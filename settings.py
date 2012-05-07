@@ -83,7 +83,7 @@ STATICFILES_FINDERS = (
 )
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = 'dr(zaw)vb6vq#r!fn-v#a8-6+q$c3d*p#ahb!rd0l+7_cez*xz'
+SECRET_KEY = '12nx7-&t@%$zb1v=968mcs0ow@!)u+62#sf4zggu%1_7pg^1g('
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
@@ -102,11 +102,7 @@ MIDDLEWARE_CLASSES = (
 
 ROOT_URLCONF = 'whiteboard.urls'
 
-TEMPLATE_DIRS = (
-    # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
-)
+TEMPLATE_DIRS = ('/Users/mauriciomunoz/workspace/whiteboard/templates',)
 
 INSTALLED_APPS = (
     'django.contrib.auth',
