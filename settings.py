@@ -102,7 +102,9 @@ MIDDLEWARE_CLASSES = (
 
 ROOT_URLCONF = 'whiteboard.urls'
 
-TEMPLATE_DIRS = ('/Users/mauriciomunoz/workspace/whiteboard/templates',)
+TEMPLATE_DIRS = (
+
+)
 
 INSTALLED_APPS = (
     'django.contrib.auth',
@@ -111,6 +113,9 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_nose',
+    'lettuce.django',
+    'board'
     # Uncomment the next line to enable the admin:
     # 'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
