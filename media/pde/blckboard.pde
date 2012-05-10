@@ -1,5 +1,6 @@
 // Post-it BlackBoard
-String postit_image_url = "/home/and0/job/mapale/postit.gif";
+/* @pjs preload="/media/postit.gif"; */
+String postit_image_url = "/media/postit.gif";
 ArrayList postits;
 
 void setup(){
