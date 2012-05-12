@@ -19,16 +19,18 @@ void draw(){
     }
 }
 
-void addPostIt(String text, float x, float y){
-    postits.put(1, new PostIt(text, x, y));
+void addPostIt(int id, String text, float x, float y){
+    postits.put(id, new PostIt(id, text, x, y));
 }
 
 class PostIt{
+  int id;
   float x, y;
   PImage postit_i;
   String feed;
 
-  PostIt(String text, float x, float y){
+  PostIt(int id, String text, float x, float y){
+    this.id = id;
     this.feed = text;
     this.x = x;
     this.y = y;
@@ -36,8 +38,8 @@ class PostIt{
     postit_i.resize(0, height/4);
   }
 
-  PostIt(String text){
-    this(text, width/2, height/2);
+  PostIt(int id, String text){
+    this(id, text, width/2, height/2);
   }
   
   void show(){
