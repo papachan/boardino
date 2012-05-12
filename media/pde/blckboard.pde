@@ -64,6 +64,10 @@ class PostIt{
   
 }
 
+void movePostIt(int id, int x, int y){
+    postits.get(id).move(x, y);
+}
+
 void mouseDragged(){
     Iterator i = postits.entrySet().iterator();
     while (i.hasNext()) {
@@ -71,6 +75,7 @@ void mouseDragged(){
         PostIt postit = (PostIt)entry.getValue();
         if (postit.clicked()){
             postit.move(mouseX - postit.postit_i.width/2, mouseY - postit.postit_i.height/2);
+            onPostItMoved(postit.id, postit.x, postit.y);
         }
     }
 }

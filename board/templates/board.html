@@ -5,8 +5,10 @@
     <title>The Board</title>
     <script src="http://code.jquery.com/jquery.min.js"></script>
     <script type="text/javascript" src="/media/js/processing-1.3.6.js"></script>
+    <script type="text/javascript" src="/media/js/json2.js"></script>
     <script type="application/javascript">
         var processingInstance;
+        var ws;
 
         function loadProcessingInstance(){
             var tId=0;
@@ -18,12 +20,32 @@
 
         function loadBoard(){
             {% for post_it in postits %}
-                processingInstance.addPostIt("{{post_it.text}}",{{ post_it.x }},{{ post_it.y }});
+                processingInstance.addPostIt({{post_it.id}},"{{post_it.text}}",{{ post_it.x }},{{ post_it.y }});
             {% endfor %}
+        }
+
+        function onPostItMoved(postItId, x, y){
+            var message = {
+                "id":postItId,
+                "x": x,
+                "y": y
+            };
+            ws.send(JSON.stringify(message));
         }
 
         $(document).ready(function() {
             loadProcessingInstance();
+            var host = "localhost";
+            var port = "8888";
+            var uri = "/ws";
+            ws = new WebSocket("ws://" + host + ":" + port + uri);
+
+            ws.onmessage = function(evt) {
+                var message = $.parseJSON(evt.data);
+                processingInstance.movePostIt(message["id"], message["x"], message["y"])
+            };
+            ws.onclose = function(evt) {};
+            ws.onopen = function(evt) {};
         });
 
     </script>
