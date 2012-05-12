@@ -1,24 +1,26 @@
 // Post-it WhiteBoard
 /* @pjs preload="/media/postit.gif"; */
 String postit_image_url = "/media/postit.gif";
-ArrayList postits;
+HashMap postits;
 
 void setup(){
   size(800, 400);
-  postits = new ArrayList();
+  postits = new HashMap();
   loadBoard();
 }
 
 void draw(){
-  background(255);
-  for (int i = postits.size() - 1; i >= 0; i--){
-    PostIt postit = (PostIt) postits.get(i);
-    postit.show();
-  }
+    background(255);
+    Iterator i = postits.entrySet().iterator();
+    while (i.hasNext()) {
+        Map.Entry entry = (Map.Entry)i.next();
+        PostIt postit = (PostIt)entry.getValue();
+        postit.show();
+    }
 }
 
 void addPostIt(String text, float x, float y){
-    postits.add(new PostIt(text, x, y));
+    postits.put(1, new PostIt(text, x, y));
 }
 
 class PostIt{
@@ -61,8 +63,10 @@ class PostIt{
 }
 
 void mouseDragged(){
-    for (int i = postits.size() - 1; i >= 0; i--){
-        PostIt postit = (PostIt) postits.get(i);
+    Iterator i = postits.entrySet().iterator();
+    while (i.hasNext()) {
+        Map.Entry entry = (Map.Entry)i.next();
+        PostIt postit = (PostIt)entry.getValue();
         if (postit.clicked()){
             postit.move(mouseX - postit.postit_i.width/2, mouseY - postit.postit_i.height/2);
         }
