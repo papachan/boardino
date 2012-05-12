@@ -7,4 +7,6 @@ class Board(models.Model):
 
 class PostIt(models.Model):
     board = models.ForeignKey(Board)
+    x = models.IntegerField()
+    y = models.IntegerField()
     text = models.TextField()

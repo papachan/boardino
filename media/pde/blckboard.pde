@@ -1,4 +1,4 @@
-// Post-it BlackBoard
+// Post-it WhiteBoard
 /* @pjs preload="/media/postit.gif"; */
 String postit_image_url = "/media/postit.gif";
 ArrayList postits;
@@ -6,7 +6,7 @@ ArrayList postits;
 void setup(){
   size(800, 400);
   postits = new ArrayList();
-  postits.add(new PostIt("test note 1"));
+  loadBoard();
 }
 
 void draw(){
@@ -17,26 +17,28 @@ void draw(){
   }
 }
 
+void addPostIt(String text, float x, float y){
+    postits.add(new PostIt(text, x, y));
+}
+
 class PostIt{
   float x, y;
   PImage postit_i;
   String feed;
-  PostIt(String feed_a){
-    x = width/2;
-    y = height/2;
+
+  PostIt(String text, float x, float y){
+    this.feed = text;
+    this.x = x;
+    this.y = y;
     postit_i = loadImage(postit_image_url);
     postit_i.resize(0, height/4);
-    feed = feed_a;
+  }
+
+  PostIt(String text){
+    this(text, width/2, height/2);
   }
   
   void show(){
-    if (mousePressed && clicked()) {
-      noFill();
-      rect(x, y, postit_i.width, postit_i.height);
-      float rpos_x = mouseX - x;
-      float rpos_y = mouseY - Y;
-      move_xy(mouseX - rpos_x, mouseY - rpos_y);   
-    }
     image(postit_i, x, y);
     fill(0);
     text(feed, x+15, y+50);
@@ -51,21 +53,18 @@ class PostIt{
     return false;
   }
   
-  void move_xy(float x_a, float y_a){
-    x = x_a;
-    y = y_a;
+  void move(float x, float y){
+    this.x = x;
+    this.y = y;
   }
   
 }
 
-/*
-void mousePressed(){
-  for (int i = postits.size() - 1; i >= 0; i--){
-    PostIt postit = (PostIt) postits.get(i);
-    if (postit.clicked()){
-      noFill();
-      rect(postit.x,postit.y,postit.postit_i.width, postit.postit_i.height);
-      postit.move_xy(mouseX - postit.postit_i.width, mouseY - postit.postit_i.height);
+void mouseDragged(){
+    for (int i = postits.size() - 1; i >= 0; i--){
+        PostIt postit = (PostIt) postits.get(i);
+        if (postit.clicked()){
+            postit.move(mouseX - postit.postit_i.width/2, mouseY - postit.postit_i.height/2);
+        }
     }
-  }
-}*/
+}
