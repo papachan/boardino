@@ -8,6 +8,7 @@ from django.conf.urls.static import static
 
 urlpatterns = patterns('',
     url(r'^', include('whiteboard.board.urls')),
+    url(r'^jasmine', include('django_jasmine.urls')),
     # Examples:
     # url(r'^$', 'whiteboard.views.home', name='home'),
     # url(r'^whiteboard/', include('whiteboard.foo.urls')),

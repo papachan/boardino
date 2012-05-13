@@ -116,6 +116,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django_nose',
     'lettuce.django',
+    'django_jasmine',
     'board'
     # Uncomment the next line to enable the admin:
     # 'django.contrib.admin',
@@ -123,6 +124,8 @@ INSTALLED_APPS = (
     # 'django.contrib.admindocs',
 )
 
+
+JASMINE_TEST_DIRECTORY = MEDIA_ROOT+'/js/jasmine'
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
 # the site admins on every HTTP 500 error.
