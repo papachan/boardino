@@ -26,9 +26,13 @@
 
         function onPostItMoved(postItId, x, y){
             var message = {
-                "id":postItId,
-                "x": x,
-                "y": y
+                "type": "move",
+                "args": {
+                    "channel_id":{{ board_id }},
+                    "postit_id":postItId,
+                    "x": x,
+                    "y": y
+                }
             };
             ws.send(JSON.stringify(message));
         }
@@ -42,10 +46,20 @@
 
             ws.onmessage = function(evt) {
                 var message = $.parseJSON(evt.data);
-                processingInstance.movePostIt(message["id"], message["x"], message["y"])
+                processingInstance.movePostIt(message["args"]["postit_id"], message["args"]["x"], message["args"]["y"])
             };
             ws.onclose = function(evt) {};
-            ws.onopen = function(evt) {};
+            ws.onopen = function(evt) {
+                var message = {
+                    "type": "register",
+                    "args": {
+                        "channel_id":{{ board_id }}
+                    }
+                };
+                ws.send(JSON.stringify(message));
+            };
+
+
         });
 
     </script>

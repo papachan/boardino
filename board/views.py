@@ -13,4 +13,4 @@ def create_board(request):
 
 def board(request, board_id):
     the_board = get_object_or_404(Board, pk=board_id)
-    return render_to_response('board.html',{'postits':the_board.postit_set.all()})
+    return render_to_response('board.html',{'board_id': board_id, 'postits':the_board.postit_set.all()})
