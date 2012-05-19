@@ -18,4 +18,11 @@ describe("Board Connection", function(){
         boardConnection.subscribe(222);
         expect(fakeWs.send).toHaveBeenCalledWith('{"type":"register","args":{"channel_id":222}}');
     });
+
+    it("should throw exception if not subscribe when moving", function(){
+        boardConnection = new BoardConnection(fakeWs);
+        expect(function(){
+            boardConnection.movePostIt(1,2,3);
+        }).toThrow("should be subscribed to board before trying to move postit")
+    });
 });

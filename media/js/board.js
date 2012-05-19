@@ -1,9 +1,11 @@
 function BoardConnection(ws) {
     this.ws = ws;
-    //this.board_id = board_id;
 }
 
 BoardConnection.prototype.movePostIt = function(postItId, x, y){
+    if(!this.board_id){
+        throw "should be subscribed to board before trying to move postit";
+    }
     var message = {
         "type": "move",
         "args": {
