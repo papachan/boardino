@@ -1,5 +1,8 @@
-from django.http import HttpResponseRedirect
+import json
+from django.core import serializers
+from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render_to_response, get_object_or_404
+from django.views.decorators.csrf import csrf_exempt
 from board.models import Board, PostIt
 
 def create_board(request):
@@ -14,3 +17,18 @@ def create_board(request):
 def board(request, board_id):
     the_board = get_object_or_404(Board, pk=board_id)
     return render_to_response('board.html',{'board_id': board_id, 'postits':the_board.postit_set.all()})
+
+@csrf_exempt
+def new_postit(request, board_id):
+    the_board = get_object_or_404(Board, pk=board_id)
+    params = request.POST
+    postit = PostIt(text=params["text"],x=30,y=30, board=the_board)
+    postit.save()
+
+    json_data = json.dumps({"id":postit.id, "text":postit.text, "x":postit.x, "y":postit.y})
+    print "JSON!:"+json_data
+    #json_data = serializers.serialize("json", [postit], ensure_ascii=False, use_natural_keys=True)
+    if request.is_ajax():
+        return HttpResponse(json_data, mimetype="application/json")
+    else:
+        return HttpResponse(status=400)

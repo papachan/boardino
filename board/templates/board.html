@@ -29,8 +29,7 @@
             boardConnection.movePostIt(postItId, x, y);
         }
 
-        $(document).ready(function() {
-            loadProcessingInstance();
+        function loadBoardConnection(){
             var host = "localhost";
             var port = "8888";
             var uri = "/ws";
@@ -48,7 +47,18 @@
             ws.onopen = function(evt) {
                 boardConnection.subscribe({{ board_id }});
             };
+        }
 
+        $(document).ready(function() {
+            loadProcessingInstance();
+            loadBoardConnection();
+
+            $("#new_postit").click(function(){
+                var text = $("#postit_text").val();
+                $.post('/{{ board_id }}/postit/new/', { text: text }, function(json){
+                    processingInstance.addPostIt(json["id"], json["text"],json["x"],json["y"]);
+                });
+            });
 
         });
 
@@ -56,5 +66,7 @@
 </head>
 <body>
     <canvas id="board" data-processing-sources="/media/pde/blckboard.pde"></canvas>
+    <input type="text" id="postit_text"/>
+    <input type="button" id="new_postit" value="Nuevo Post-it"/>
 </body>
 </html>
