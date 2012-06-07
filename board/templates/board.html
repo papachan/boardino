@@ -29,6 +29,15 @@
             boardConnection.movePostIt(postItId, x, y);
         }
 
+        function onnewPostit(x, y, feed){
+            $.post('/{{ board_id }}/postit/new/', { text: feed, x:x, y:y }, function(json){
+                    boardConnection.newPostit({{ board_id }} , json["postit_id"], json["x"],json["y"],json["text"]);
+
+                });
+
+        }
+
+
         function loadBoardConnection(){
             var host = "localhost";
             var port = "8888";
@@ -39,7 +48,16 @@
 
             ws.onmessage = function(evt) {
                 var message = $.parseJSON(evt.data);
-                processingInstance.movePostIt(message["args"]["postit_id"], message["args"]["x"], message["args"]["y"])
+                var message_type = message["type"];
+                if (message_type == "new") {
+                    processingInstance.addPostIt(message["args"]["postit_id"], message["args"]["text"], message["args"]["x"], message["args"]["y"]);
+                    }
+                else if (message_type == "move") {
+                    processingInstance.movePostIt(message["args"]["postit_id"], message["args"]["x"], message["args"]["y"]);
+                    }
+                else {
+                    return false;
+                    }
             };
 
             ws.onclose = function(evt) {};

@@ -28,3 +28,19 @@ BoardConnection.prototype.subscribe = function(board_id){
     };
     this.ws.send(JSON.stringify(message));
 };
+
+BoardConnection.prototype.newPostit = function(board_id, postItId, x, y, text){
+    this.board_id = board_id;
+    var message = {
+        "type": "new",
+        "args": {
+            "channel_id": this.board_id,
+            "obj":"postit",
+            "postit_id":postItId,
+            "x": x,
+            "y": y,
+            "text":text 
+        }
+    };
+    this.ws.send(JSON.stringify(message));
+};

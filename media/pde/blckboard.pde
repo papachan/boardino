@@ -5,12 +5,13 @@ HashMap postits;
 
 void setup(){
   size(800, 400);
+  frameRate(15);
   postits = new HashMap();
   loadBoard();
 }
 
 void draw(){
-    background(255);
+    background(59,101,61);
     Iterator i = postits.entrySet().iterator();
     while (i.hasNext()) {
         Map.Entry entry = (Map.Entry)i.next();
@@ -19,7 +20,7 @@ void draw(){
     }
 }
 
-void addPostIt(int id, String text, float x, float y){
+void addPostIt(int id, String text, int x, int y){
     postits.put(id, new PostIt(id, text, x, y));
 }
 
@@ -43,6 +44,9 @@ class PostIt{
   }
   
   void show(){
+    if (id == 9999){
+        rect(x, y, postit_i.width, postit_i.height);
+    }
     image(postit_i, x, y);
     fill(0);
     text(feed, x+15, y+50);
@@ -57,6 +61,10 @@ class PostIt{
     return false;
   }
   
+  void select(){
+      println("select");
+  }
+  
   void move(float x, float y){
     this.x = x;
     this.y = y;
@@ -65,7 +73,35 @@ class PostIt{
 }
 
 void movePostIt(int id, int x, int y){
-    postits.get(id).move(x, y);
+    PostIt postit = (PostIt) postits.get(id);
+    postit.move(x, y);
+}
+
+void createPostIt(){
+    PostIt postit = postits.get(9999)
+    onnewPostit(postit.x, postit.y, postit.feed);
+    postits.remove(9999);
+
+}
+
+
+void mouseClicked(){
+  println("mouseClicked");
+  Iterator i = postits.entrySet().iterator();
+    while (i.hasNext()) {
+        Map.Entry entry = (Map.Entry)i.next();
+        PostIt postit = (PostIt)entry.getValue();
+        if (postit.clicked()){
+            postit.select();
+            return;
+        }
+    }
+    if (postits.containsKey(9999)){
+            createPostIt();
+        }
+    else{
+        addPostIt(9999, "Write text...", mouseX, mouseY);
+    }
 }
 
 void mouseDragged(){
@@ -76,6 +112,20 @@ void mouseDragged(){
         if (postit.clicked()){
             postit.move(mouseX - postit.postit_i.width/2, mouseY - postit.postit_i.height/2);
             onPostItMoved(postit.id, postit.x, postit.y);
+        }
+    }
+}
+
+
+
+void keyPressed(){
+    if (postits.containsKey(9999)){
+        PostIt postit = (PostIt) postits.get(9999);
+        if( ((key>='A')&&(key<='Z')) || ((key>='a')&&(key<='z')) || ((key>='0')&&(key<='9')) || (key == ' ')){
+          postit.feed = concat(postit.feed, key);
+        } 
+        if(keyCode == BACKSPACE){
+            postit.feed = postit.feed.substring(0, postit.feed.length() -1);
         }
     }
 }

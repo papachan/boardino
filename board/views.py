@@ -22,10 +22,10 @@ def board(request, board_id):
 def new_postit(request, board_id):
     the_board = get_object_or_404(Board, pk=board_id)
     params = request.POST
-    postit = PostIt(text=params["text"],x=30,y=30, board=the_board)
+    postit = PostIt(text=params["text"],x=params["x"],y=params["y"], board=the_board)
     postit.save()
 
-    json_data = json.dumps({"id":postit.id, "text":postit.text, "x":postit.x, "y":postit.y})
+    json_data = json.dumps({"postit_id":postit.id, "text":postit.text, "x":postit.x, "y":postit.y})
     print "JSON!:"+json_data
     #json_data = serializers.serialize("json", [postit], ensure_ascii=False, use_natural_keys=True)
     if request.is_ajax():
