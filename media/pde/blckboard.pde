@@ -62,7 +62,7 @@ class PostIt{
   }
   
   void select(){
-      println("select");
+
   }
   
   void move(float x, float y){
@@ -86,7 +86,6 @@ void createPostIt(){
 
 
 void mouseClicked(){
-  println("mouseClicked");
   Iterator i = postits.entrySet().iterator();
     while (i.hasNext()) {
         Map.Entry entry = (Map.Entry)i.next();
