@@ -2,6 +2,7 @@
 /* @pjs preload="/media/postit.gif"; */
 String postit_image_url = "/media/postit.gif";
 HashMap postits;
+PostIt selectedPostIt;
 
 void setup(){
   size(800, 400);
@@ -29,6 +30,7 @@ class PostIt{
   float x, y;
   PImage postit_i;
   String feed;
+  boolean selected;
 
   PostIt(int id, String text, float x, float y){
     this.id = id;
@@ -37,6 +39,7 @@ class PostIt{
     this.y = y;
     postit_i = loadImage(postit_image_url);
     postit_i.resize(0, height/4);
+    this.selected = false;
   }
 
   PostIt(int id, String text){
@@ -62,14 +65,17 @@ class PostIt{
   }
   
   void select(){
+    this.selected = true;
+  }
 
+  void deselect(){
+    this.selected = false;
   }
   
   void move(float x, float y){
     this.x = x;
     this.y = y;
   }
-  
 }
 
 void movePostIt(int id, int x, int y){
@@ -84,21 +90,23 @@ void createPostIt(){
 
 }
 
+void mousePressed(){
+    if(selectedPostIt!=null)
+        selectedPostIt.deselect();
 
-void mouseClicked(){
-  Iterator i = postits.entrySet().iterator();
+    Iterator i = postits.entrySet().iterator();
     while (i.hasNext()) {
         Map.Entry entry = (Map.Entry)i.next();
         PostIt postit = (PostIt)entry.getValue();
         if (postit.clicked()){
             postit.select();
+            selectedPostIt = postit;
             return;
         }
     }
     if (postits.containsKey(9999)){
-            createPostIt();
-        }
-    else{
+        createPostIt();
+    }else{
         addPostIt(9999, "Write text...", mouseX, mouseY);
     }
 }
@@ -108,14 +116,17 @@ void mouseDragged(){
     while (i.hasNext()) {
         Map.Entry entry = (Map.Entry)i.next();
         PostIt postit = (PostIt)entry.getValue();
-        if (postit.clicked()){
+        if (postit.selected){
             postit.move(mouseX - postit.postit_i.width/2, mouseY - postit.postit_i.height/2);
             onPostItMoved(postit.id, postit.x, postit.y);
         }
     }
 }
 
-
+void mouseReleased(){
+    selectedPostIt.deselect();
+    selectedPostIt = null;
+}
 
 void keyPressed(){
     if (postits.containsKey(9999)){
