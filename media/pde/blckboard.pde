@@ -21,6 +21,17 @@ void draw(){
     }
 }
 
+JavaScript javaScript;
+
+interface JavaScript{
+    void onNewPostit(float x, float y, String feed);
+    void onPostitMoved(int id, float x, float y);
+}
+
+void bindJavaScript(JavaScript js){
+    javaScript = js;
+}
+
 void addPostIt(int id, String text, int x, int y){
     postits.put(id, new PostIt(id, text, x, y));
 }
@@ -92,7 +103,7 @@ void movePostIt(int id, int x, int y){
 
 void createPostIt(){
     PostIt postit = postits.get(9999);
-    onnewPostit(postit.x, postit.y, postit.feed);
+    javaScript.onNewPostit(postit.x, postit.y, postit.feed);
     postits.remove(9999);
 }
 
@@ -134,7 +145,7 @@ void mouseDragged(){
     postit = searchFirstSelected();
     if(postit!=null){
         postit.move(mouseX - postit.postit_i.width/2, mouseY - postit.postit_i.height/2);
-        onPostItMoved(postit.id, postit.x, postit.y);
+        javaScript.onPostitMoved(postit.id, postit.x, postit.y);
     }
 }
 

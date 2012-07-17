@@ -6,7 +6,7 @@
     <script src="http://code.jquery.com/jquery.min.js"></script>
     <script type="text/javascript" src="/media/js/processing-1.3.6.js"></script>
     <script type="text/javascript" src="/media/js/json2.js"></script>
-    <script type="text/javascript" src="/media/js/board.js"></script>
+    <script type="text/javascript" src="/media/js/boardconnection.js"></script>
     <script type="application/javascript">
         var processingInstance;
         var boardConnection;
@@ -23,20 +23,18 @@
             {% for post_it in postits %}
                 processingInstance.addPostIt({{post_it.id}},"{{post_it.text}}",{{ post_it.x }},{{ post_it.y }});
             {% endfor %}
+            processingInstance.bindJavaScript(this);
         }
 
-        function onPostItMoved(postItId, x, y){
+        function onPostitMoved(postItId, x, y){
             boardConnection.movePostIt(postItId, x, y);
         }
 
-        function onnewPostit(x, y, feed){
+        function onNewPostit(x, y, feed){
             $.post('/{{ board_id }}/postit/new/', { text: feed, x:x, y:y }, function(json){
                     boardConnection.newPostit({{ board_id }} , json["postit_id"], json["x"],json["y"],json["text"]);
-
-                });
-
+            });
         }
-
 
         function loadBoardConnection(){
             var host = "localhost";
@@ -70,14 +68,6 @@
         $(document).ready(function() {
             loadProcessingInstance();
             loadBoardConnection();
-
-            $("#new_postit").click(function(){
-                var text = $("#postit_text").val();
-                $.post('/{{ board_id }}/postit/new/', { text: text }, function(json){
-                    processingInstance.addPostIt(json["id"], json["text"],json["x"],json["y"]);
-                });
-            });
-
         });
 
     </script>
