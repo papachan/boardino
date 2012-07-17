@@ -26,6 +26,7 @@ JavaScript javaScript;
 interface JavaScript{
     void onNewPostit(float x, float y, String feed);
     void onPostitMoved(int id, float x, float y);
+    void onPostitSelected(int id);
 }
 
 void bindJavaScript(JavaScript js){
@@ -126,9 +127,14 @@ void mousePressed(){
 void trySelectingPostit(){
     postit = searchFirstHovered();
     if (postit!=null){
-        postit.select();
-        selectedPostIt = postit;
+        selectPostit(postit);
     }
+}
+
+void selectPostit(PostIt postit){
+    postit.select();
+    javaScript.onPostitSelected(postit.id);
+    selectedPostIt = postit;
 }
 
 void deselectCurrentPostit(){

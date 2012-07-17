@@ -26,14 +26,18 @@
             processingInstance.bindJavaScript(this);
         }
 
-        function onPostitMoved(postItId, x, y){
-            boardConnection.movePostIt(postItId, x, y);
+        function onPostitMoved(postitId, x, y){
+            boardConnection.movePostIt(postitId, x, y);
         }
 
         function onNewPostit(x, y, feed){
             $.post('/{{ board_id }}/postit/new/', { text: feed, x:x, y:y }, function(json){
-                    boardConnection.newPostit({{ board_id }} , json["postit_id"], json["x"],json["y"],json["text"]);
+                boardConnection.newPostit({{ board_id }} , json["postit_id"], json["x"],json["y"],json["text"]);
             });
+        }
+
+        function onPostitSelected(postitId){
+            //TODO: informar que se seleccionó el postit
         }
 
         function loadBoardConnection(){
