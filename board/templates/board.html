@@ -37,7 +37,7 @@
         }
 
         function onPostitSelected(postitId){
-            //TODO: informar que se seleccionó el postit
+            boardConnection.selectPostit(postitId);
         }
 
         function loadBoardConnection(){
@@ -51,15 +51,19 @@
             ws.onmessage = function(evt) {
                 var message = $.parseJSON(evt.data);
                 var message_type = message["type"];
-                if (message_type == "new") {
-                    processingInstance.addPostIt(message["args"]["postit_id"], message["args"]["text"], message["args"]["x"], message["args"]["y"]);
-                    }
-                else if (message_type == "move") {
-                    processingInstance.movePostIt(message["args"]["postit_id"], message["args"]["x"], message["args"]["y"]);
-                    }
-                else {
-                    return false;
-                    }
+                switch(message_type){
+                    case "new":
+                        processingInstance.addPostIt(message["args"]["postit_id"], message["args"]["text"], message["args"]["x"], message["args"]["y"]);
+                        break;
+                    case "move":
+                        processingInstance.movePostIt(message["args"]["postit_id"], message["args"]["x"], message["args"]["y"]);
+                        break;
+                    case "select":
+                        processingInstance.friendSelectPostit(message["args"]["id"]);
+                        break;
+                    default:
+                        return false;
+                }
             };
 
             ws.onclose = function(evt) {};

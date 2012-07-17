@@ -38,21 +38,22 @@ void addPostIt(int id, String text, int x, int y){
 }
 
 class PostIt{
-  int id;
-  float x, y;
-  PImage postit_i;
-  String feed;
-  boolean selected;
+    int id;
+    float x, y;
+    PImage postit_i;
+    String feed;
+    boolean selected = false;
+    boolean friendSelected = false;
 
-  PostIt(int id, String text, float x, float y){
-    this.id = id;
-    this.feed = text;
-    this.x = x;
-    this.y = y;
-    postit_i = loadImage(postit_image_url);
-    postit_i.resize(0, height/4);
-    this.selected = false;
-  }
+    PostIt(int id, String text, float x, float y){
+        this.id = id;
+        this.feed = text;
+        this.x = x;
+        this.y = y;
+        postit_i = loadImage(postit_image_url);
+        postit_i.resize(0, height/4);
+        this.selected = false;
+    }
 
   PostIt(int id, String text){
     this(id, text, width/2, height/2);
@@ -65,9 +66,17 @@ class PostIt{
     if(selected){
         rect(x, y, postit_i.width, postit_i.height);
     }
+    if(friendSelected){
+        fill(color(200, 0, 0));
+        rect(x, y, postit_i.width, postit_i.height);
+    }
     image(postit_i, x, y);
     fill(0);
     text(feed, x+15, y+50);
+  }
+
+  boolean isNew(){
+    return id==9999;
   }
   
   boolean hovered(){
@@ -83,6 +92,10 @@ class PostIt{
     this.selected = true;
   }
 
+    void friendSelect(){
+        this.friendSelected = true;
+    }
+
   void deselect(){
     this.selected = false;
   }
@@ -92,9 +105,7 @@ class PostIt{
     this.y = y;
   }
 
-  boolean isNew(){
-    return id==9999;
-  }
+
 }
 
 void movePostIt(int id, int x, int y){
@@ -135,6 +146,11 @@ void selectPostit(PostIt postit){
     postit.select();
     javaScript.onPostitSelected(postit.id);
     selectedPostIt = postit;
+}
+
+void friendSelectPostit(int postitId){
+    PostIt postit = (PostIt) postits.get(postitId);
+    postit.friendSelect();
 }
 
 void deselectCurrentPostit(){
