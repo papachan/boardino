@@ -47,7 +47,10 @@ class PostIt{
   }
   
   void show(){
-    if (id == 9999){
+    if (isNew()){
+        rect(x, y, postit_i.width, postit_i.height);
+    }
+    if(selected){
         rect(x, y, postit_i.width, postit_i.height);
     }
     image(postit_i, x, y);
@@ -55,7 +58,7 @@ class PostIt{
     text(feed, x+15, y+50);
   }
   
-  boolean clicked(){
+  boolean hovered(){
     if (mouseX > x && mouseX < (postit_i.width + x)){
       if (mouseY > y && mouseY < (postit_i.height + y)){
         return true;
@@ -76,6 +79,10 @@ class PostIt{
     this.x = x;
     this.y = y;
   }
+
+  boolean isNew(){
+    return id==9999;
+  }
 }
 
 void movePostIt(int id, int x, int y){
@@ -87,45 +94,48 @@ void createPostIt(){
     PostIt postit = postits.get(9999)
     onnewPostit(postit.x, postit.y, postit.feed);
     postits.remove(9999);
-
 }
 
 void mousePressed(){
-    if(selectedPostIt!=null)
-        selectedPostIt.deselect();
-
-    Iterator i = postits.entrySet().iterator();
-    while (i.hasNext()) {
-        Map.Entry entry = (Map.Entry)i.next();
-        PostIt postit = (PostIt)entry.getValue();
-        if (postit.clicked()){
-            postit.select();
-            selectedPostIt = postit;
-            return;
-        }
+    if(selectedPostIt!=null){
+        deselectCurrentPostit();
+        trySelectingPostit();
+        return;
     }
-    if (postits.containsKey(9999)){
+
+    if (createPendingPostit()){
         createPostIt();
     }else{
-        addPostIt(9999, "Write text...", mouseX, mouseY);
+        trySelectingPostit();
+        if(selectedPostIt==null)
+            addPostIt(9999, "Write text...", mouseX, mouseY);
     }
+}
+
+void trySelectingPostit(){
+    postit = searchFirstHovered();
+    if (postit!=null){
+        postit.select();
+        selectedPostIt = postit;
+    }
+}
+
+void deselectCurrentPostit(){
+    selectedPostIt.deselect();
+    selectedPostIt = null;
+}
+
+boolean createPendingPostit(){
+    return postits.containsKey(9999);
 }
 
 void mouseDragged(){
     Iterator i = postits.entrySet().iterator();
-    while (i.hasNext()) {
-        Map.Entry entry = (Map.Entry)i.next();
-        PostIt postit = (PostIt)entry.getValue();
-        if (postit.selected){
-            postit.move(mouseX - postit.postit_i.width/2, mouseY - postit.postit_i.height/2);
-            onPostItMoved(postit.id, postit.x, postit.y);
-        }
+    postit = searchFirstSelected();
+    if(postit!=null){
+        postit.move(mouseX - postit.postit_i.width/2, mouseY - postit.postit_i.height/2);
+        onPostItMoved(postit.id, postit.x, postit.y);
     }
-}
-
-void mouseReleased(){
-    selectedPostIt.deselect();
-    selectedPostIt = null;
 }
 
 void keyPressed(){
@@ -138,4 +148,28 @@ void keyPressed(){
             postit.feed = postit.feed.substring(0, postit.feed.length() -1);
         }
     }
+}
+
+PostIt searchFirstHovered(){
+    Iterator i = postits.entrySet().iterator();
+    while (i.hasNext()) {
+        Map.Entry entry = (Map.Entry)i.next();
+        PostIt postit = (PostIt)entry.getValue();
+        if (postit.hovered()){
+            return postit;
+        }
+    }
+    return null;
+}
+
+PostIt searchFirstSelected(){
+    Iterator i = postits.entrySet().iterator();
+    while (i.hasNext()) {
+        Map.Entry entry = (Map.Entry)i.next();
+        PostIt postit = (PostIt)entry.getValue();
+        if (postit.selected){
+            return postit;
+        }
+    }
+    return null;
 }
