@@ -91,7 +91,7 @@ void movePostIt(int id, int x, int y){
 }
 
 void createPostIt(){
-    PostIt postit = postits.get(9999)
+    PostIt postit = postits.get(9999);
     onnewPostit(postit.x, postit.y, postit.feed);
     postits.remove(9999);
 }
