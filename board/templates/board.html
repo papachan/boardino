@@ -40,6 +40,10 @@
             boardConnection.selectPostit(postitId);
         }
 
+        function onPostitDeselected(postitId){
+            boardConnection.deselectPostit(postitId);
+        }
+
         function loadBoardConnection(){
             var host = "localhost";
             var port = "8888";
@@ -60,6 +64,9 @@
                         break;
                     case "select":
                         processingInstance.friendSelectPostit(message["args"]["id"]);
+                        break;
+                    case "deselect":
+                        processingInstance.friendDeselectPostit(message["args"]["id"]);
                         break;
                     default:
                         return false;

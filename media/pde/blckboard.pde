@@ -27,6 +27,7 @@ interface JavaScript{
     void onNewPostit(float x, float y, String feed);
     void onPostitMoved(int id, float x, float y);
     void onPostitSelected(int id);
+    void onPostitDeselected(int id);
 }
 
 void bindJavaScript(JavaScript js){
@@ -96,6 +97,10 @@ class PostIt{
         this.friendSelected = true;
     }
 
+    void friendDeselect(){
+        this.friendSelected = false;
+    }
+
   void deselect(){
     this.selected = false;
   }
@@ -153,8 +158,14 @@ void friendSelectPostit(int postitId){
     postit.friendSelect();
 }
 
+void friendDeselectPostit(int postitId){
+    PostIt postit = (PostIt) postits.get(postitId);
+    postit.friendDeselect();
+}
+
 void deselectCurrentPostit(){
     selectedPostIt.deselect();
+    javaScript.onPostitDeselected(selectedPostIt.id);
     selectedPostIt = null;
 }
 

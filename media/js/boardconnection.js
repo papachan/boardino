@@ -55,3 +55,14 @@ BoardConnection.prototype.selectPostit = function(postItId){
     };
     this.ws.send(JSON.stringify(message));
 };
+
+BoardConnection.prototype.deselectPostit = function(postItId){
+    var message = {
+        "type": "deselect",
+        "args": {
+            "channel_id": this.board_id,
+            "id":postItId
+        }
+    };
+    this.ws.send(JSON.stringify(message));
+};
