@@ -5,7 +5,7 @@ HashMap postits;
 PostIt selectedPostIt;
 
 void setup(){
-  size(800, 400);
+  size(window.innerWidth, window.innerHeight);
   frameRate(15);
   postits = new HashMap();
   loadBoard();
