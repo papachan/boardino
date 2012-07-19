@@ -186,7 +186,7 @@ void keyPressed(){
     if (postits.containsKey(9999)){
         PostIt postit = (PostIt) postits.get(9999);
         if( ((key>='A')&&(key<='Z')) || ((key>='a')&&(key<='z')) || ((key>='0')&&(key<='9')) || (key == ' ')){
-          postit.feed = concat(postit.feed, key);
+          postit.feed = concat(postit.feed, new String(key));
         } 
         if(keyCode == BACKSPACE){
             postit.feed = postit.feed.substring(0, postit.feed.length() -1);
