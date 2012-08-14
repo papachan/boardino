@@ -3,3 +3,31 @@
     left: 15px;
     top: 15px;
 }
+
+.postit_tool_enabled{
+    background-image: url('/media/postit_enabled.png');
+    display: block;
+    height: 50px;
+    width: 50px;
+}
+
+.postit_tool_disabled{
+    background-image: url('/media/postit_disabled.png');
+    display: block;
+    height: 50px;
+    width: 50px;
+}
+
+.pencil_tool_enabled{
+    background-image: url('/media/pencil_enabled.png');
+    display: block;
+    height: 50px;
+    width: 50px;
+}
+
+.pencil_tool_disabled{
+    background-image: url('/media/pencil_disabled.png');
+    display: block;
+    height: 50px;
+    width: 50px;
+}

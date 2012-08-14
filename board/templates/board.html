@@ -85,18 +85,17 @@
             loadProcessingInstance();
             loadBoardConnection();
 
-            $("#pencil_tool").click(
-                function(){
-                    $(this).find("img").attr({src:"/media/pencil_enabled.png"});
-                    $("#postit_tool").find("img").attr({src:"/media/postit_disabled.png"});
+            $("#pencil_tool").click(function(){
+                    $(this).attr({'class':"pencil_tool_enabled"});
+                    $("#postit_tool").attr({'class':"postit_tool_disabled"});
                     processingInstance.selectPencilTool();
                 }
             );
 
             $("#postit_tool").click(
                 function(){
-                    $(this).find("img").attr({src:"/media/postit_enabled.png"});
-                    $("#pencil_tool").find("img").attr({src:"/media/pencil_disabled.png"});
+                    $(this).attr({'class':"postit_tool_enabled"});
+                    $("#pencil_tool").attr({'class':"pencil_tool_disabled"});
                     processingInstance.selectPostitTool();
                 }
             );
@@ -106,8 +105,8 @@
 </head>
 <body>
     <div id="toolbar">
-        <a id="postit_tool"><img src="/media/postit_enabled.png"/></a>
-        <a id="pencil_tool"><img src="/media/pencil_disabled.png"/></a>
+        <a id="postit_tool" class="postit_tool_enabled"></a>
+        <a id="pencil_tool" class="pencil_tool_disabled"></a>
     </div>
     <canvas id="board" data-processing-sources="/media/pde/blckboard.pde /media/pde/postit.pde
     /media/pde/postittool.pde /media/pde/penciltool.pde"></canvas>
