@@ -58,7 +58,7 @@
                 var message_type = message["type"];
                 switch(message_type){
                     case "new":
-                        processingInstance.addPostIt(message["args"]["postit_id"], message["args"]["text"], message["args"]["x"], message["args"]["y"]);
+                        processingInstance.addPostIt(message["args"]["id"], message["args"]["text"], message["args"]["x"], message["args"]["y"]);
                         break;
                     case "move":
                         processingInstance.movePostIt(message["args"]["postit_id"], message["args"]["x"], message["args"]["y"]);

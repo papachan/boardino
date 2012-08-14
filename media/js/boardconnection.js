@@ -36,7 +36,7 @@ BoardConnection.prototype.newPostit = function(board_id, postItId, x, y, text){
         "args": {
             "channel_id": this.board_id,
             "obj":"postit",
-            "postit_id":postItId,
+            "id":postItId,
             "x": x,
             "y": y,
             "text":text 
