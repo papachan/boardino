@@ -37,6 +37,10 @@
             });
         }
 
+        function onNewLine(x, y, x1, y1){
+            boardConnection.newLine(x, y, x1, y1);
+        }
+
         function onPostitSelected(postitId){
             boardConnection.selectPostit(postitId);
         }
@@ -58,7 +62,12 @@
                 var message_type = message["type"];
                 switch(message_type){
                     case "new":
-                        processingInstance.addPostIt(message["args"]["id"], message["args"]["text"], message["args"]["x"], message["args"]["y"]);
+                        if(message["args"]["obj"]=="postit")
+                            processingInstance.addPostIt(message["args"]["id"], message["args"]["text"],
+                                                         message["args"]["x"], message["args"]["y"]);
+                        else
+                            processingInstance.addLine(message["args"]["x"], message["args"]["y"],
+                                                       message["args"]["x1"], message["args"]["y1"]);
                         break;
                     case "move":
                         processingInstance.movePostIt(message["args"]["postit_id"], message["args"]["x"], message["args"]["y"]);

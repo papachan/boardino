@@ -9,6 +9,7 @@ JavaScript javaScript;
 
 interface JavaScript{
     void onNewPostit(float x, float y, String feed);
+    void onNewLine(float x, float y, float x1, float y1);
     void onPostitMoved(int id, float x, float y);
     void onPostitSelected(int id);
     void onPostitDeselected(int id);
@@ -67,6 +68,10 @@ public void bindJavaScript(JavaScript js){
 
 public void addPostIt(int id, String text, int x, int y){
     postits.put(id, new PostIt(id, text, x, y));
+}
+
+public void addLine(int x, int y, int x1, int y1){
+    lines.add(new Line(x, y, x1, y1));
 }
 
 public void movePostIt(int id, int x, int y){

@@ -45,6 +45,21 @@ BoardConnection.prototype.newPostit = function(board_id, postItId, x, y, text){
     this.ws.send(JSON.stringify(message));
 };
 
+BoardConnection.prototype.newLine = function(x, y, x1, y1){
+    var message = {
+        "type": "new",
+        "args": {
+            "channel_id": this.board_id,
+            "obj":"line",
+            "x": x,
+            "y": y,
+            "x1": x1,
+            "y1": y1
+        }
+    };
+    this.ws.send(JSON.stringify(message));
+};
+
 BoardConnection.prototype.selectPostit = function(postItId){
     var message = {
         "type": "select",
