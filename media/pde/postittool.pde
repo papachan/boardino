@@ -45,6 +45,9 @@ class PostitTool implements Tool{
         }
     }
 
+    public void mouseClicked(){
+    }
+
     private void trySelectingPostit(){
         postit = searchFirstHovered();
         if (postit!=null){
