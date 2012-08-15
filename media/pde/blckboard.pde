@@ -61,10 +61,6 @@ private void mouseDragged(){
     currentTool.mouseDragged();
 }
 
-private void mouseOver(){
-    currentTool.mouseOver();
-}
-
 private void keyPressed(){
     currentTool.keyPressed();
 }
