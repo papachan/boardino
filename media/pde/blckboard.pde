@@ -66,7 +66,7 @@ public void bindJavaScript(JavaScript js){
     javaScript = js;
 }
 
-public void addPostIt(int id, String text, int x, int y){
+public void addPostit(int id, String text, int x, int y){
     postits.put(id, new PostIt(id, text, x, y));
 }
 
@@ -77,12 +77,6 @@ public void addLine(int x, int y, int x1, int y1){
 public void movePostIt(int id, int x, int y){
     PostIt postit = (PostIt) postits.get(id);
     postit.move(x, y);
-}
-
-private void createPostIt(){
-    PostIt postit = postits.get(9999);
-    javaScript.onNewPostit(postit.x, postit.y, postit.feed);
-    postits.remove(9999);
 }
 
 public void friendSelectPostit(int postitId){

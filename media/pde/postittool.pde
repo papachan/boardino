@@ -20,7 +20,7 @@ class PostitTool implements Tool{
         }else{
             trySelectingPostit();
             if(selectedPostIt==null)
-                addPostIt(9999, "Write text...", mouseX, mouseY);
+                addPostit(9999, "Write text...", mouseX, mouseY);
         }
     }
 
@@ -93,6 +93,12 @@ class PostitTool implements Tool{
             }
         }
         return null;
+    }
+
+    private void createPostIt(){
+        PostIt postit = postits.get(9999);
+        javaScript.onNewPostit(postit.x, postit.y, postit.feed);
+        postits.remove(9999);
     }
 
 }

@@ -22,7 +22,7 @@
 
         function loadBoard(){
             {% for post_it in postits %}
-                processingInstance.addPostIt({{post_it.id}},"{{post_it.text}}",{{ post_it.x }},{{ post_it.y }});
+                processingInstance.addPostit({{post_it.id}},"{{post_it.text}}",{{ post_it.x }},{{ post_it.y }});
             {% endfor %}
             processingInstance.bindJavaScript(this);
         }
@@ -33,6 +33,7 @@
 
         function onNewPostit(x, y, feed){
             $.post('/{{ board_id }}/postit/new/', { text: feed, x:x, y:y }, function(json){
+                processingInstance.addPostit(json["postit_id"], feed, x, y);
                 boardConnection.newPostit({{ board_id }} , json["postit_id"], json["x"],json["y"],json["text"]);
             });
         }
@@ -63,7 +64,7 @@
                 switch(message_type){
                     case "new":
                         if(message["args"]["obj"]=="postit")
-                            processingInstance.addPostIt(message["args"]["id"], message["args"]["text"],
+                            processingInstance.addPostit(message["args"]["id"], message["args"]["text"],
                                                          message["args"]["x"], message["args"]["y"]);
                         else
                             processingInstance.addLine(message["args"]["x"], message["args"]["y"],
