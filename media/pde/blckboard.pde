@@ -13,6 +13,7 @@ interface JavaScript{
     void onPostitMoved(int id, float x, float y);
     void onPostitSelected(int id);
     void onPostitDeselected(int id);
+    void onCreatingPostit(float x, float y);
 }
 
 interface Tool {

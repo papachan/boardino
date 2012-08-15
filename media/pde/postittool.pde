@@ -19,8 +19,10 @@ class PostitTool implements Tool{
             createPostIt();
         }else{
             trySelectingPostit();
-            if(selectedPostIt==null)
-                addPostit(9999, "Write text...", mouseX, mouseY);
+            if(selectedPostIt==null){
+                addPostit(9999, "", mouseX, mouseY);
+                javaScript.onCreatingPostit(mouseX, mouseY);
+            }
         }
     }
 
@@ -34,15 +36,6 @@ class PostitTool implements Tool{
     }
 
     public void keyPressed(){
-        if (postits.containsKey(9999)){
-            PostIt postit = (PostIt) postits.get(9999);
-            if( ((key>='A')&&(key<='Z')) || ((key>='a')&&(key<='z')) || ((key>='0')&&(key<='9')) || (key == ' ')){
-              postit.feed = concat(postit.feed, new String(key));
-            }
-            if(keyCode == BACKSPACE){
-                postit.feed = postit.feed.substring(0, postit.feed.length() -1);
-            }
-        }
     }
 
     public void mouseClicked(){

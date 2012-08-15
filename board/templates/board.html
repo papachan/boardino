@@ -32,10 +32,29 @@
         }
 
         function onNewPostit(x, y, feed){
+            feed = $("#postit_input").val();
             $.post('/{{ board_id }}/postit/new/', { text: feed, x:x, y:y }, function(json){
+                $("#postit_input").remove();
                 processingInstance.addPostit(json["postit_id"], feed, x, y);
                 boardConnection.newPostit({{ board_id }} , json["postit_id"], json["x"],json["y"],json["text"]);
             });
+        }
+
+        function onCreatingPostit(x, y){
+            createPostitTextInput(x, y);
+        }
+
+        function createPostitTextInput(x, y){
+            $("\
+                <textarea rows='4', cols='15'\
+                       id='postit_input'\
+                       style='border:none;\
+                              background-color: transparent;\
+                              position: absolute;\
+                              top:"+(y+20)+"px;\
+                              left:"+(x+15)+"px;'/ value='write here...'>")
+                    .appendTo("#board");
+            setTimeout(function() { $("#postit_input").focus().select(); }, 0);
         }
 
         function onNewLine(x, y, x1, y1){
@@ -118,7 +137,9 @@
         <a id="postit_tool" class="postit_tool_enabled"></a>
         <a id="pencil_tool" class="pencil_tool_disabled"></a>
     </div>
-    <canvas id="board" data-processing-sources="/media/pde/blckboard.pde /media/pde/postit.pde
-    /media/pde/postittool.pde /media/pde/penciltool.pde"></canvas>
+    <div id="board">
+        <canvas id="board" data-processing-sources="/media/pde/blckboard.pde /media/pde/postit.pde
+        /media/pde/postittool.pde /media/pde/penciltool.pde"></canvas>
+    </div>
 </body>
 </html>
