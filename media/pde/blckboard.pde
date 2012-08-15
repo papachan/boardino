@@ -1,6 +1,8 @@
 // Post-it WhiteBoard
 /* @pjs preload="/media/postit.gif"; */
+/* @pjs preload="/media/close.png"; */
 String postit_image_url = "/media/postit.gif";
+String postit_close_url = "/media/close.png";
 HashMap postits;
 List lines;
 PostIt selectedPostIt;
@@ -14,6 +16,7 @@ interface JavaScript{
     void onPostitSelected(int id);
     void onPostitDeselected(int id);
     void onCreatingPostit(float x, float y);
+    void onDeletedPostit(int id);
 }
 
 interface Tool {
@@ -58,6 +61,10 @@ private void mouseDragged(){
     currentTool.mouseDragged();
 }
 
+private void mouseOver(){
+    currentTool.mouseOver();
+}
+
 private void keyPressed(){
     currentTool.keyPressed();
 }
@@ -69,6 +76,10 @@ public void bindJavaScript(JavaScript js){
 
 public void addPostit(int id, String text, int x, int y){
     postits.put(id, new PostIt(id, text, x, y));
+}
+
+public void deletePostit(int id){
+    postits.remove(id);
 }
 
 public void addLine(int x, int y, int x1, int y1){

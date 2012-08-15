@@ -2,6 +2,7 @@ class PostIt{
     int id;
     float x, y;
     PImage postit_i;
+    PImage closeButtonImage;
     String feed;
     boolean selected = false;
     boolean friendSelected = false;
@@ -14,6 +15,7 @@ class PostIt{
         this.x = x;
         this.y = y;
         postit_i = loadImage(postit_image_url);
+        closeButtonImage = loadImage(postit_close_url);
         postit_i.resize(0, height/4);
         this._width = postit_i.width;
         this._height = postit_i.height;
@@ -37,6 +39,9 @@ class PostIt{
             rect(x, y, postit_i.width, postit_i.height);
         }
         image(postit_i, x, y);
+        if(hovered()){
+            image(closeButtonImage, x+postit_i.width-closeButtonImage.width, y);
+        }
         showText();
     }
 
@@ -77,5 +82,19 @@ class PostIt{
     void move(float x, float y){
         this.x = x;
         this.y = y;
+    }
+
+    void pressed(){
+        if(mouseOverCloseButton())
+            javaScript.onDeletedPostit(id);
+    }
+
+    boolean mouseOverCloseButton(){
+        if (mouseX > x+postit_i.width-closeButtonImage.width && mouseX < (x+postit_i.width)){
+            if (mouseY > y && mouseY < (closeButtonImage.height + y)){
+                return true;
+            }
+        }
+        return false;
     }
 }

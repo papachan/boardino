@@ -69,6 +69,11 @@
             boardConnection.deselectPostit(postitId);
         }
 
+        function onDeletedPostit(id){
+            processingInstance.deletePostit(id);
+            //todo: delete from db
+        }
+
         function loadBoardConnection(){
             var host = "localhost";
             var port = "8888";

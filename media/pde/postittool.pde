@@ -12,6 +12,8 @@ class PostitTool implements Tool{
         if(selectedPostIt!=null){
             deselectCurrentPostit();
             trySelectingPostit();
+            if(selectedPostIt!=null)
+                selectedPostIt.pressed();
             return;
         }
 
@@ -22,6 +24,8 @@ class PostitTool implements Tool{
             if(selectedPostIt==null){
                 addPostit(9999, "", mouseX, mouseY);
                 javaScript.onCreatingPostit(mouseX, mouseY);
+            }else{
+                selectedPostIt.pressed();
             }
         }
     }
