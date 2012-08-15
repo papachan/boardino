@@ -81,3 +81,15 @@ BoardConnection.prototype.deselectPostit = function(postItId){
     };
     this.ws.send(JSON.stringify(message));
 };
+
+BoardConnection.prototype.deletePostit = function(postitId){
+    var message = {
+        "type": "delete",
+        "args": {
+            "channel_id": this.board_id,
+            "obj": "postit",
+            "id":postitId
+        }
+    };
+    this.ws.send(JSON.stringify(message));
+};

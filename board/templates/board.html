@@ -71,7 +71,7 @@
 
         function onDeletedPostit(id){
             $.post('/postit/'+id+'/delete/', function(json){
-                //todo: verify response, publish deletion
+                boardConnection.deletePostit(id);
             });
             processingInstance.deletePostit(id);
         }
@@ -104,6 +104,9 @@
                         break;
                     case "deselect":
                         processingInstance.friendDeselectPostit(message["args"]["id"]);
+                        break;
+                    case "delete":
+                        processingInstance.deletePostit(message["args"]["id"]);
                         break;
                     default:
                         return false;

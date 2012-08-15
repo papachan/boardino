@@ -94,7 +94,8 @@ public void friendSelectPostit(int postitId){
 
 public void friendDeselectPostit(int postitId){
     PostIt postit = (PostIt) postits.get(postitId);
-    postit.friendDeselect();
+    if(postit!=null)
+        postit.friendDeselect();
 }
 
 public void selectPostitTool(){
