@@ -1,5 +1,4 @@
 import json
-from django.core import serializers
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render_to_response, get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
@@ -27,6 +26,18 @@ def new_postit(request, board_id):
 
     json_data = json.dumps({"postit_id":postit.id, "text":postit.text, "x":postit.x, "y":postit.y})
     print "JSON!:"+json_data
+    #json_data = serializers.serialize("json", [postit], ensure_ascii=False, use_natural_keys=True)
+    if request.is_ajax():
+        return HttpResponse(json_data, mimetype="application/json")
+    else:
+        return HttpResponse(status=400)
+
+@csrf_exempt
+def delete_postit(request, postit_id):
+    postit = get_object_or_404(PostIt, pk=postit_id)
+    postit.delete()
+
+    json_data = json.dumps({"result":"OK"})
     #json_data = serializers.serialize("json", [postit], ensure_ascii=False, use_natural_keys=True)
     if request.is_ajax():
         return HttpResponse(json_data, mimetype="application/json")

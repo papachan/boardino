@@ -70,8 +70,10 @@
         }
 
         function onDeletedPostit(id){
+            $.post('/postit/'+id+'/delete/', function(json){
+                //todo: verify response, publish deletion
+            });
             processingInstance.deletePostit(id);
-            //todo: delete from db
         }
 
         function loadBoardConnection(){
