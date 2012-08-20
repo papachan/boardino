@@ -21,9 +21,11 @@
         }
 
         function loadBoard(){
-            {% for post_it in postits %}
-                processingInstance.addPostit({{post_it.id}},"{{post_it.text}}",{{ post_it.x }},{{ post_it.y }});
-            {% endfor %}
+            $.get('/{{ board_id }}/postits', function(json){
+                $.each(json, function(i, postit){
+                    processingInstance.addPostit(postit.id, postit.text, postit.x , postit.y);
+                });
+            });
             processingInstance.bindJavaScript(this);
         }
 

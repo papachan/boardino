@@ -43,3 +43,13 @@ def delete_postit(request, postit_id):
         return HttpResponse(json_data, mimetype="application/json")
     else:
         return HttpResponse(status=400)
+
+@csrf_exempt
+def get_postits(request, board_id):
+    board = get_object_or_404(Board, pk=board_id)
+    json_data = json.dumps(list(board.postit_set.all().values()))
+
+    if request.is_ajax():
+        return HttpResponse(json_data, mimetype="application/json")
+    else:
+        return HttpResponse(status=400)
