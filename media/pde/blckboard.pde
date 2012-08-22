@@ -13,6 +13,7 @@ interface JavaScript{
     void onNewPostit(float x, float y, String feed);
     void onNewLine(float x, float y, float x1, float y1);
     void onPostitMoved(int id, float x, float y);
+    void onPostitReleased(int id, float x, float y);
     void onPostitSelected(int id);
     void onPostitDeselected(int id);
     void onCreatingPostit(float x, float y);
@@ -21,6 +22,7 @@ interface JavaScript{
 
 interface Tool {
     public void mouseDragged();
+    public void mouseReleased();
     public void keyPressed();
     public void mousePressed();
     public void mouseClicked();
@@ -59,6 +61,10 @@ private void mouseClicked(){
 
 private void mouseDragged(){
     currentTool.mouseDragged();
+}
+
+private void mouseReleased(){
+    currentTool.mouseReleased();
 }
 
 private void keyPressed(){

@@ -31,12 +31,17 @@ class PostitTool implements Tool{
     }
 
     public void mouseDragged(){
-        Iterator i = postits.entrySet().iterator();
         postit = searchFirstSelected();
         if(postit!=null){
             postit.move(mouseX - postit.postit_i.width/2, mouseY - postit.postit_i.height/2);
             javaScript.onPostitMoved(postit.id, postit.x, postit.y);
         }
+    }
+
+    public void mouseReleased(){
+        postit = searchFirstSelected();
+        if(postit!=null)
+            javaScript.onPostitReleased(postit.id, postit.x, postit.y);
     }
 
     public void keyPressed(){

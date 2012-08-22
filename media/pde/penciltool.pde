@@ -19,6 +19,8 @@ class PencilTool implements Tool{
         javaScript.onNewLine(mouseX, mouseY, pmouseX, pmouseY);
     }
 
+    public void mouseReleased(){}
+
     public void keyPressed(){
     }
 }

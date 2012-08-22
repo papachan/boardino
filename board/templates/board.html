@@ -33,6 +33,10 @@
             boardConnection.movePostIt(postitId, x, y);
         }
 
+        function onPostitReleased(postitId, x, y){
+            $.post('/postit/'+postitId+'/update/', { x:x, y:y });
+        }
+
         function onNewPostit(x, y, feed){
             feed = $("#postit_input").val();
             $.post('/{{ board_id }}/postit/new/', { text: feed, x:x, y:y }, function(json){

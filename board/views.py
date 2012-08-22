@@ -33,12 +33,31 @@ def new_postit(request, board_id):
         return HttpResponse(status=400)
 
 @csrf_exempt
+def update_postit(request, postit_id):
+    postit = get_object_or_404(PostIt, pk=postit_id)
+
+
+    params = request.POST
+
+    postit.x = int(float(params["x"]))
+    postit.y = int(float(params["y"]))
+
+    postit.save()
+
+    json_data = json.dumps({"result":"OK"})
+
+    if request.is_ajax():
+        return HttpResponse(json_data, mimetype="application/json")
+    else:
+        return HttpResponse(status=400)
+
+@csrf_exempt
 def delete_postit(request, postit_id):
     postit = get_object_or_404(PostIt, pk=postit_id)
     postit.delete()
 
     json_data = json.dumps({"result":"OK"})
-    #json_data = serializers.serialize("json", [postit], ensure_ascii=False, use_natural_keys=True)
+
     if request.is_ajax():
         return HttpResponse(json_data, mimetype="application/json")
     else:
