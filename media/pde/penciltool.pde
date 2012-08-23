@@ -11,7 +11,7 @@ class PencilTool implements Tool{
         for(int j=0;j<lines.size();j++){
            lines.get(j).show();
         }
-        if(painting){
+        if(currentTool == this && painting){
             lines.add(new Line(mouseX, mouseY, pmouseX, pmouseY));
             javaScript.onNewLine(mouseX, mouseY, pmouseX, pmouseY);
         }
