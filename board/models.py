@@ -10,3 +10,10 @@ class PostIt(models.Model):
     x = models.IntegerField()
     y = models.IntegerField()
     text = models.TextField()
+
+class Line(models.Model):
+    board = models.ForeignKey(Board)
+    x = models.IntegerField()
+    y = models.IntegerField()
+    x1 = models.IntegerField()
+    y1 = models.IntegerField()

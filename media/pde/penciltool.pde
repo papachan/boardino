@@ -1,13 +1,24 @@
 class PencilTool implements Tool{
 
     private List lines;
+    private boolean painting=false;
 
     public PencilTool(List lines){
         this.lines = lines;
     }
 
-    public void mousePressed(){
+    public void draw(){
+        for(int j=0;j<lines.size();j++){
+           lines.get(j).show();
+        }
+        if(painting){
+            lines.add(new Line(mouseX, mouseY, pmouseX, pmouseY));
+            javaScript.onNewLine(mouseX, mouseY, pmouseX, pmouseY);
+        }
+    }
 
+    public void mousePressed(){
+        painting = true;
     }
 
     public void mouseClicked(){
@@ -15,11 +26,13 @@ class PencilTool implements Tool{
     }
 
     public void mouseDragged(){
-        lines.add(new Line(mouseX, mouseY, pmouseX, pmouseY));
-        javaScript.onNewLine(mouseX, mouseY, pmouseX, pmouseY);
+        //lines.add(new Line(mouseX, mouseY, pmouseX, pmouseY));
+        //javaScript.onNewLine(mouseX, mouseY, pmouseX, pmouseY);
     }
 
-    public void mouseReleased(){}
+    public void mouseReleased(){
+        painting = false;
+    }
 
     public void keyPressed(){
     }
@@ -39,6 +52,7 @@ class Line{
     }
 
     public void show(){
+        smooth();
         line(x,y,x1,y1);
     }
 }

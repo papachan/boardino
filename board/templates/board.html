@@ -26,6 +26,11 @@
                     processingInstance.addPostit(postit.id, postit.text, postit.x , postit.y);
                 });
             });
+            $.get('/{{ board_id }}/lines', function(json){
+                $.each(json, function(i, line){
+                    processingInstance.addLine(line.x, line.y , line.x1, line.y1);
+                });
+            });
             processingInstance.bindJavaScript(this);
         }
 
@@ -64,7 +69,9 @@
         }
 
         function onNewLine(x, y, x1, y1){
-            boardConnection.newLine(x, y, x1, y1);
+            $.post('/{{ board_id }}/line/new/', { x: x, y: y, x1:x1, y1:y1 }, function(json){
+                boardConnection.newLine(x, y, x1, y1);
+            });
         }
 
         function onPostitSelected(postitId){

@@ -7,6 +7,8 @@ HashMap postits;
 List lines;
 PostIt selectedPostIt;
 Tool currentTool;
+PostitTool postitTool;
+PencilTool pencilTool;
 JavaScript javaScript;
 
 interface JavaScript{
@@ -21,6 +23,7 @@ interface JavaScript{
 }
 
 interface Tool {
+    public void draw();
     public void mouseDragged();
     public void mouseReleased();
     public void keyPressed();
@@ -31,23 +34,22 @@ interface Tool {
 private void setup(){
     size(window.innerWidth, window.innerHeight);
     frameRate(15);
+
     postits = new HashMap();
+    postitTool = new PostitTool(postits, selectedPostIt);
+
     lines = new ArrayList();
-    loadBoard();
+    pencilTool = new PencilTool(lines);
+
     selectPostitTool();
+
+    loadBoard();
 }
 
 private void draw(){
     background(255,255,255);
-    Iterator i = postits.entrySet().iterator();
-    for(int j=0;j<lines.size();j++){
-        lines.get(j).show();
-    }
-    while (i.hasNext()) {
-        Map.Entry entry = (Map.Entry)i.next();
-        PostIt postit = (PostIt)entry.getValue();
-        postit.show();
-    }
+    pencilTool.draw();
+    postitTool.draw();
 }
 
 /**Processing events**/
@@ -80,6 +82,10 @@ public void addPostit(int id, String text, int x, int y){
     postits.put(id, new PostIt(id, text, x, y));
 }
 
+public void addLine(int x, int y, int x1, int y1){
+    lines.add(new Line(x, y, x1, y1));
+}
+
 public void deletePostit(int id){
     postits.remove(id);
 }
@@ -105,9 +111,9 @@ public void friendDeselectPostit(int postitId){
 }
 
 public void selectPostitTool(){
-    currentTool = new PostitTool(postits, selectedPostIt);
+    currentTool = postitTool;
 }
 
 public void selectPencilTool(){
-    currentTool = new PencilTool(lines);
+    currentTool = pencilTool;
 }

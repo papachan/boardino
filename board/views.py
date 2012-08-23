@@ -2,7 +2,7 @@ import json
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render_to_response, get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
-from board.models import Board, PostIt
+from board.models import Board, PostIt, Line
 
 def create_board(request):
     new_board = Board()
@@ -25,8 +25,21 @@ def new_postit(request, board_id):
     postit.save()
 
     json_data = json.dumps({"postit_id":postit.id, "text":postit.text, "x":postit.x, "y":postit.y})
-    print "JSON!:"+json_data
-    #json_data = serializers.serialize("json", [postit], ensure_ascii=False, use_natural_keys=True)
+
+    if request.is_ajax():
+        return HttpResponse(json_data, mimetype="application/json")
+    else:
+        return HttpResponse(status=400)
+
+@csrf_exempt
+def new_line(request, board_id):
+    board = get_object_or_404(Board, pk=board_id)
+    params = request.POST
+    line = Line(x=params["x"],y=params["y"], x1=params["x1"], y1=params["y1"], board=board)
+    line.save()
+
+    json_data = json.dumps({"x":line.x, "y":line.y, "x1":line.x1, "y1":line.y1})
+
     if request.is_ajax():
         return HttpResponse(json_data, mimetype="application/json")
     else:
@@ -67,6 +80,16 @@ def delete_postit(request, postit_id):
 def get_postits(request, board_id):
     board = get_object_or_404(Board, pk=board_id)
     json_data = json.dumps(list(board.postit_set.all().values()))
+
+    if request.is_ajax():
+        return HttpResponse(json_data, mimetype="application/json")
+    else:
+        return HttpResponse(status=400)
+
+@csrf_exempt
+def get_lines(request, board_id):
+    board = get_object_or_404(Board, pk=board_id)
+    json_data = json.dumps(list(board.line_set.all().values()))
 
     if request.is_ajax():
         return HttpResponse(json_data, mimetype="application/json")

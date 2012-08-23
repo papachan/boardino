@@ -8,6 +8,15 @@ class PostitTool implements Tool{
         this.selectedPostit = selectedPostit;
     }
 
+    public void draw(){
+        Iterator i = postits.entrySet().iterator();
+        while (i.hasNext()) {
+            Map.Entry entry = (Map.Entry)i.next();
+            PostIt postit = (PostIt)entry.getValue();
+            postit.show();
+        }
+    }
+
     public void mousePressed(){
         if(selectedPostIt!=null){
             deselectCurrentPostit();
