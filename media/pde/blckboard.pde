@@ -20,6 +20,9 @@ interface JavaScript{
     void onPostitDeselected(int id);
     void onCreatingPostit(float x, float y);
     void onDeletedPostit(int id);
+    void onCreateTextPostit(int id, String feed, float x, float y);
+    void onDeletedTextPostit(int id);
+    void onPostitMovedText(int id, float x, float y);
 }
 
 interface Tool {
@@ -79,6 +82,7 @@ public void bindJavaScript(JavaScript js){
 }
 
 public void addPostit(int id, String text, int x, int y){
+    javaScript.onCreateTextPostit(id, text, x, y);
     postits.put(id, new PostIt(id, text, x, y));
 }
 
@@ -88,6 +92,7 @@ public void addLine(int x, int y, int x1, int y1){
 
 public void deletePostit(int id){
     postits.remove(id);
+    javaScript.onDeletedTextPostit(id);
 }
 
 public void addLine(int x, int y, int x1, int y1){

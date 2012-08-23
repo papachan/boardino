@@ -1,6 +1,7 @@
 class PostIt{
     int id;
     float x, y;
+    float mouseOffsetX, mouseOffsetY;
     PImage postit_i;
     PImage closeButtonImage;
     String feed;
@@ -42,13 +43,15 @@ class PostIt{
         if(hovered()){
             image(closeButtonImage, x+postit_i.width-closeButtonImage.width, y);
         }
-        showText();
+        //showText();
     }
 
-    void showText(){
-        fill(0);
-        text(feed, x+30, y+40, this._width-60, this._height-60);
-    }
+    //void showText(){
+        //javaScript.onShowTextPostit(this.id, this.feed, this.x, this.y);
+
+        //fill(0);
+        //text(feed, x+30, y+40, this._width-60, this._height-60);
+    //}
 
     boolean isNew(){
         return id==9999;
@@ -82,11 +85,16 @@ class PostIt{
     void move(float x, float y){
         this.x = x;
         this.y = y;
+        javaScript.onPostitMovedText(this.id, this.x, this.y);
     }
 
     void pressed(){
         if(mouseOverCloseButton())
             javaScript.onDeletedPostit(id);
+        else {
+            this.mouseOffsetX = this.x - mouseX;
+            this.mouseOffsetY = this.y - mouseY;
+        }
     }
 
     boolean mouseOverCloseButton(){

@@ -42,7 +42,7 @@ class PostitTool implements Tool{
     public void mouseDragged(){
         postit = searchFirstSelected();
         if(postit!=null){
-            postit.move(mouseX - postit.postit_i.width/2, mouseY - postit.postit_i.height/2);
+            postit.move(mouseX + postit.mouseOffsetX, mouseY + postit.mouseOffsetY);
             javaScript.onPostitMoved(postit.id, postit.x, postit.y);
         }
     }
