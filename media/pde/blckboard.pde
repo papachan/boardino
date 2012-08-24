@@ -5,7 +5,6 @@ String postit_image_url = "/media/postit.gif";
 String postit_close_url = "/media/close.png";
 HashMap postits;
 List lines;
-PostIt selectedPostIt;
 Tool currentTool;
 PostitTool postitTool;
 PencilTool pencilTool;
@@ -39,7 +38,7 @@ private void setup(){
     frameRate(15);
 
     postits = new HashMap();
-    postitTool = new PostitTool(postits, selectedPostIt);
+    postitTool = new PostitTool(postits);
 
     lines = new ArrayList();
     pencilTool = new PencilTool(lines);

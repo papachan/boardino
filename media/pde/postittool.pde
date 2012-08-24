@@ -3,26 +3,34 @@ class PostitTool implements Tool{
     private HashMap postits;
     private PostIt selectedPostit;
 
-    public PostitTool(HashMap postits, selectedPostit){
+    public PostitTool(HashMap postits){
         this.postits = postits;
-        this.selectedPostit = selectedPostit;
     }
 
     public void draw(){
         Iterator i = postits.entrySet().iterator();
+        PostIt selectedPostit;
         while (i.hasNext()) {
             Map.Entry entry = (Map.Entry)i.next();
             PostIt postit = (PostIt)entry.getValue();
-            postit.show();
+            if(!postit.selected)
+                postit.show();
+            else
+                selectedPostit = postit;
+        }
+
+        if(selectedPostit!=null)  {
+            println("mostrando selected postit "+selectedPostit.id);
+            selectedPostit.show();
         }
     }
 
     public void mousePressed(){
-        if(selectedPostIt!=null){
+        if(this.selectedPostIt!=null){
             deselectCurrentPostit();
             trySelectingPostit();
-            if(selectedPostIt!=null)
-                selectedPostIt.pressed();
+            if(this.selectedPostIt!=null)
+                this.selectedPostIt.pressed();
             return;
         }
 
@@ -30,11 +38,11 @@ class PostitTool implements Tool{
             createPostIt();
         }else{
             trySelectingPostit();
-            if(selectedPostIt==null){
+            if(this.selectedPostIt==null){
                 addPostit(9999, "", mouseX, mouseY);
                 javaScript.onCreatingPostit(mouseX, mouseY);
             }else{
-                selectedPostIt.pressed();
+                this.selectedPostIt.pressed();
             }
         }
     }
@@ -69,13 +77,13 @@ class PostitTool implements Tool{
     private void selectPostit(PostIt postit){
         postit.select();
         javaScript.onPostitSelected(postit.id);
-        selectedPostIt = postit;
+        this.selectedPostIt = postit;
     }
 
     private void deselectCurrentPostit(){
-        selectedPostIt.deselect();
-        javaScript.onPostitDeselected(selectedPostIt.id);
-        selectedPostIt = null;
+        this.selectedPostIt.deselect();
+        javaScript.onPostitDeselected(this.selectedPostIt.id);
+        this.selectedPostIt = null;
     }
 
     private boolean pendingToCreatePostit(){
