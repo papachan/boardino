@@ -99,16 +99,18 @@
         }
 
         function onCreateTextPostit(id, feed, x, y){
-            $("\
-                <textarea rows='4', cols='15'\
-                    id='postit_input"+id+"'\
-                    style='border:none;\
-                        background-color: transparent;\
-                        position: absolute;\
-                        top:"+(y+20)+"px;\
-                        left:"+(x+15)+"px;'>")
-                .appendTo("#board");
-                $("#postit_input" + id).val(feed);
+            if (id != 9999){
+                $("\
+                    <textarea rows='4', cols='15'\
+                        id='postit_input"+id+"'\
+                        style='border:none;\
+                            background-color: transparent;\
+                            position: absolute;\
+                            top:"+(y+20)+"px;\
+                            left:"+(x+15)+"px;'>")
+                    .appendTo("#board");
+                    $("#postit_input" + id).val(feed);
+            }
         }
 
 

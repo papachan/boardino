@@ -90,8 +90,8 @@ public void addLine(int x, int y, int x1, int y1){
 }
 
 public void deletePostit(int id){
-    postits.remove(id);
     javaScript.onDeletedTextPostit(id);
+    postits.remove(id);
 }
 
 public void addLine(int x, int y, int x1, int y1){
