@@ -20,7 +20,6 @@ class PostitTool implements Tool{
         }
 
         if(selectedPostit!=null)  {
-            println("mostrando selected postit "+selectedPostit.id);
             selectedPostit.show();
         }
     }
