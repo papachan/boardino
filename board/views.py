@@ -51,7 +51,8 @@ def update_postit(request, postit_id):
 
 
     params = request.POST
-
+    print params
+    print params['x']
     postit.x = int(float(params["x"]))
     postit.y = int(float(params["y"]))
 

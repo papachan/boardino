@@ -4,7 +4,8 @@
 <head>
     <title>The Board</title>
     <link href="/media/css/board.css" rel="stylesheet" type="text/css"/>
-    <script src="http://code.jquery.com/jquery.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
     <script type="text/javascript" src="/media/js/processing-1.3.6.js"></script>
     <script type="text/javascript" src="/media/js/json2.js"></script>
     <script type="text/javascript" src="/media/js/boardconnection.js"></script>
@@ -23,7 +24,11 @@
         function loadBoard(){
             $.get('/{{ board_id }}/postits', function(json){
                 $.each(json, function(i, postit){
-                    processingInstance.addPostit(postit.id, postit.text, postit.x , postit.y);
+                    var the_width = $(document).width()/8;
+                    var the_heigth = $(document).height()/4;
+                    createPostit(postit.id, postit.text,
+                                               postit.x , postit.y,
+                                               the_width, the_heigth);
                 });
             });
             $.get('/{{ board_id }}/lines', function(json){
@@ -34,43 +39,72 @@
             processingInstance.bindJavaScript(this);
         }
 
-        function onPostitMoved(postitId, x, y){
-            boardConnection.movePostIt(postitId, x, y);
+        function movePostit(id, newX, newY){
+            $("#postit"+id).css('top', newY+"px");
+            $("#postit"+id).css('left',newX+"px");
         }
 
-        function onPostitMovedText(id, x, y){
-            $("#postit_input" + id).css('top', (y+20)+"px");
-            $("#postit_input" + id).css('left', (x+20)+"px");
-        }
-
-        function onPostitReleased(postitId, x, y){
+        function updatePostitPosition(postitId, x, y){
             $.post('/postit/'+postitId+'/update/', { x:x, y:y });
         }
 
-        function onNewPostit(x, y, feed){
-            feed = $("#postit_input").val();
-            $.post('/{{ board_id }}/postit/new/', { text: feed, x:x, y:y }, function(json){
-                $("#postit_input").remove();
-                processingInstance.addPostit(json["postit_id"], feed, x, y);
+        function onNewPostit(x, y){
+            $.post('/{{ board_id }}/postit/new/', { text: "", x:x, y:y }, function(json){
+                var the_width = $(document).width()/8;
+                var the_heigth = $(document).height()/4;
+                createPostit(json["postit_id"], "Write text...", x, y, the_width, the_heigth);
                 boardConnection.newPostit({{ board_id }} , json["postit_id"], json["x"],json["y"],json["text"]);
             });
         }
 
-        function onCreatingPostit(x, y){
-            createPostitTextInput(x, y);
-        }
-
-        function createPostitTextInput(x, y){
+        //TODO: refactorizar este método horrible
+        function createPostit(id, text, x, y, width, height){
+            var postitDivId = "postit"+id;
             $("\
-                <textarea rows='4', cols='15'\
-                       id='postit_input'\
-                       style='border:none;\
-                              background-color: transparent;\
+                <div \
+                       id='"+postitDivId+"'\
+                       style='boder=none;\
+                              background-color: #FFFF33;\
                               position: absolute;\
-                              top:"+(y+20)+"px;\
-                              left:"+(x+15)+"px;'/ value='write here...'>")
-                    .appendTo("#board");
-            setTimeout(function() { $("#postit_input").focus().select(); }, 0);
+                              top:"+(y)+"px;\
+                              left:"+(x)+"px;\
+                              width:"+width+"px; height:"+height+"px;'\
+                />").appendTo("#board");
+            $("#"+postitDivId).draggable({
+                    drag: function(){
+                        var position = $(this).position();
+                        boardConnection.movePostIt(id, position.left, position.top);
+                    },
+                    stop: function(){
+                        var position = $(this).position();
+                        updatePostitPosition(id, position.left, position.top);
+                    }
+            });
+            $("\
+                <img src='/media/close.png' \
+                       id='postit_close"+id+"'\
+                       style='position: relative;\
+                              float:right;\
+                              top:0px;\
+                              right:0px;'\
+                />").appendTo("#"+postitDivId);
+
+            $("#postit_close"+id).click(function(){
+                onDeletedPostit(id);
+            });
+
+            $("\
+                <textarea \
+                       id='postit_input"+id+"'\
+                       style='border:none;\
+                              background-color: #FFFF99;\
+                              position: relative;\
+                              top:0px;\
+                              width:"+width+"px; height:"+(height-10)+"px;'\/>")
+                    .appendTo("#"+postitDivId);
+            $("#postit_input"+id).val(text);
+            if(id=="")
+                setTimeout(function() { $("#postit_input"+id).focus().select(); }, 0);
         }
 
         function onNewLine(x, y, x1, y1){
@@ -79,40 +113,17 @@
             });
         }
 
-        function onPostitSelected(postitId){
-            boardConnection.selectPostit(postitId);
-        }
-
-        function onPostitDeselected(postitId){
-            boardConnection.deselectPostit(postitId);
-        }
-
         function onDeletedPostit(id){
             $.post('/postit/'+id+'/delete/', function(json){
                 boardConnection.deletePostit(id);
+                deletePostit(id);
             });
-            processingInstance.deletePostit(id);
         }
 
-        function onDeletedTextPostit(id){
+        function deletePostit(id){
             $("#postit_input" + id).remove();
+            $("#postit" + id).remove();
         }
-
-        function onCreateTextPostit(id, feed, x, y){
-            if (id != 9999){
-                $("\
-                    <textarea rows='4', cols='15'\
-                        id='postit_input"+id+"'\
-                        style='border:none;\
-                            background-color: transparent;\
-                            position: absolute;\
-                            top:"+(y+20)+"px;\
-                            left:"+(x+15)+"px;'>")
-                    .appendTo("#board");
-                    $("#postit_input" + id).val(feed);
-            }
-        }
-
 
         function loadBoardConnection(){
             var host = "localhost";
@@ -127,24 +138,25 @@
                 var message_type = message["type"];
                 switch(message_type){
                     case "new":
-                        if(message["args"]["obj"]=="postit")
-                            processingInstance.addPostit(message["args"]["id"], message["args"]["text"],
-                                                         message["args"]["x"], message["args"]["y"]);
-                        else
+                        if(message["args"]["obj"]=="postit"){
+                            var the_width = $(document).width()/8;
+                            var the_heigth = $(document).height()/4;
+                            createPostit(message["args"]["id"], message["args"]["text"],
+                                               message["args"]["x"], message["args"]["y"],
+                                               the_width, the_heigth);
+                        }else
                             processingInstance.addLine(message["args"]["x"], message["args"]["y"],
                                                        message["args"]["x1"], message["args"]["y1"]);
                         break;
                     case "move":
-                        processingInstance.movePostIt(message["args"]["postit_id"], message["args"]["x"], message["args"]["y"]);
+                        movePostit(message["args"]["postit_id"], message["args"]["x"], message["args"]["y"]);
                         break;
                     case "select":
-                        processingInstance.friendSelectPostit(message["args"]["id"]);
                         break;
                     case "deselect":
-                        processingInstance.friendDeselectPostit(message["args"]["id"]);
                         break;
                     case "delete":
-                        processingInstance.deletePostit(message["args"]["id"]);
+                        deletePostit(message["args"]["id"]);
                         break;
                     default:
                         return false;
@@ -186,7 +198,7 @@
         <a id="pencil_tool" class="pencil_tool_disabled"></a>
     </div>
     <div id="board">
-        <canvas id="board" data-processing-sources="/media/pde/blckboard.pde /media/pde/postit.pde
+        <canvas id="board" data-processing-sources="/media/pde/blckboard.pde
         /media/pde/postittool.pde /media/pde/penciltool.pde"></canvas>
     </div>
     <!-- uservoice feedback widget-->
