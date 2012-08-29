@@ -18,6 +18,22 @@ BoardConnection.prototype.movePostit = function(postItId, x, y){
     this.ws.send(JSON.stringify(message));
 };
 
+BoardConnection.prototype.resizePostit = function(postItId, width, height){
+    if(!this.board_id){
+        throw "should be subscribed to board before trying to update postit";
+    }
+    var message = {
+        "type": "resize",
+        "args": {
+            "channel_id": this.board_id,
+            "id":postItId,
+            "w": width,
+            "h": height
+        }
+    };
+    this.ws.send(JSON.stringify(message));
+};
+
 BoardConnection.prototype.updatePostitText = function(postItId, text){
     if(!this.board_id){
         throw "should be subscribed to board before trying to update postit";
@@ -44,7 +60,7 @@ BoardConnection.prototype.subscribe = function(board_id){
     this.ws.send(JSON.stringify(message));
 };
 
-BoardConnection.prototype.newPostit = function(board_id, postItId, x, y, text){
+BoardConnection.prototype.newPostit = function(board_id, postItId, x, y, width, height, text){
     this.board_id = board_id;
     var message = {
         "type": "new",
@@ -54,6 +70,8 @@ BoardConnection.prototype.newPostit = function(board_id, postItId, x, y, text){
             "id":postItId,
             "x": x,
             "y": y,
+            "w": width,
+            "h": height,
             "text":text 
         }
     };

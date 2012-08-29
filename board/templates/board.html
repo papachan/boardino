@@ -26,7 +26,7 @@
             $.get('/{{ board_id }}/postits', function(json){
                 $.each(json, function(i, postit){
                     createPostit(postit.id, postit.text,
-                                               postit.x , postit.y);
+                                               postit.x , postit.y, postit.width, postit.height);
                 });
             });
             $.get('/{{ board_id }}/lines', function(json){
@@ -42,12 +42,21 @@
             $("#postit"+id).css('left',newX+"px");
         }
 
+        function resizePostit(id, width, height){
+            $("#postit"+id).width(width);
+            $("#postit"+id).height(height);
+        }
+
         function updatePostitText(id, text){
             $("#postit_input"+id).val(text);
         }
 
         function updatePostitPosition(postitId, x, y){
             $.post('/postit/'+postitId+'/update/', { x:x, y:y });
+        }
+
+        function updatePostitSize(postitId, width, height){
+            $.post('/postit/'+postitId+'/update/', { width:width, height:height });
         }
 
         function onUpdatePostit(id, x, y, text){
@@ -57,15 +66,16 @@
         }
 
         function onNewPostit(x, y){
-            $.post('/{{ board_id }}/postit/new/', { text: "", x:x, y:y }, function(json){
-                createPostit(json["postit_id"], "", x, y);
-                boardConnection.newPostit({{ board_id }} , json["postit_id"], json["x"],json["y"],json["text"]);
+            var width = $(document).width()/10;
+            var height = $(document).height()/6;
+            $.post('/{{ board_id }}/postit/new/', { text: "", x:x, y:y, width:width, height:height }, function(json){
+                createPostit(json["postit_id"], "", x, y, width, height);
+                boardConnection.newPostit({{ board_id }} , json["postit_id"], json["x"],json["y"],
+                                                           width, height, json["text"]);
             });
         }
 
-        function createPostit(id, text, x, y){
-            var width = $(document).width()/10;
-            var height = $(document).height()/6;
+        function createPostit(id, text, x, y, width, height){
             var postitDivId = "postit"+id;
 
             $("<div/>")
@@ -88,7 +98,18 @@
                         var position = $(this).position();
                         updatePostitPosition(id, position.left, position.top);
                     }
-            }).resizable();
+            }).resizable({
+                    resize: function(){
+                        var width = $(this).width();
+                        var height = $(this).height();
+                        boardConnection.resizePostit(id, width, height);
+                    },
+                    stop: function(event, ui){
+                        var width = ui.size.width;
+                        var height = ui.size.height;
+                        updatePostitSize(id, width, height);
+                    }
+            });
 
             $("<img/>")
                     .attr("id", "postit_close"+id)
@@ -147,7 +168,8 @@
                     case "new":
                         if(message["args"]["obj"]=="postit"){
                             createPostit(message["args"]["id"], message["args"]["text"],
-                                               message["args"]["x"], message["args"]["y"]);
+                                               message["args"]["x"], message["args"]["y"],
+                                               message["args"]["w"], message["args"]["h"]);
                         }else
                             processingInstance.addLine(message["args"]["x"], message["args"]["y"],
                                                        message["args"]["x1"], message["args"]["y1"]);
@@ -157,6 +179,9 @@
                         break;
                     case "move":
                         movePostit(message["args"]["postit_id"], message["args"]["x"], message["args"]["y"]);
+                        break;
+                    case "resize":
+                        resizePostit(message["args"]["id"], message["args"]["w"], message["args"]["h"]);
                         break;
                     case "select":
                         break;

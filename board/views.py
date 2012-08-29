@@ -21,7 +21,9 @@ def board(request, board_id):
 def new_postit(request, board_id):
     the_board = get_object_or_404(Board, pk=board_id)
     params = request.POST
-    postit = PostIt(text=params["text"],x=params["x"],y=params["y"], board=the_board)
+    postit = PostIt(text=params["text"],x=params["x"],y=params["y"], board=the_board,
+                    width=int(float(params["width"])),
+                    height=int(float(params["height"])))
     postit.save()
 
     json_data = json.dumps({"postit_id":postit.id, "text":postit.text, "x":postit.x, "y":postit.y})
@@ -56,6 +58,12 @@ def update_postit(request, postit_id):
 
     if "y" in params.keys():
         postit.y = int(float(params["y"]))
+
+    if "width" in params.keys():
+        postit.width = int(float(params["width"]))
+
+    if "height" in params.keys():
+        postit.height = int(float(params["height"]))
 
     if "text" in params.keys():
         postit.text = params["text"]
