@@ -9,6 +9,8 @@ class PostIt(models.Model):
     board = models.ForeignKey(Board)
     x = models.IntegerField()
     y = models.IntegerField()
+    width = models.IntegerField()
+    height = models.IntegerField()
     text = models.TextField()
 
 class Line(models.Model):
