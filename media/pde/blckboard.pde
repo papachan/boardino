@@ -22,7 +22,7 @@ interface Tool {
 }
 
 private void setup(){
-    size(window.innerWidth, window.innerHeight);
+    size(3000, 1500);
     frameRate(15);
 
     postitTool = new PostitTool();
