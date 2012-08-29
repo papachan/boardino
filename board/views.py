@@ -49,12 +49,16 @@ def new_line(request, board_id):
 def update_postit(request, postit_id):
     postit = get_object_or_404(PostIt, pk=postit_id)
 
-
     params = request.POST
-    print params
-    print params['x']
-    postit.x = int(float(params["x"]))
-    postit.y = int(float(params["y"]))
+
+    if "x" in params.keys():
+        postit.x = int(float(params["x"]))
+
+    if "y" in params.keys():
+        postit.y = int(float(params["y"]))
+
+    if "text" in params.keys():
+        postit.text = params["text"]
 
     postit.save()
 

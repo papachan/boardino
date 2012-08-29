@@ -2,9 +2,9 @@ function BoardConnection(ws) {
     this.ws = ws;
 }
 
-BoardConnection.prototype.movePostIt = function(postItId, x, y){
+BoardConnection.prototype.movePostit = function(postItId, x, y){
     if(!this.board_id){
-        throw "should be subscribed to board before trying to move postit";
+        throw "should be subscribed to board before trying to update postit";
     }
     var message = {
         "type": "move",
@@ -13,6 +13,21 @@ BoardConnection.prototype.movePostIt = function(postItId, x, y){
             "postit_id":postItId,
             "x": x,
             "y": y
+        }
+    };
+    this.ws.send(JSON.stringify(message));
+};
+
+BoardConnection.prototype.updatePostitText = function(postItId, text){
+    if(!this.board_id){
+        throw "should be subscribed to board before trying to update postit";
+    }
+    var message = {
+        "type": "update",
+        "args": {
+            "channel_id": this.board_id,
+            "postit_id":postItId,
+            "text": text
         }
     };
     this.ws.send(JSON.stringify(message));

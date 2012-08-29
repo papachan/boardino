@@ -4,6 +4,7 @@
 <head>
     <title>The Board</title>
     <link href="/media/css/board.css" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.1/themes/base/jquery-ui.css"/>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
     <script type="text/javascript" src="/media/js/processing-1.3.6.js"></script>
@@ -24,11 +25,8 @@
         function loadBoard(){
             $.get('/{{ board_id }}/postits', function(json){
                 $.each(json, function(i, postit){
-                    var the_width = $(document).width()/8;
-                    var the_heigth = $(document).height()/4;
                     createPostit(postit.id, postit.text,
-                                               postit.x , postit.y,
-                                               the_width, the_heigth);
+                                               postit.x , postit.y);
                 });
             });
             $.get('/{{ board_id }}/lines', function(json){
@@ -39,47 +37,57 @@
             processingInstance.bindJavaScript(this);
         }
 
-        function movePostit(id, newX, newY){
+        function movePostit(id, newX, newY, text){
             $("#postit"+id).css('top', newY+"px");
             $("#postit"+id).css('left',newX+"px");
+        }
+
+        function updatePostitText(id, text){
+            $("#postit_input"+id).val(text);
         }
 
         function updatePostitPosition(postitId, x, y){
             $.post('/postit/'+postitId+'/update/', { x:x, y:y });
         }
 
+        function onUpdatePostit(id, x, y, text){
+            $.post('/postit/'+id+'/update/', { text:text}, function(){
+                boardConnection.updatePostitText(id, text);
+            });
+        }
+
         function onNewPostit(x, y){
             $.post('/{{ board_id }}/postit/new/', { text: "", x:x, y:y }, function(json){
-                var the_width = $(document).width()/8;
-                var the_heigth = $(document).height()/4;
-                createPostit(json["postit_id"], "Write text...", x, y, the_width, the_heigth);
+                createPostit(json["postit_id"], "", x, y);
                 boardConnection.newPostit({{ board_id }} , json["postit_id"], json["x"],json["y"],json["text"]);
             });
         }
 
         //TODO: refactorizar este método horrible
-        function createPostit(id, text, x, y, width, height){
+        function createPostit(id, text, x, y){
+            var width = $(document).width()/8;
+            var height = $(document).height()/4;
             var postitDivId = "postit"+id;
             $("\
                 <div \
                        id='"+postitDivId+"'\
-                       style='boder=none;\
-                              background-color: #FFFF33;\
+                       style='background-color: #FFFF33;\
                               position: absolute;\
                               top:"+(y)+"px;\
                               left:"+(x)+"px;\
-                              width:"+width+"px; height:"+height+"px;'\
+                              width:"+width+"px; height:"+height+"px;\
+                              padding: 2px 2px 25px 2px; '\
                 />").appendTo("#board");
             $("#"+postitDivId).draggable({
                     drag: function(){
                         var position = $(this).position();
-                        boardConnection.movePostIt(id, position.left, position.top);
+                        boardConnection.movePostit(id, position.left, position.top);
                     },
                     stop: function(){
                         var position = $(this).position();
                         updatePostitPosition(id, position.left, position.top);
                     }
-            });
+            }).resizable();
             $("\
                 <img src='/media/close.png' \
                        id='postit_close"+id+"'\
@@ -93,18 +101,30 @@
                 onDeletedPostit(id);
             });
 
+            var textAreaHeight = $("#postit"+id).height()-$("#postit_close"+id).height()-2;
             $("\
                 <textarea \
+                       class = 'postit_input'\
                        id='postit_input"+id+"'\
-                       style='border:none;\
+                       style='-moz-box-sizing:border-box;\
+                              border:none;\
+                              resize: none;\
+                              display:block;\
                               background-color: #FFFF99;\
                               position: relative;\
+                              padding:0px;\
                               top:0px;\
-                              width:"+width+"px; height:"+(height-10)+"px;'\/>")
+                              left:0px;\
+                              width:100%;height:100%;'/>")
                     .appendTo("#"+postitDivId);
             $("#postit_input"+id).val(text);
-            if(id=="")
+            $("#postit_input"+id).keyup(function(){
+                onUpdatePostit(id, x, y, $("#postit_input"+id).val());
+            });
+            if(text==""){
+                $("#postit_input"+id).val("Write ...");
                 setTimeout(function() { $("#postit_input"+id).focus().select(); }, 0);
+            }
         }
 
         function onNewLine(x, y, x1, y1){
@@ -139,14 +159,14 @@
                 switch(message_type){
                     case "new":
                         if(message["args"]["obj"]=="postit"){
-                            var the_width = $(document).width()/8;
-                            var the_heigth = $(document).height()/4;
                             createPostit(message["args"]["id"], message["args"]["text"],
-                                               message["args"]["x"], message["args"]["y"],
-                                               the_width, the_heigth);
+                                               message["args"]["x"], message["args"]["y"]);
                         }else
                             processingInstance.addLine(message["args"]["x"], message["args"]["y"],
                                                        message["args"]["x1"], message["args"]["y1"]);
+                        break;
+                    case "update":
+                        updatePostitText(message["args"]["postit_id"], message["args"]["text"]);
                         break;
                     case "move":
                         movePostit(message["args"]["postit_id"], message["args"]["x"], message["args"]["y"]);
@@ -202,6 +222,7 @@
         /media/pde/postittool.pde /media/pde/penciltool.pde"></canvas>
     </div>
     <!-- uservoice feedback widget-->
+    <div id="resizeDiv">asdf asdf asdf</div>
     <script type="text/javascript">
       var uvOptions = {};
       (function() {
