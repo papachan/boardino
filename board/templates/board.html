@@ -90,6 +90,7 @@
                     .appendTo("#board");
 
             $("#"+postitDivId).draggable({
+                    containment: "parent",
                     drag: function(){
                         var position = $(this).position();
                         boardConnection.movePostit(id, position.left, position.top);
