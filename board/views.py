@@ -11,7 +11,7 @@ def create_board(request):
     postit = PostIt(text="Bienvenido! Mueveme, Editame!",x=50,y=50, board=new_board, width=200, height=100)
     postit.save()
 
-    return HttpResponseRedirect(new_board.id)
+    return HttpResponseRedirect("/"+str(new_board.id))
 
 def board(request, board_id):
     the_board = get_object_or_404(Board, pk=board_id)
