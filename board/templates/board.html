@@ -63,21 +63,22 @@
             });
         }
 
-        //TODO: refactorizar este método horrible
         function createPostit(id, text, x, y){
-            var width = $(document).width()/8;
-            var height = $(document).height()/4;
+            var width = $(document).width()/10;
+            var height = $(document).height()/6;
             var postitDivId = "postit"+id;
-            $("\
-                <div \
-                       id='"+postitDivId+"'\
-                       style='background-color: #FFFF33;\
-                              position: absolute;\
-                              top:"+(y)+"px;\
-                              left:"+(x)+"px;\
-                              width:"+width+"px; height:"+height+"px;\
-                              padding: 2px 2px 25px 2px; '\
-                />").appendTo("#board");
+
+            $("<div/>")
+                    .attr("id", postitDivId)
+                    .addClass("postit")
+                    .css("position", "absolute")
+                    .css("top", y+"px")
+                    .css("left", x+"px")
+                    .css("width", width+"px")
+                    .css("height", height+"px")
+                    .css("padding", "2px 2px 25px 2px")
+                    .appendTo("#board");
+
             $("#"+postitDivId).draggable({
                     drag: function(){
                         var position = $(this).position();
@@ -88,43 +89,29 @@
                         updatePostitPosition(id, position.left, position.top);
                     }
             }).resizable();
-            $("\
-                <img src='/media/close.png' \
-                       id='postit_close"+id+"'\
-                       style='position: relative;\
-                              float:right;\
-                              top:0px;\
-                              right:0px;'\
-                />").appendTo("#"+postitDivId);
+
+            $("<img/>")
+                    .attr("id", "postit_close"+id)
+                    .addClass("postit_close_image")
+                    .attr("src", "/media/close.png")
+                    .appendTo("#"+postitDivId);
+
 
             $("#postit_close"+id).click(function(){
                 onDeletedPostit(id);
             });
 
             var textAreaHeight = $("#postit"+id).height()-$("#postit_close"+id).height()-2;
-            $("\
-                <textarea \
-                       class = 'postit_input'\
-                       id='postit_input"+id+"'\
-                       style='-moz-box-sizing:border-box;\
-                              border:none;\
-                              resize: none;\
-                              display:block;\
-                              background-color: #FFFF99;\
-                              position: relative;\
-                              padding:0px;\
-                              top:0px;\
-                              left:0px;\
-                              width:100%;height:100%;'/>")
+            $("<textarea/>")
+                    .attr("id","postit_input"+id)
+                    .addClass("postit_input")
                     .appendTo("#"+postitDivId);
+
             $("#postit_input"+id).val(text);
             $("#postit_input"+id).keyup(function(){
                 onUpdatePostit(id, x, y, $("#postit_input"+id).val());
             });
-            if(text==""){
-                $("#postit_input"+id).val("Write ...");
-                setTimeout(function() { $("#postit_input"+id).focus().select(); }, 0);
-            }
+            setTimeout(function() { $("#postit_input"+id).focus(); }, 0);
         }
 
         function onNewLine(x, y, x1, y1){
@@ -222,7 +209,6 @@
         /media/pde/postittool.pde /media/pde/penciltool.pde"></canvas>
     </div>
     <!-- uservoice feedback widget-->
-    <div id="resizeDiv">asdf asdf asdf</div>
     <script type="text/javascript">
       var uvOptions = {};
       (function() {
