@@ -8,7 +8,7 @@ def create_board(request):
     new_board = Board()
     new_board.save()
 
-    postit = PostIt(text="Nuevo",x=20,y=20, board=new_board)
+    postit = PostIt(text="Bienvenido! Mueveme, Editame!",x=50,y=50, board=new_board, width=200, height=100)
     postit.save()
 
     return HttpResponseRedirect(new_board.id)
