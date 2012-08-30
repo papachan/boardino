@@ -8,8 +8,20 @@ def create_board(request):
     new_board = Board()
     new_board.save()
 
-    postit = PostIt(text="Bienvenido! Mueveme, Editame!",x=50,y=50, board=new_board, width=200, height=100)
-    postit.save()
+    welcomePostit = PostIt(text="Welcome! Move me! Edit me! Delete me!",x=120,y=50, board=new_board, width=100,
+                           height=100)
+    sharePostit = PostIt(text="Share this board and work together in realtime!\n\nhttp://www.boardino.com/"+str(new_board.id),
+                    x=200,
+                    y=300,
+                    board=new_board,
+                    width=220,
+                    height=100)
+    comeBackPostit = PostIt(text="Come back to check new features!",x=550,y=50, board=new_board,
+                            width=150,
+                            height=100)
+    welcomePostit.save()
+    sharePostit.save()
+    comeBackPostit.save()
 
     return HttpResponseRedirect("/"+str(new_board.id))
 
