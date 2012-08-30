@@ -69,20 +69,20 @@
 }
 
 .eraser_tool_enabled{
-    background-image: url('/media/pencil_enabled.png');
+    background-image: url('/media/eraser_enabled.png');
+    display: block;
+    height: 50px;
+    width: 50px;
+}
+.eraser_tool_disabled{
+    background-image: url('/media/eraser_disabled.png');
     display: block;
     height: 50px;
     width: 50px;
 }
 
-<<<<<<< Updated upstream
-.eraser_tool_enabled{
-    background-image: url('/media/eraser_enabled.png');
-=======
-.eraser_tool_disabled{
-    background-image: url('/media/pencil_disabled.png');
->>>>>>> Stashed changes
-    display: block;
-    height: 50px;
-    width: 50px;
+ #mapale_logo{
+position: fixed;
+bottom:0;
+right:0;
 }
