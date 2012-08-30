@@ -49,10 +49,11 @@ def new_postit(request, board_id):
 def new_line(request, board_id):
     board = get_object_or_404(Board, pk=board_id)
     params = request.POST
-    line = Line(x=params["x"],y=params["y"], x1=params["x1"], y1=params["y1"], board=board)
+    line = Line(x=params["x"],y=params["y"], x1=params["x1"], y1=params["y1"], color_l=params["color_l"], stroke_w=params["stroke_w"], board=board)
     line.save()
 
-    json_data = json.dumps({"x":line.x, "y":line.y, "x1":line.x1, "y1":line.y1})
+    json_data = json.dumps({"x":line.x, "y":line.y, "x1":line.x1, "y1":line.y1,
+                           "color_l":line.color_l, "stroke_w":line.stroke_w})
 
     if request.is_ajax():
         return HttpResponse(json_data, mimetype="application/json")

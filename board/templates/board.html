@@ -31,7 +31,8 @@
             });
             $.get('/{{ board_id }}/lines', function(json){
                 $.each(json, function(i, line){
-                    processingInstance.addLine(line.x, line.y , line.x1, line.y1);
+                    processingInstance.addLine(line.x, line.y , line.x1,
+                    line.y1, line.color_l, line.stroke_w);
                 });
             });
             processingInstance.bindJavaScript(this);
@@ -136,9 +137,9 @@
             setTimeout(function() { $("#postit_input"+id).focus(); }, 0);
         }
 
-        function onNewLine(x, y, x1, y1){
-            $.post('/{{ board_id }}/line/new/', { x: x, y: y, x1:x1, y1:y1 }, function(json){
-                boardConnection.newLine(x, y, x1, y1);
+        function onNewLine(x, y, x1, y1, color_l, stroke_w){
+            $.post('/{{ board_id }}/line/new/', { x: x, y: y, x1:x1, y1:y1, color_l:color_l, stroke_w:stroke_w }, function(json){
+                boardConnection.newLine(x, y, x1, y1, color_l, stroke_w);
             });
         }
 
@@ -173,7 +174,10 @@
                                                message["args"]["w"], message["args"]["h"]);
                         }else
                             processingInstance.addLine(message["args"]["x"], message["args"]["y"],
-                                                       message["args"]["x1"], message["args"]["y1"]);
+                                                       message["args"]["x1"],
+                                                       message["args"]["y1"], 
+                                                       message["args"]["color_l"],
+                                                       message["args"]["stroke_w"]);
                         break;
                     case "update":
                         updatePostitText(message["args"]["postit_id"], message["args"]["text"]);
@@ -229,6 +233,15 @@
                     $("#pencil_tool").attr({'class':"pencil_tool_disabled"});
                     $("#eraser_tool").attr({'class':"eraser_tool_disabled"});
                     processingInstance.selectPostitTool();
+                }
+            );
+
+            $("#eraser_tool").click(
+                function(){
+                    $(this).attr({'class':"eraser_tool_enabled"});
+                    $("#pencil_tool").attr({'class':"pencil_tool_disabled"});
+                    $("#postit_tool").attr({'class':"postit_tool_disabled"});
+                    processingInstance.selectEraserTool();
                 }
             );
         });

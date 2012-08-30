@@ -66,13 +66,10 @@ public void bindJavaScript(JavaScript js){
     javaScript = js;
 }
 
-public void addLine(int x, int y, int x1, int y1){
-    lines.add(new Line(x, y, x1, y1));
+public void addLine(int x, int y, int x1, int y1, int color_l, int stroke_w){
+    lines.add(new Line(x, y, x1, y1, color_l, stroke_w));
 }
 
-public void addLine(int x, int y, int x1, int y1){
-    lines.add(new Line(x, y, x1, y1));
-}
 
 public void selectPostitTool(){
     currentTool = postitTool;
@@ -80,4 +77,12 @@ public void selectPostitTool(){
 
 public void selectPencilTool(){
     currentTool = pencilTool;
+    currentTool.setColor(0);
+    currentTool.setStrokeWeight(2);
 }
+
+public void selectEraserTool(){
+    currentTool = pencilTool;
+    currentTool.setColor(255);
+    currentTool.setStrokeWeight(20);
+} 

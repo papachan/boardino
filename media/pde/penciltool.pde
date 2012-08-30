@@ -2,9 +2,20 @@ class PencilTool implements Tool{
 
     private List lines;
     private boolean painting=false;
+    private int color_line;
+    private int stroke_weight;
+
 
     public PencilTool(List lines){
         this.lines = lines;
+        this.color_line = 0;
+        this.stroke_weight = 1;
+    }
+
+    public PencilTool(List lines, int color_line, int stroke_weight){
+        this.lines = lines;
+        this.color_line = color_line;
+        this.stroke_weight = stroke_weight;
     }
 
     public void draw(){
@@ -12,9 +23,17 @@ class PencilTool implements Tool{
            lines.get(j).show();
         }
         if(currentTool == this && painting){
-            lines.add(new Line(mouseX, mouseY, pmouseX, pmouseY));
-            javaScript.onNewLine(mouseX, mouseY, pmouseX, pmouseY);
+            lines.add(new Line(mouseX, mouseY, pmouseX, pmouseY, color_line, stroke_weight));
+            javaScript.onNewLine(mouseX, mouseY, pmouseX, pmouseY, color_line, stroke_weight);
         }
+    }
+
+    public void setColor(int color_line){
+        this.color_line = color_line;
+    }
+
+    public void setStrokeWeight(int stroke_weight){
+        this.stroke_weight = stroke_weight;
     }
 
     public void mousePressed(){
@@ -43,16 +62,32 @@ class Line{
     int y;
     int x1;
     int y1;
+    int stroke_w;
+    color color_l;
 
     Line(int x, int y, int x1, int y1){
         this.x = x;
         this.y = y;
         this.x1 = x1;
         this.y1 = y1;
+        this.color_l = color(0);
+        stroke_w = 2;
+    }
+
+
+    Line(int x, int y, int x1, int y1, int color_l, int stroke_w){
+        this.x = x;
+        this.y = y;
+        this.x1 = x1;
+        this.y1 = y1;
+        this.color_l = color(color_l);
+        this.stroke_w = stroke_w;
     }
 
     public void show(){
         smooth();
+        strokeWeight(stroke_w);
+        stroke(color_l);
         line(x,y,x1,y1);
     }
 }

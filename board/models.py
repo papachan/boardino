@@ -19,3 +19,5 @@ class Line(models.Model):
     y = models.IntegerField()
     x1 = models.IntegerField()
     y1 = models.IntegerField()
+    color_l = models.IntegerField()
+    stroke_w = models.IntegerField()

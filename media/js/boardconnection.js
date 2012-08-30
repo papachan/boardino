@@ -78,7 +78,7 @@ BoardConnection.prototype.newPostit = function(board_id, postItId, x, y, width, 
     this.ws.send(JSON.stringify(message));
 };
 
-BoardConnection.prototype.newLine = function(x, y, x1, y1){
+BoardConnection.prototype.newLine = function(x, y, x1, y1, color_l, stroke_w){
     var message = {
         "type": "new",
         "args": {
@@ -87,7 +87,9 @@ BoardConnection.prototype.newLine = function(x, y, x1, y1){
             "x": x,
             "y": y,
             "x1": x1,
-            "y1": y1
+            "y1": y1,
+            "color_l":color_l,
+            "stroke_w":stroke_w
         }
     };
     this.ws.send(JSON.stringify(message));
