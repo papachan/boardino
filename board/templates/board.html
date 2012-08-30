@@ -210,7 +210,16 @@
             $("#pencil_tool").click(function(){
                     $(this).attr({'class':"pencil_tool_enabled"});
                     $("#postit_tool").attr({'class':"postit_tool_disabled"});
+                    $("#eraser_tool").attr({'class':"eraser_tool_disabled"});
                     processingInstance.selectPencilTool();
+                }
+            );
+
+            $("#eraser_tool").click(function(){
+                    $(this).attr({'class':"eraser_tool_enabled"});
+                    $("#postit_tool").attr({'class':"postit_tool_disabled"});
+                    $("#pencil_tool").attr({'class':"pencil_tool_disabled"});
+                    //TODO: ACTIVAR HERRAMIENTA DE BORRADOR EN PROCESSING!
                 }
             );
 
@@ -218,6 +227,7 @@
                 function(){
                     $(this).attr({'class':"postit_tool_enabled"});
                     $("#pencil_tool").attr({'class':"pencil_tool_disabled"});
+                    $("#eraser_tool").attr({'class':"eraser_tool_disabled"});
                     processingInstance.selectPostitTool();
                 }
             );
@@ -229,6 +239,7 @@
     <div id="toolbar">
         <a id="postit_tool" class="postit_tool_enabled"></a>
         <a id="pencil_tool" class="pencil_tool_disabled"></a>
+        <a id="eraser_tool" class="eraser_tool_disabled"></a>
     </div>
     <div id="board">
         <canvas id="board" data-processing-sources="/media/pde/blckboard.pde

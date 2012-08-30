@@ -67,3 +67,17 @@
     height: 50px;
     width: 50px;
 }
+
+.eraser_tool_disabled{
+    background-image: url('/media/eraser_disabled.png');
+    display: block;
+    height: 50px;
+    width: 50px;
+}
+
+.eraser_tool_enabled{
+    background-image: url('/media/eraser_enabled.png');
+    display: block;
+    height: 50px;
+    width: 50px;
+}
