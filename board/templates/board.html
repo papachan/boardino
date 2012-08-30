@@ -66,8 +66,8 @@
         }
 
         function onNewPostit(x, y){
-            var width = $(document).width()/10;
-            var height = $(document).height()/6;
+            var width = 120;
+            var height = 120;
             $.post('/{{ board_id }}/postit/new/', { text: "", x:x, y:y, width:width, height:height }, function(json){
                 createPostit(json["postit_id"], "", x, y, width, height);
                 boardConnection.newPostit({{ board_id }} , json["postit_id"], json["x"],json["y"],
