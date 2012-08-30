@@ -81,3 +81,9 @@
     height: 50px;
     width: 50px;
 }
+
+#mapale_logo{
+    position: fixed;
+    bottom:0;
+    right:0;
+}
