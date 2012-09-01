@@ -10,9 +10,11 @@
     <script type="text/javascript" src="/media/js/processing-1.3.6.js"></script>
     <script type="text/javascript" src="/media/js/json2.js"></script>
     <script type="text/javascript" src="/media/js/boardconnection.js"></script>
+    <script type="text/javascript" src="/media/js/postittool.js"></script>
     <script type="application/javascript">
         var processingInstance;
         var boardConnection;
+        var postitTool = new PostitTool({});
 
         function loadProcessingInstance(){
             var tId=0;
@@ -23,11 +25,8 @@
         }
 
         function loadBoard(){
-            $.get('/{{ board_id }}/postits', function(json){
-                $.each(json, function(i, postit){
-                    createPostit(postit.id, postit.text,
-                                               postit.x , postit.y, postit.width, postit.height);
-                });
+            $.get('/{{ board_id }}/postits', function(postits){
+                postitTool.addPostits(postits);
             });
             $.get('/{{ board_id }}/lines', function(json){
                 $.each(json, function(i, line){
@@ -38,25 +37,11 @@
             processingInstance.bindJavaScript(this);
         }
 
-        function movePostit(id, newX, newY, text){
-            $("#postit"+id).css('top', newY+"px");
-            $("#postit"+id).css('left',newX+"px");
-        }
-
-        function resizePostit(id, width, height){
-            $("#postit"+id).width(width);
-            $("#postit"+id).height(height);
-        }
-
-        function updatePostitText(id, text){
-            $("#postit"+id+" > textarea").val(text);
-        }
-
-        function updatePostitPosition(postitId, x, y){
+        function savePostitPosition(postitId, x, y){
             $.post('/postit/'+postitId+'/update/', { x:x, y:y });
         }
 
-        function updatePostitSize(postitId, width, height){
+        function savePostitSize(postitId, width, height){
             $.post('/postit/'+postitId+'/update/', { width:width, height:height });
         }
 
@@ -70,76 +55,10 @@
             var width = 120;
             var height = 120;
             $.post('/{{ board_id }}/postit/new/', { text: "", x:x, y:y, width:width, height:height }, function(json){
-                createPostit(json["postit_id"], "", x, y, width, height);
+                postitTool.createPostit(json["postit_id"], "", x, y, width, height);
                 boardConnection.newPostit({{ board_id }} , json["postit_id"], json["x"],json["y"],
                                                            width, height, json["text"]);
             });
-        }
-
-        function createPostit(id, text, x, y, width, height){
-
-            var postit = createPostitDiv(id, x, y, width, height).appendTo("#board");
-
-            var postitCloseElement = createPostitCloseElement(id).appendTo(postit);
-
-            var postitTextArea = createPostitTextArea(id).appendTo(postit);
-
-            postitTextArea.val(text);
-            postitTextArea.keyup(function(){
-                onUpdatePostit(id, x, y, postitTextArea.val());
-            });
-            setTimeout(function() { postitTextArea.focus(); }, 0);
-        }
-
-        function createPostitTextArea(postitId){
-            return $("<textarea/>").addClass("postit_input");
-        }
-
-        function createPostitCloseElement(postitId){
-            return $("<img/>")
-                    .addClass("postit_close_image")
-                    .attr("src", "/media/close.png")
-                    .click(function(){
-                        onDeletedPostit(postitId);
-                    });
-        }
-
-        function createPostitDiv(postitId, x, y, width, height){
-            var postitDivId = "postit"+postitId;
-            postitElement = $("<div/>")
-                    .attr("id", postitDivId)
-                    .addClass("postit")
-                    .css("position", "absolute")
-                    .css("top", y+"px")
-                    .css("left", x+"px")
-                    .css("width", width+"px")
-                    .css("height", height+"px")
-                    .css("padding", "2px 2px 25px 2px");
-
-            postitElement.draggable({
-                    containment: "parent",
-                    drag: function(){
-                        var position = $(this).position();
-                        boardConnection.movePostit(postitId, position.left, position.top);
-                    },
-                    stop: function(){
-                        var position = $(this).position();
-                        updatePostitPosition(postitId, position.left, position.top);
-                    }
-            }).resizable({
-                    resize: function(){
-                        var width = $(this).width();
-                        var height = $(this).height();
-                        boardConnection.resizePostit(postitId, width, height);
-                    },
-                    stop: function(event, ui){
-                        var width = ui.size.width;
-                        var height = ui.size.height;
-                        updatePostitSize(postitId, width, height);
-                    }
-            });
-
-            return postitElement;
         }
 
         function onNewLine(x, y, x1, y1, color_l, stroke_w){
@@ -151,13 +70,8 @@
         function onDeletedPostit(id){
             $.post('/postit/'+id+'/delete/', function(json){
                 boardConnection.deletePostit(id);
-                deletePostit(id);
+                postitTool.deletePostit(id);
             });
-        }
-
-        function deletePostit(id){
-            $("#postit_input" + id).remove();
-            $("#postit" + id).remove();
         }
 
         function loadBoardConnection(){
@@ -174,7 +88,7 @@
                 switch(message_type){
                     case "new":
                         if(message["args"]["obj"]=="postit"){
-                            createPostit(message["args"]["id"], message["args"]["text"],
+                            postitTool.createPostit(message["args"]["id"], message["args"]["text"],
                                                message["args"]["x"], message["args"]["y"],
                                                message["args"]["w"], message["args"]["h"]);
                         }else
@@ -185,20 +99,21 @@
                                                        message["args"]["stroke_w"]);
                         break;
                     case "update":
-                        updatePostitText(message["args"]["postit_id"], message["args"]["text"]);
+                        postitTool.updatePostitText(message["args"]["postit_id"], message["args"]["text"]);
                         break;
                     case "move":
-                        movePostit(message["args"]["postit_id"], message["args"]["x"], message["args"]["y"]);
+                        postitTool.movePostit(message["args"]["postit_id"], message["args"]["x"],
+                                              message["args"]["y"]);
                         break;
                     case "resize":
-                        resizePostit(message["args"]["id"], message["args"]["w"], message["args"]["h"]);
+                        postitTool.resizePostit(message["args"]["id"], message["args"]["w"], message["args"]["h"]);
                         break;
                     case "select":
                         break;
                     case "deselect":
                         break;
                     case "delete":
-                        deletePostit(message["args"]["id"]);
+                        postitTool.deletePostit(message["args"]["id"]);
                         break;
                     default:
                         return false;
