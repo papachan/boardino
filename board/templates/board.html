@@ -52,19 +52,23 @@
             $.post('/postit/'+postitId+'/update/', { width:width, height:height });
         }
 
-        function onNewPostit(x, y){
+        function createPostit(x, y){
             var width = 120;
             var height = 120;
             $.post('/{{ board_id }}/postit/new/', { text: "", x:x, y:y, width:width, height:height }, function(json){
                 postitTool.createPostit(json["postit_id"], "", x, y, width, height);
-                boardConnection.newPostit({{ board_id }} , json["postit_id"], json["x"],json["y"],
+                onCreatedPostit({{ board_id }} , json["postit_id"], json["x"],json["y"],
                                                            width, height, json["text"]);
             });
         }
 
-        function onNewLine(x, y, x1, y1, color_l, stroke_w){
-            $.post('/{{ board_id }}/line/new/', { x: x, y: y, x1:x1, y1:y1, color_l:color_l, stroke_w:stroke_w }, function(json){
-                boardConnection.newLine(x, y, x1, y1, color_l, stroke_w);
+        function onCreatedPostit(boardId, postitId, x, y, width, height, text){
+            boardConnection.newPostit(boardId, postitId, x, y, width, height, text);
+        }
+
+        function onCreatedLine(x, y, x1, y1, color, strokeWidth){
+            $.post('/{{ board_id }}/line/new/', { x: x, y: y, x1:x1, y1:y1, color_l:color, stroke_w:strokeWidth }, function(json){
+                boardConnection.newLine(x, y, x1, y1, color, strokeWidth);
             });
         }
 

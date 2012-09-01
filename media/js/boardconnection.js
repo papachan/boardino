@@ -128,3 +128,8 @@ BoardConnection.prototype.deletePostit = function(postitId){
     };
     this.ws.send(JSON.stringify(message));
 };
+
+
+BoardConnection.prototype.onMessage = function(){
+
+};
