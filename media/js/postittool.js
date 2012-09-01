@@ -63,47 +63,25 @@ PostitTool.prototype.createChangePostitColorTool = function(postitId) {
     });
     var _this = this;
     var postitToolListener = this.postitToolListener;
-    $("<div class='postit_color'/>")
-            .css('background-color', '#FFFF99')
-            .css('float', 'left')
-            .click(function() {
-                           var postit = _this.getPostit(postitId);
-                           postit.find("textarea").css('background-color', "#FFFF99");
-                           postit.css('background-color', "#FFFF33");
-                           postitToolListener.onPostitChangedColor(postitId, "#FFFF99", "#FFFF33");
-                       })
-            .appendTo(postitChangeColorTool);
-    $("<div class='postit_color'/>")
-            .css('background-color', 'aqua')
-            .css('float', 'right')
-            .click(function() {
-                           var postit = _this.getPostit(postitId);
-                           postit.find("textarea").css('background-color', "aqua");
-                           postit.css('background-color', "blue");
-                           postitToolListener.onPostitChangedColor(postitId, "aqua", "blue");
-                       })
-            .appendTo(postitChangeColorTool);
-    $("<div class='postit_color'/>")
-            .css('background-color', 'chartreuse')
-            .css('float', 'left')
-            .click(function() {
-                           var postit = _this.getPostit(postitId);
-                           postit.find("textarea").css('background-color', "chartreuse");
-                           postit.css('background-color', "green");
-                           postitToolListener.onPostitChangedColor(postitId, "chartreuse", "green");
-                       })
-            .appendTo(postitChangeColorTool);
-    $("<div class='postit_color'/>")
-            .css('background-color', 'gold')
-            .css('float', 'right')
-            .click(function() {
-                           var postit = _this.getPostit(postitId);
-                           postit.find("textarea").css('background-color', "gold");
-                           postit.css('background-color', "chocolate");
-                           postitToolListener.onPostitChangedColor(postitId, "gold", "chocolate");
-                       })
-            .appendTo(postitChangeColorTool);
+    this.createColorSelectionElement(postitId, "#FFFF99", "#FFFF99", "left").appendTo(postitChangeColorTool);
+    this.createColorSelectionElement(postitId, "#FF69B4", "#FF69B4", "right").appendTo(postitChangeColorTool);
+    this.createColorSelectionElement(postitId, "#ADFF2F", "#ADFF2F", "left").appendTo(postitChangeColorTool);
+    this.createColorSelectionElement(postitId, "gold", "gold", "right").appendTo(postitChangeColorTool);
     return postitChangeColorTool.hide();
+};
+
+PostitTool.prototype.createColorSelectionElement = function(postitId, color, backColor, location){
+    var _this = this;
+    var postitToolListener = this.postitToolListener;
+    return $("<div class='postit_color'/>")
+            .css('background-color', color)
+            .css('float', location)
+            .click(function() {
+                           var postit = _this.getPostit(postitId);
+                           postit.find("textarea").css('background-color', color);
+                           postit.css('background-color', backColor);
+                           postitToolListener.onPostitChangedColor(postitId, color, backColor);
+                       });
 };
 
 PostitTool.prototype.createPostitDiv = function(postitId, x, y, width, height){
