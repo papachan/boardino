@@ -49,6 +49,22 @@ BoardConnection.prototype.updatePostitText = function(postItId, text){
     this.ws.send(JSON.stringify(message));
 };
 
+BoardConnection.prototype.changePostitColor = function(postItId, color, backColor){
+    if(!this.board_id){
+        throw "should be subscribed to board before trying to update postit";
+    }
+    var message = {
+        "type": "change_color",
+        "args": {
+            "channel_id": this.board_id,
+            "id": postItId,
+            "color": color,
+            "back_color": backColor
+        }
+    };
+    this.ws.send(JSON.stringify(message));
+};
+
 BoardConnection.prototype.subscribe = function(board_id){
     this.board_id = board_id;
     var message = {

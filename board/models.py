@@ -12,6 +12,8 @@ class PostIt(models.Model):
     width = models.IntegerField()
     height = models.IntegerField()
     text = models.TextField()
+    color = models.TextField(default="#FFFF99")
+    back_color = models.TextField(default="#FFFF33")
 
 class Line(models.Model):
     board = models.ForeignKey(Board)

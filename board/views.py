@@ -81,6 +81,12 @@ def update_postit(request, postit_id):
     if "text" in params.keys():
         postit.text = params["text"]
 
+    if "color" in params.keys():
+        postit.color = params["color"]
+
+    if "back_color" in params.keys():
+        postit.back_color = params["back_color"]
+
     postit.save()
 
     json_data = json.dumps({"result":"OK"})

@@ -113,6 +113,10 @@
                     case "delete":
                         postitTool.deletePostit(message["args"]["id"]);
                         break;
+                    case "change_color":
+                        postitTool.changePostitColor(message["args"]["id"], message["args"]["color"],
+                                                     message["args"]["back_color"])
+                        break;
                     default:
                         return false;
                 }

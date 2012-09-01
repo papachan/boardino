@@ -6,6 +6,7 @@ PostitTool.prototype.addPostits = function(postits) {
     var _this = this;
     $.each(postits, function(i, postit) {
         _this.createPostit(postit.id, postit.text, postit.x, postit.y, postit.width, postit.height);
+        _this.changePostitColor(postit.id, postit.color, postit.back_color);
     });
 };
 
@@ -61,7 +62,7 @@ PostitTool.prototype.createChangePostitColorTool = function(postitId) {
         postitChangeColorTool.hide()
     });
     var _this = this;
-
+    var postitToolListener = this.postitToolListener;
     $("<div class='postit_color'/>")
             .css('background-color', '#FFFF99')
             .css('float', 'left')
@@ -69,6 +70,7 @@ PostitTool.prototype.createChangePostitColorTool = function(postitId) {
                            var postit = _this.getPostit(postitId);
                            postit.find("textarea").css('background-color', "#FFFF99");
                            postit.css('background-color', "#FFFF33");
+                           postitToolListener.onPostitChangedColor(postitId, "#FFFF99", "#FFFF33");
                        })
             .appendTo(postitChangeColorTool);
     $("<div class='postit_color'/>")
@@ -78,6 +80,7 @@ PostitTool.prototype.createChangePostitColorTool = function(postitId) {
                            var postit = _this.getPostit(postitId);
                            postit.find("textarea").css('background-color', "aqua");
                            postit.css('background-color', "blue");
+                           postitToolListener.onPostitChangedColor(postitId, "aqua", "blue");
                        })
             .appendTo(postitChangeColorTool);
     $("<div class='postit_color'/>")
@@ -87,6 +90,7 @@ PostitTool.prototype.createChangePostitColorTool = function(postitId) {
                            var postit = _this.getPostit(postitId);
                            postit.find("textarea").css('background-color', "chartreuse");
                            postit.css('background-color', "green");
+                           postitToolListener.onPostitChangedColor(postitId, "chartreuse", "green");
                        })
             .appendTo(postitChangeColorTool);
     $("<div class='postit_color'/>")
@@ -96,6 +100,7 @@ PostitTool.prototype.createChangePostitColorTool = function(postitId) {
                            var postit = _this.getPostit(postitId);
                            postit.find("textarea").css('background-color', "gold");
                            postit.css('background-color', "chocolate");
+                           postitToolListener.onPostitChangedColor(postitId, "gold", "chocolate");
                        })
             .appendTo(postitChangeColorTool);
     return postitChangeColorTool.hide();
@@ -164,6 +169,12 @@ PostitTool.prototype.getPostit = function(id){
     return $("#postit"+id);
 };
 
+PostitTool.prototype.changePostitColor = function(postItId, color, backColor){
+    var postit = this.getPostit(postItId);
+    postit.css('background-color',backColor);
+    postit.find("textarea").css('background-color', color);
+};
+
 function PostitToolListener(boardConnection){
     this.boardConnection = boardConnection;
 }
@@ -179,5 +190,13 @@ PostitToolListener.prototype.onDeletedPostit = function(id){
     var boardConnection = this.boardConnection;
     $.post('/postit/'+id+'/delete/', function(json){
         boardConnection.deletePostit(id);
+    });
+};
+
+
+PostitToolListener.prototype.onPostitChangedColor = function(id, color, backColor){
+    var boardConnection = this.boardConnection;
+    $.post('/postit/'+id+'/update/', {color:color, back_color:backColor}, function(json){
+        boardConnection.changePostitColor(id, color, backColor);
     });
 };
