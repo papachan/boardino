@@ -49,7 +49,7 @@
         }
 
         function updatePostitText(id, text){
-            $("#postit_input"+id).val(text);
+            $("#postit"+id+" > textarea").val(text);
         }
 
         function updatePostitPosition(postitId, x, y){
@@ -77,9 +77,36 @@
         }
 
         function createPostit(id, text, x, y, width, height){
-            var postitDivId = "postit"+id;
 
-            $("<div/>")
+            var postit = createPostitDiv(id, x, y, width, height).appendTo("#board");
+
+            var postitCloseElement = createPostitCloseElement(id).appendTo(postit);
+
+            var postitTextArea = createPostitTextArea(id).appendTo(postit);
+
+            postitTextArea.val(text);
+            postitTextArea.keyup(function(){
+                onUpdatePostit(id, x, y, postitTextArea.val());
+            });
+            setTimeout(function() { postitTextArea.focus(); }, 0);
+        }
+
+        function createPostitTextArea(postitId){
+            return $("<textarea/>").addClass("postit_input");
+        }
+
+        function createPostitCloseElement(postitId){
+            return $("<img/>")
+                    .addClass("postit_close_image")
+                    .attr("src", "/media/close.png")
+                    .click(function(){
+                        onDeletedPostit(postitId);
+                    });
+        }
+
+        function createPostitDiv(postitId, x, y, width, height){
+            var postitDivId = "postit"+postitId;
+            postitElement = $("<div/>")
                     .attr("id", postitDivId)
                     .addClass("postit")
                     .css("position", "absolute")
@@ -87,54 +114,32 @@
                     .css("left", x+"px")
                     .css("width", width+"px")
                     .css("height", height+"px")
-                    .css("padding", "2px 2px 25px 2px")
-                    .appendTo("#board");
+                    .css("padding", "2px 2px 25px 2px");
 
-            $("#"+postitDivId).draggable({
+            postitElement.draggable({
                     containment: "parent",
                     drag: function(){
                         var position = $(this).position();
-                        boardConnection.movePostit(id, position.left, position.top);
+                        boardConnection.movePostit(postitId, position.left, position.top);
                     },
                     stop: function(){
                         var position = $(this).position();
-                        updatePostitPosition(id, position.left, position.top);
+                        updatePostitPosition(postitId, position.left, position.top);
                     }
             }).resizable({
                     resize: function(){
                         var width = $(this).width();
                         var height = $(this).height();
-                        boardConnection.resizePostit(id, width, height);
+                        boardConnection.resizePostit(postitId, width, height);
                     },
                     stop: function(event, ui){
                         var width = ui.size.width;
                         var height = ui.size.height;
-                        updatePostitSize(id, width, height);
+                        updatePostitSize(postitId, width, height);
                     }
             });
 
-            $("<img/>")
-                    .attr("id", "postit_close"+id)
-                    .addClass("postit_close_image")
-                    .attr("src", "/media/close.png")
-                    .appendTo("#"+postitDivId);
-
-
-            $("#postit_close"+id).click(function(){
-                onDeletedPostit(id);
-            });
-
-            var textAreaHeight = $("#postit"+id).height()-$("#postit_close"+id).height()-2;
-            $("<textarea/>")
-                    .attr("id","postit_input"+id)
-                    .addClass("postit_input")
-                    .appendTo("#"+postitDivId);
-
-            $("#postit_input"+id).val(text);
-            $("#postit_input"+id).keyup(function(){
-                onUpdatePostit(id, x, y, $("#postit_input"+id).val());
-            });
-            setTimeout(function() { $("#postit_input"+id).focus(); }, 0);
+            return postitElement;
         }
 
         function onNewLine(x, y, x1, y1, color_l, stroke_w){
