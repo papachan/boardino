@@ -14,7 +14,7 @@
     <script type="application/javascript">
         var processingInstance;
         var boardConnection;
-        var postitTool = new PostitTool({});
+        var postitTool;
 
         function loadProcessingInstance(){
             var tId=0;
@@ -25,16 +25,23 @@
         }
 
         function loadBoard(){
+            loadLines();
+            processingInstance.bindJavaScript(this);
+        }
+
+        function loadPostits(){
             $.get('/{{ board_id }}/postits', function(postits){
                 postitTool.addPostits(postits);
             });
+        }
+
+        function loadLines(){
             $.get('/{{ board_id }}/lines', function(json){
                 $.each(json, function(i, line){
                     processingInstance.addLine(line.x, line.y , line.x1,
                     line.y1, line.color_l, line.stroke_w);
                 });
             });
-            processingInstance.bindJavaScript(this);
         }
 
         function savePostitPosition(postitId, x, y){
@@ -43,12 +50,6 @@
 
         function savePostitSize(postitId, width, height){
             $.post('/postit/'+postitId+'/update/', { width:width, height:height });
-        }
-
-        function onUpdatePostit(id, x, y, text){
-            $.post('/postit/'+id+'/update/', { text:text}, function(){
-                boardConnection.updatePostitText(id, text);
-            });
         }
 
         function onNewPostit(x, y){
@@ -64,13 +65,6 @@
         function onNewLine(x, y, x1, y1, color_l, stroke_w){
             $.post('/{{ board_id }}/line/new/', { x: x, y: y, x1:x1, y1:y1, color_l:color_l, stroke_w:stroke_w }, function(json){
                 boardConnection.newLine(x, y, x1, y1, color_l, stroke_w);
-            });
-        }
-
-        function onDeletedPostit(id){
-            $.post('/postit/'+id+'/delete/', function(json){
-                boardConnection.deletePostit(id);
-                postitTool.deletePostit(id);
             });
         }
 
@@ -130,6 +124,8 @@
         $(document).ready(function() {
             loadProcessingInstance();
             loadBoardConnection();
+            postitTool = new PostitTool(new PostitToolListener(boardConnection));
+            loadPostits();
 
             $("#pencil_tool").click(function(){
                     $(this).attr({'class':"pencil_tool_enabled"});

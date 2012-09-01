@@ -14,8 +14,9 @@ PostitTool.prototype.createPostit = function(id, text, x, y, width, height){
     var postitCloseElement = this.createPostitCloseElement(id).appendTo(postit);
     var postitTextArea = this.createPostitTextArea(id).appendTo(postit);
     postitTextArea.val(text);
+    postitToolListener = this.postitToolListener;
     postitTextArea.keyup(function(){
-        onUpdatePostit(id, x, y, postitTextArea.val());
+        postitToolListener.onUpdatedPostitText(id, postitTextArea.val());
     });
     setTimeout(function() { postitTextArea.focus(); }, 0);
 };
@@ -25,11 +26,14 @@ PostitTool.prototype.createPostitTextArea = function(postitId){
 };
 
 PostitTool.prototype.createPostitCloseElement = function(postitId){
+    var _this = this;
+    var postitToolListener = this.postitToolListener;
     return $("<img/>")
             .addClass("postit_close_image")
             .attr("src", "/media/close.png")
             .click(function(){
-                onDeletedPostit(postitId);
+                _this.deletePostit(postitId);
+                postitToolListener.onDeletedPostit(postitId);
             });
 };
 
@@ -94,4 +98,22 @@ PostitTool.prototype.deletePostit = function(id){
 
 PostitTool.prototype.getPostit = function(id){
     return $("#postit"+id);
+};
+
+function PostitToolListener(boardConnection){
+    this.boardConnection = boardConnection;
+}
+
+PostitToolListener.prototype.onUpdatedPostitText = function(id, text){
+    var boardConnection = this.boardConnection;
+    $.post('/postit/'+id+'/update/', { text:text}, function(){
+        boardConnection.updatePostitText(id, text);
+    });
+};
+
+PostitToolListener.prototype.onDeletedPostit = function(id){
+    var boardConnection = this.boardConnection;
+    $.post('/postit/'+id+'/delete/', function(json){
+        boardConnection.deletePostit(id);
+    });
 };
