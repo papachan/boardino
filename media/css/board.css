@@ -26,6 +26,29 @@
     right:0px;
 }
 
+.postit_color_image{
+    position: relative;
+    float:left;
+    top:0px;
+    left:0px;
+}
+
+.postit_color_tool{
+    border: 1px black solid;
+    position: absolute;
+    background-color: #FFFFFF;
+    top:-10px;
+    left:-10px;
+    width: 40px;
+    height: 40px;
+}
+
+.postit_color{
+    display: block;
+    width: 20px;
+    height: 20px;
+}
+
 .postit_input {
     -moz-box-sizing:border-box;
     border:none;

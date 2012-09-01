@@ -11,18 +11,21 @@ PostitTool.prototype.addPostits = function(postits) {
 
 PostitTool.prototype.createPostit = function(id, text, x, y, width, height){
     var postit = this.createPostitDiv(id, x, y, width, height).appendTo("#board");
-    var postitCloseElement = this.createPostitCloseElement(id).appendTo(postit);
-    var postitTextArea = this.createPostitTextArea(id).appendTo(postit);
-    postitTextArea.val(text);
-    postitToolListener = this.postitToolListener;
-    postitTextArea.keyup(function(){
-        postitToolListener.onUpdatedPostitText(id, postitTextArea.val());
-    });
-    setTimeout(function() { postitTextArea.focus(); }, 0);
+    this.createPostitCloseElement(id).appendTo(postit);
+    this.createPostitColorTool(id).appendTo(postit);
+    this.createPostitTextArea(id, text).appendTo(postit);
+    this.createChangePostitColorTool(id).appendTo(postit);
 };
 
-PostitTool.prototype.createPostitTextArea = function(postitId){
-    return $("<textarea/>").addClass("postit_input");
+PostitTool.prototype.createPostitTextArea = function(postitId, text){
+    var postitToolListener = this.postitToolListener;
+    var postitTextArea =  $("<textarea/>").addClass("postit_input");
+    postitTextArea.keyup(function(){
+        postitToolListener.onUpdatedPostitText(postitId, postitTextArea.val());
+    });
+    postitTextArea.val(text);
+    setTimeout(function() { postitTextArea.focus(); }, 0);
+    return postitTextArea;
 };
 
 PostitTool.prototype.createPostitCloseElement = function(postitId){
@@ -35,6 +38,67 @@ PostitTool.prototype.createPostitCloseElement = function(postitId){
                 _this.deletePostit(postitId);
                 postitToolListener.onDeletedPostit(postitId);
             });
+};
+
+PostitTool.prototype.createPostitColorTool = function(postitId){
+
+    var _this = this;
+    var image = $("<img/>")
+            .addClass("postit_color_image")
+            .attr("src", "/media/colors.png")
+            .mouseover(function(){
+                var tool = _this.getPostit(postitId).find(".postit_color_tool");
+                tool.show();
+            });
+
+    return image;
+};
+
+PostitTool.prototype.createChangePostitColorTool = function(postitId) {
+    var postitChangeColorTool = $("<div />")
+            .addClass("postit_color_tool");
+    postitChangeColorTool.mouseout(function() {
+        postitChangeColorTool.hide()
+    });
+    var _this = this;
+
+    $("<div class='postit_color'/>")
+            .css('background-color', '#FFFF99')
+            .css('float', 'left')
+            .click(function() {
+                           var postit = _this.getPostit(postitId);
+                           postit.find("textarea").css('background-color', "#FFFF99");
+                           postit.css('background-color', "#FFFF33");
+                       })
+            .appendTo(postitChangeColorTool);
+    $("<div class='postit_color'/>")
+            .css('background-color', 'aqua')
+            .css('float', 'right')
+            .click(function() {
+                           var postit = _this.getPostit(postitId);
+                           postit.find("textarea").css('background-color', "aqua");
+                           postit.css('background-color', "blue");
+                       })
+            .appendTo(postitChangeColorTool);
+    $("<div class='postit_color'/>")
+            .css('background-color', 'chartreuse')
+            .css('float', 'left')
+            .click(function() {
+                           var postit = _this.getPostit(postitId);
+                           postit.find("textarea").css('background-color', "chartreuse");
+                           postit.css('background-color', "green");
+                       })
+            .appendTo(postitChangeColorTool);
+    $("<div class='postit_color'/>")
+            .css('background-color', 'gold')
+            .css('float', 'right')
+            .click(function() {
+                           var postit = _this.getPostit(postitId);
+                           postit.find("textarea").css('background-color', "gold");
+                           postit.css('background-color', "chocolate");
+                       })
+            .appendTo(postitChangeColorTool);
+    return postitChangeColorTool.hide();
 };
 
 PostitTool.prototype.createPostitDiv = function(postitId, x, y, width, height){
