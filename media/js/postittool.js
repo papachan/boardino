@@ -63,7 +63,7 @@ PostitTool.prototype.createChangePostitColorTool = function(postitId) {
     });
     var _this = this;
     var postitToolListener = this.postitToolListener;
-    this.createColorSelectionElement(postitId, "#FFFF99", "#FFFF99", "left").appendTo(postitChangeColorTool);
+    this.createColorSelectionElement(postitId, "#FFFF33", "#FFFF33", "left").appendTo(postitChangeColorTool);
     this.createColorSelectionElement(postitId, "#FF69B4", "#FF69B4", "right").appendTo(postitChangeColorTool);
     this.createColorSelectionElement(postitId, "#ADFF2F", "#ADFF2F", "left").appendTo(postitChangeColorTool);
     this.createColorSelectionElement(postitId, "gold", "gold", "right").appendTo(postitChangeColorTool);
