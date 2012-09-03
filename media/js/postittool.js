@@ -2,6 +2,10 @@ function PostitTool(postitToolListener){
     this.postitToolListener = postitToolListener;
 }
 
+PostitTool.prototype.setListener = function(postitToolListener){
+    this.postitToolListener = postitToolListener;
+};
+
 PostitTool.prototype.addPostits = function(postits) {
     var _this = this;
     $.each(postits, function(i, postit) {

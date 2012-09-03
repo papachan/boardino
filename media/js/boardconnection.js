@@ -1,5 +1,20 @@
-function BoardConnection(ws) {
-    this.ws = ws;
+function BoardConnection(board_id, boardMessageHandler) {
+    var host = "localhost";
+    var port = "8888";
+    var uri = "/ws";
+
+    this.ws = new WebSocket("ws://" + host + ":" + port + uri);
+
+    this.ws.onmessage = function(evt) {
+        boardMessageHandler.handle($.parseJSON(evt.data));
+    };
+
+    this.ws.onclose = function(evt) {};
+
+    var _this = this;
+    this.ws.onopen = function(evt) {
+        _this.subscribe(board_id);
+    };
 }
 
 BoardConnection.prototype.movePostit = function(postItId, x, y){

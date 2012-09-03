@@ -14,27 +14,20 @@
     <script type="application/javascript">
         var processingInstance;
         var boardConnection;
-        var boardMessageHandler;
         var postitTool;
 
         function loadProcessingInstance(){
-            var tId=0;
-            tId=setInterval(function() {
-                processingInstance = Processing.getInstanceById("board");
-                if (processingInstance) clearInterval(tId);
-            },1);
-        }
-
-        function loadBoard(){
-            loadLines();
-            processingInstance.bindJavaScript(this);
-            boardMessageHandler = new BoardMessageHandler(postitTool, processingInstance);
-        }
-
-        function loadPostits(){
-            $.get('/{{ board_id }}/postits', function(postits){
-                postitTool.addPostits(postits);
-            });
+            processingInstance = Processing.getInstanceById("board");
+            if(!processingInstance)
+                setTimeout(function() { loadProcessingInstance() }, 250);
+            else{
+                processingInstance.bindJavaScript(this);
+                postitTool = new PostitTool();
+                boardConnection = new BoardConnection({{ board_id }}, new BoardMessageHandler(postitTool, processingInstance));
+                postitTool.setListener(new PostitToolListener(boardConnection));
+                loadLines();
+                loadPostits();
+            }
         }
 
         function loadLines(){
@@ -43,6 +36,12 @@
                     processingInstance.addLine(line.x, line.y , line.x1,
                     line.y1, line.color_l, line.stroke_w);
                 });
+            });
+        }
+
+        function loadPostits(){
+            $.get('/{{ board_id }}/postits', function(postits){
+                postitTool.addPostits(postits);
             });
         }
 
@@ -74,30 +73,8 @@
             });
         }
 
-        function loadBoardConnection(){
-            var host = "localhost";
-            var port = "8888";
-            var uri = "/ws";
-            var ws = new WebSocket("ws://" + host + ":" + port + uri);
-
-            boardConnection = new BoardConnection(ws);
-
-            ws.onmessage = function(evt) {
-                 boardMessageHandler.handle($.parseJSON(evt.data));
-            };
-
-            ws.onclose = function(evt) {};
-
-            ws.onopen = function(evt) {
-                boardConnection.subscribe({{ board_id }});
-            };
-        }
-
         $(document).ready(function() {
             loadProcessingInstance();
-            loadBoardConnection();
-            postitTool = new PostitTool(new PostitToolListener(boardConnection));
-            loadPostits();
 
             $("#pencil_tool").click(function(){
                     $(this).attr({'class':"pencil_tool_enabled"});

@@ -31,8 +31,6 @@ private void setup(){
     pencilTool = new PencilTool(lines);
 
     selectPostitTool();
-
-    loadBoard();
 }
 
 private void draw(){
