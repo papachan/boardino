@@ -14,6 +14,7 @@
     <script type="application/javascript">
         var processingInstance;
         var boardConnection;
+        var boardMessageHandler;
         var postitTool;
 
         function loadProcessingInstance(){
@@ -27,6 +28,7 @@
         function loadBoard(){
             loadLines();
             processingInstance.bindJavaScript(this);
+            boardMessageHandler = new BoardMessageHandler(postitTool, processingInstance);
         }
 
         function loadPostits(){
@@ -81,45 +83,7 @@
             boardConnection = new BoardConnection(ws);
 
             ws.onmessage = function(evt) {
-                var message = $.parseJSON(evt.data);
-                var message_type = message["type"];
-                switch(message_type){
-                    case "new":
-                        if(message["args"]["obj"]=="postit"){
-                            postitTool.createPostit(message["args"]["id"], message["args"]["text"],
-                                               message["args"]["x"], message["args"]["y"],
-                                               message["args"]["w"], message["args"]["h"]);
-                        }else
-                            processingInstance.addLine(message["args"]["x"], message["args"]["y"],
-                                                       message["args"]["x1"],
-                                                       message["args"]["y1"], 
-                                                       message["args"]["color_l"],
-                                                       message["args"]["stroke_w"]);
-                        break;
-                    case "update":
-                        postitTool.updatePostitText(message["args"]["postit_id"], message["args"]["text"]);
-                        break;
-                    case "move":
-                        postitTool.movePostit(message["args"]["postit_id"], message["args"]["x"],
-                                              message["args"]["y"]);
-                        break;
-                    case "resize":
-                        postitTool.resizePostit(message["args"]["id"], message["args"]["w"], message["args"]["h"]);
-                        break;
-                    case "select":
-                        break;
-                    case "deselect":
-                        break;
-                    case "delete":
-                        postitTool.deletePostit(message["args"]["id"]);
-                        break;
-                    case "change_color":
-                        postitTool.changePostitColor(message["args"]["id"], message["args"]["color"],
-                                                     message["args"]["back_color"])
-                        break;
-                    default:
-                        return false;
-                }
+                 boardMessageHandler.handle($.parseJSON(evt.data));
             };
 
             ws.onclose = function(evt) {};

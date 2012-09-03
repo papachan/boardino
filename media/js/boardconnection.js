@@ -144,3 +144,36 @@ BoardConnection.prototype.deletePostit = function(postitId){
     };
     this.ws.send(JSON.stringify(message));
 };
+
+BoardMessageHandler = function(postitTool, processingInstance){
+    this.handlers = {
+        "new" : function(args){
+            if(args["obj"]=="postit")
+                postitTool.createPostit(args["id"], args["text"], args["x"], args["y"], args["w"], args["h"]);
+            else
+                processingInstance.addLine(args["x"], args["y"], args["x1"], args["y1"], args["color_l"], args["stroke_w"]);
+        },
+        "update" : function(args){
+            postitTool.updatePostitText(args["postit_id"], args["text"]);
+        },
+        "move" : function(args){
+            postitTool.movePostit(args["postit_id"], args["x"], args["y"]);
+        },
+        "resize" : function(args){
+            postitTool.resizePostit(args["id"], args["w"], args["h"]);
+        },
+        "delete" : function(args){
+            postitTool.deletePostit(args["id"]);
+        },
+        "change_color" : function(args){
+            postitTool.changePostitColor(args["id"], args["color"], args["back_color"]);
+        }
+    };
+
+};
+
+BoardMessageHandler.prototype.handle = function(message){
+    var messageType = message["type"];
+    if(this.handlers[messageType])
+        this.handlers[messageType](message["args"]);
+};
