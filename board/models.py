@@ -21,5 +21,5 @@ class Line(models.Model):
     y = models.IntegerField()
     x1 = models.IntegerField()
     y1 = models.IntegerField()
-    color_l = models.IntegerField()
+    color_l = models.TextField(default="000000")
     stroke_w = models.IntegerField()

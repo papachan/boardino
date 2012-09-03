@@ -12,9 +12,9 @@ class PencilTool implements Tool{
         this.stroke_weight = 1;
     }
 
-    public PencilTool(List lines, int color_line, int stroke_weight){
+    public PencilTool(List lines, String color_line, int stroke_weight){
         this.lines = lines;
-        this.color_line = color_line;
+        this.color_line = unhex(color_line);
         this.stroke_weight = stroke_weight;
     }
 
@@ -24,7 +24,7 @@ class PencilTool implements Tool{
         }
         if(currentTool == this && painting){
             lines.add(new Line(mouseX, mouseY, pmouseX, pmouseY, color_line, stroke_weight));
-            javaScript.onCreatedLine(mouseX, mouseY, pmouseX, pmouseY, color_line, stroke_weight);
+            javaScript.onCreatedLine(mouseX, mouseY, pmouseX, pmouseY, hex(color_line), stroke_weight);
         }
     }
 
@@ -61,7 +61,7 @@ class Line{
     int x1;
     int y1;
     int stroke_w;
-    color color_l;
+    int color_l;
 
     Line(int x, int y, int x1, int y1){
         this.x = x;
@@ -78,7 +78,7 @@ class Line{
         this.y = y;
         this.x1 = x1;
         this.y1 = y1;
-        this.color_l = color(color_l);
+        this.color_l = color_l;
         this.stroke_w = stroke_w;
     }
 
