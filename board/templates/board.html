@@ -45,26 +45,14 @@
             });
         }
 
-        function savePostitPosition(postitId, x, y){
-            $.post('/postit/'+postitId+'/update/', { x:x, y:y });
-        }
-
-        function savePostitSize(postitId, width, height){
-            $.post('/postit/'+postitId+'/update/', { width:width, height:height });
-        }
-
         function createPostit(x, y){
             var width = 120;
             var height = 120;
             $.post('/{{ board_id }}/postit/new/', { text: "", x:x, y:y, width:width, height:height }, function(json){
                 postitTool.createPostit(json["postit_id"], "", x, y, width, height);
-                onCreatedPostit({{ board_id }} , json["postit_id"], json["x"],json["y"],
+                boardConnection.newPostit({{ board_id }} , json["postit_id"], json["x"],json["y"],
                                                            width, height, json["text"]);
             });
-        }
-
-        function onCreatedPostit(boardId, postitId, x, y, width, height, text){
-            boardConnection.newPostit(boardId, postitId, x, y, width, height, text);
         }
 
         function onCreatedLine(x, y, x1, y1, color, strokeWidth){

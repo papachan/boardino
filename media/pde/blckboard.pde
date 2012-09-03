@@ -8,7 +8,7 @@ PencilTool pencilTool;
 JavaScript javaScript;
 
 interface JavaScript{
-    void createPostit(float x, float y, String feed);
+    void createPostit(float x, float y);
     void onCreatedLine(float x, float y, float x1, float y1);
 }
 

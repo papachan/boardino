@@ -157,6 +157,14 @@ PostitTool.prototype.changePostitColor = function(postItId, color, backColor){
     postit.find("textarea").css('background-color', color);
 };
 
+function savePostitPosition(postitId, x, y){
+    $.post('/postit/'+postitId+'/update/', { x:x, y:y });
+}
+
+function savePostitSize(postitId, width, height){
+    $.post('/postit/'+postitId+'/update/', { width:width, height:height });
+}
+
 function PostitToolListener(boardConnection){
     this.boardConnection = boardConnection;
 }
