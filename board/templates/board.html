@@ -16,10 +16,10 @@
         var boardConnection;
         var postitTool;
 
-        function loadProcessingInstance(){
+        function initBoard(){
             processingInstance = Processing.getInstanceById("board");
             if(!processingInstance)
-                setTimeout(function() { loadProcessingInstance() }, 250);
+                setTimeout(function() { initBoard() }, 250);
             else{
                 processingInstance.bindJavaScript(this);
                 postitTool = new PostitTool();
@@ -50,8 +50,7 @@
             var height = 120;
             $.post('/{{ board_id }}/postit/new/', { text: "", x:x, y:y, width:width, height:height }, function(json){
                 postitTool.createPostit(json["postit_id"], "", x, y, width, height);
-                boardConnection.newPostit({{ board_id }} , json["postit_id"], json["x"],json["y"],
-                                                           width, height, json["text"]);
+                boardConnection.newPostit({{ board_id }}, json["postit_id"], json["x"],json["y"], width, height, json["text"]);
             });
         }
 
@@ -62,77 +61,73 @@
         }
 
         $(document).ready(function() {
-            loadProcessingInstance();
-
-            $("#pencil_tool").click(function(){
-                    $(this).attr({'class':"pencil_tool_enabled"});
-                    $("#postit_tool").attr({'class':"postit_tool_disabled"});
-                    $("#eraser_tool").attr({'class':"eraser_tool_disabled"});
-                    $("#pencil_blue_tool").attr({'class':"pencil_blue_tool_disabled"});
-                    $("#pencil_green_tool").attr({'class':"pencil_green_tool_disabled"});
-                    $("#pencil_red_tool").attr({'class':"pencil_red_tool_disabled"});
-                    processingInstance.selectPencilTool("FF000000");
-                }
-            );
-
-            $("#pencil_red_tool").click(function(){
-                    $(this).attr({'class':"pencil_red_tool_enabled"});
-                    $("#postit_tool").attr({'class':"postit_tool_disabled"});
-                    $("#pencil_tool").attr({'class':"pencil_tool_disabled"});
-                    $("#eraser_tool").attr({'class':"eraser_tool_disabled"});
-                    $("#pencil_blue_tool").attr({'class':"pencil_blue_tool_disabled"});
-                    $("#pencil_green_tool").attr({'class':"pencil_green_tool_disabled"});
-                    processingInstance.selectPencilTool("FFFF0000");
-                }
-            );
-
-             $("#pencil_blue_tool").click(function(){
-                    $(this).attr({'class':"pencil_blue_tool_enabled"});
-                    $("#postit_tool").attr({'class':"postit_tool_disabled"});
-                    $("#pencil_tool").attr({'class':"pencil_tool_disabled"});
-                    $("#eraser_tool").attr({'class':"eraser_tool_disabled"});
-                    $("#pencil_green_tool").attr({'class':"pencil_green_tool_disabled"});
-                    $("#pencil_red_tool").attr({'class':"pencil_red_tool_disabled"});
-                    processingInstance.selectPencilTool("FF0000FF");
-                }
-            );
-
-            $("#pencil_green_tool").click(function(){
-                    $(this).attr({'class':"pencil_green_tool_enabled"});
-                    $("#postit_tool").attr({'class':"postit_tool_disabled"});
-                    $("#pencil_tool").attr({'class':"pencil_tool_disabled"});
-                    $("#eraser_tool").attr({'class':"eraser_tool_disabled"});
-                    $("#pencil_blue_tool").attr({'class':"pencil_blue_tool_disabled"});
-                    $("#pencil_red_tool").attr({'class':"pencil_red_tool_disabled"});
-                    processingInstance.selectPencilTool("FF00FF00");
-                }
-            );
-
-
-            $("#postit_tool").click(
-                function(){
-                    $(this).attr({'class':"postit_tool_enabled"});
-                    $("#pencil_tool").attr({'class':"pencil_tool_disabled"});
-                    $("#eraser_tool").attr({'class':"eraser_tool_disabled"});
-                    $("#pencil_blue_tool").attr({'class':"pencil_blue_tool_disabled"});
-                    $("#pencil_green_tool").attr({'class':"pencil_green_tool_disabled"});
-                    $("#pencil_red_tool").attr({'class':"pencil_red_tool_disabled"});
-                    processingInstance.selectPostitTool();
-                }
-            );
-
-            $("#eraser_tool").click(
-                function(){
-                    $(this).attr({'class':"eraser_tool_enabled"});
-                    $("#pencil_tool").attr({'class':"pencil_tool_disabled"});
-                    $("#postit_tool").attr({'class':"postit_tool_disabled"});
-                    $("#pencil_blue_tool").attr({'class':"pencil_blue_tool_disabled"});
-                    $("#pencil_green_tool").attr({'class':"pencil_green_tool_disabled"});
-                    $("#pencil_red_tool").attr({'class':"pencil_red_tool_disabled"});
-                    processingInstance.selectEraserTool();
-                }
-            );
+            initBoard();
+            loadToolBar();
         });
+
+        function loadToolBar(){
+            var tools = [
+                {
+                    "selector": "#eraser_tool",
+                    "enabledClass": "eraser_tool_enabled",
+                    "disabledClass": "eraser_tool_disabled",
+                    "action": function(){
+                        processingInstance.selectEraserTool();
+                    }
+                },
+                {
+                    "selector": "#postit_tool",
+                    "enabledClass": "postit_tool_enabled",
+                    "disabledClass": "postit_tool_disabled",
+                    "action": function(){
+                        processingInstance.selectPostitTool();
+                    }
+                },
+                {
+                    "selector": "#pencil_tool",
+                    "enabledClass": "pencil_tool_enabled",
+                    "disabledClass": "pencil_tool_disabled",
+                    "action": function(){
+                        processingInstance.selectPencilTool("FF000000");
+                    }
+                },
+                {
+                    "selector": "#pencil_green_tool",
+                    "enabledClass": "pencil_green_tool_enabled",
+                    "disabledClass": "pencil_green_tool_disabled",
+                    "action": function(){
+                        processingInstance.selectPencilTool("FF00FF00");
+                    }
+                },
+                {
+                    "selector": "#pencil_red_tool",
+                    "enabledClass": "pencil_red_tool_enabled",
+                    "disabledClass": "pencil_red_tool_disabled",
+                    "action": function(){
+                        processingInstance.selectPencilTool("FFFF0000");
+                    }
+                },
+                {
+                    "selector": "#pencil_blue_tool",
+                    "enabledClass": "pencil_blue_tool_enabled",
+                    "disabledClass": "pencil_blue_tool_disabled",
+                    "action": function(){
+                        processingInstance.selectPencilTool("FF0000FF");
+                    }
+                }
+            ];
+
+            $.each(tools, function(i, tool){
+                $(tool.selector).click(function(){
+                    $.each(tools, function(i, otherTool){
+                        otherToolElement = $(otherTool.selector);
+                        otherToolElement.attr({'class': otherTool.disabledClass})
+                    });
+                    $(tool.selector).attr({'class':tool.enabledClass});
+                    tool.action();
+                });
+            });
+        }
 
     </script>
     <script type="text/javascript">
