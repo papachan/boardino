@@ -19,7 +19,7 @@
         function initBoard(){
             processingInstance = Processing.getInstanceById("board");
             if(!processingInstance)
-                setTimeout(function() { initBoard() }, 250);
+                setTimeout(function() { initBoard() }, 1000);
             else{
                 processingInstance.bindJavaScript(this);
                 postitTool = new PostitTool();
