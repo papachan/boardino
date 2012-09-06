@@ -38,7 +38,7 @@ PostitTool.prototype.createPostitCloseElement = function(postitId){
     var postitToolListener = this.postitToolListener;
     return $("<img/>")
             .addClass("postit_close_image")
-            .attr("src", "/media/close.png")
+            .attr("src", "/static/images/close.png")
             .click(function(){
                 _this.deletePostit(postitId);
                 postitToolListener.onDeletedPostit(postitId);
@@ -50,7 +50,7 @@ PostitTool.prototype.createPostitColorTool = function(postitId){
     var _this = this;
     var image = $("<img/>")
             .addClass("postit_color_image")
-            .attr("src", "/media/colors.png")
+            .attr("src", "/static/images/colors.png")
             .mouseover(function(){
                 var tool = _this.getPostit(postitId).find(".postit_color_tool");
                 tool.show();

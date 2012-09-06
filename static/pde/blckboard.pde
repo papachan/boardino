@@ -1,6 +1,4 @@
 // Post-it WhiteBoard
-/* @pjs preload="/media/postit.gif"; */
-String postit_image_url = "/media/postit.gif";
 List lines;
 Tool currentTool;
 PostitTool postitTool;
