@@ -148,8 +148,14 @@
     width: 50px;
 }
 
- #mapale_logo{
+#mapale_logo{
 position: fixed;
 bottom:0;
+right:0;
+}
+
+#boardino_logo{
+position: fixed;
+top:0;
 right:0;
 }
