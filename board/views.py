@@ -1,5 +1,5 @@
 import json
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, HttpResponseForbidden
 from django.shortcuts import render_to_response, get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 from board.models import Board, PostIt, Line
@@ -26,8 +26,10 @@ def create_board(request):
     return HttpResponseRedirect("/"+str(new_board.id))
 
 def board(request, board_id):
-    the_board = get_object_or_404(Board, pk=board_id)
-    return render_to_response('board.html',{'board_id': board_id, 'postits':the_board.postit_set.all()})
+    board = get_object_or_404(Board, pk=board_id)
+    if board.password:
+        return HttpResponseForbidden()
+    return render_to_response('board.html',{'board_id': board_id, 'postits':board.postit_set.all()})
 
 @csrf_exempt
 def new_postit(request, board_id):

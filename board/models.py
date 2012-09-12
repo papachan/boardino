@@ -2,6 +2,8 @@ from django.db import models
 
 class Board(models.Model):
 
+    password = models.TextField(default="")
+
     def __unicode__(self):
         return self.id
 
