@@ -157,6 +157,18 @@ BoardConnection.prototype.deletePostit = function(postitId){
     this.ws.send(JSON.stringify(message));
 };
 
+BoardConnection.prototype.clearLines = function(){
+    var message = {
+        "type": "clear",
+        "args": {
+            "channel_id": this.board_id,
+            "obj": "line"
+        }
+    };
+    this.ws.send(JSON.stringify(message));
+};
+
+
 BoardMessageHandler = function(postitTool, processingInstance){
     this.handlers = {
         "new" : function(args){
@@ -179,6 +191,10 @@ BoardMessageHandler = function(postitTool, processingInstance){
         },
         "change_color" : function(args){
             postitTool.changePostitColor(args["id"], args["color"], args["back_color"]);
+        },
+        "clear" : function(args){
+            if(args["obj"] == "line")
+                processingInstance.clearLines();
         }
     };
 

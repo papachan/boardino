@@ -148,6 +148,20 @@
     width: 50px;
 }
 
+.clear_lines_tool_enabled{
+    background-image: url('/static/images/clear_lines_enabled.png');
+    display: block;
+    height: 50px;
+    width: 50px;
+}
+
+.clear_lines_tool_disabled{
+    background-image: url('/static/images/clear_lines_enabled.png');
+    display: block;
+    height: 50px;
+    width: 50px;
+}
+
 #mapale_logo{
 position: fixed;
 bottom:0;

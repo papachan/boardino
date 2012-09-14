@@ -65,10 +65,19 @@
             });
         }
 
+        function clearLines(){
+            $.get('/{{ board_id }}/lines/clear/',  function(json){
+                 boardConnection.clearLines();
+                 processingInstance.clearLines();
+            });
+        }
+
+
         $(document).ready(function() {
             initBoard();
             loadToolBar();
         });
+
 
         function loadToolBar(){
             var tools = [
@@ -119,6 +128,14 @@
                     "action": function(){
                         processingInstance.selectPencilTool("FF0000FF");
                     }
+                },
+                {
+                    "selector": "#clear_lines_tool",
+                    "enabledClass": "clear_lines_tool_enabled",
+                    "disabledClass": "clear_lines_tool_disabled",
+                    "action": function(){
+                        clearLines();
+                    }
                 }
             ];
 
@@ -158,6 +175,7 @@
         <a id="pencil_blue_tool" class="pencil_blue_tool_disabled"></a>
         <a id="pencil_green_tool" class="pencil_green_tool_disabled"></a>
         <a id="eraser_tool" class="eraser_tool_disabled"></a>
+        <a id="clear_lines_tool" class="clear_lines_tool_disabled"></a>
     </div>
     <div id="board">
         <canvas id="board" data-processing-sources="/static/pde/blckboard.pde

@@ -143,3 +143,16 @@ def get_lines(request, board_id):
         return HttpResponse(json_data, mimetype="application/json")
     else:
         return HttpResponse(status=400)
+
+@csrf_exempt
+def clear_lines(request, board_id):
+    print "hey!"
+    board = get_object_or_404(Board, pk=board_id)
+    Line.objects.filter(board=board).delete()
+
+    json_data = json.dumps({"result":"OK"})
+
+    if request.is_ajax():
+        return HttpResponse(json_data, mimetype="application/json")
+    else:
+        return HttpResponse(status=400)
