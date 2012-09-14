@@ -3,18 +3,15 @@ function BoardConnection(board_id, boardMessageHandler) {
     var port = "8888";
     var uri = "/ws";
 
-    this.ws = new WebSocket("ws://" + host + ":" + port + uri);
-
-    this.ws.onmessage = function(evt) {
-        boardMessageHandler.handle($.parseJSON(evt.data));
-    };
-
-    this.ws.onclose = function(evt) {};
+    this.ws = io.connect('http://localhost:8888');
 
     var _this = this;
-    this.ws.onopen = function(evt) {
+    this.ws.on('connect', function () {
         _this.subscribe(board_id);
-    };
+        _this.ws.on('message', function (msg) {
+            boardMessageHandler.handle($.parseJSON(msg));
+        });
+    });
 }
 
 BoardConnection.prototype.movePostit = function(postItId, x, y){
