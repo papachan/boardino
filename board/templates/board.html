@@ -80,6 +80,7 @@
 
 
         function loadToolBar(){
+
             var tools = [
                 {
                     "selector": "#eraser_tool",
@@ -135,7 +136,8 @@
                     "disabledClass": "clear_lines_tool_disabled",
                     "action": function(){
                         clearLines();
-                    }
+                    },
+                    "confirmable": true
                 }
             ];
 
@@ -146,9 +148,24 @@
                         otherToolElement.attr({'class': otherTool.disabledClass})
                     });
                     $(tool.selector).attr({'class':tool.enabledClass});
-                    tool.action();
+                    if(tool.confirmable){
+                        $("#dialog").dialog({
+                            buttons : {
+                                "Confirm" : function() {
+                                    $(this).dialog("close");
+                                    tool.action();
+                                },
+                                "Cancel" : function() {
+                                    $(this).dialog("close");
+                                }
+                            }
+                        });
+                    }else
+                        tool.action();
                 });
             });
+
+
         }
 
     </script>
@@ -176,6 +193,9 @@
         <a id="pencil_green_tool" class="pencil_green_tool_disabled"></a>
         <a id="eraser_tool" class="eraser_tool_disabled"></a>
         <a id="clear_lines_tool" class="clear_lines_tool_disabled"></a>
+    </div>
+    <div id="dialog" title="Cleaning drawings..." style="display: none;">
+        Are you sure about this?
     </div>
     <div id="board">
         <canvas id="board" data-processing-sources="/static/pde/blckboard.pde

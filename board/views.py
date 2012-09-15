@@ -16,10 +16,12 @@ def create_board(request):
                     y=300,
                     board=new_board,
                     width=220,
-                    height=100)
+                    height=100,
+                    back_color='#FF69B4')
     comeBackPostit = PostIt(text="Come back to check new features!",x=550,y=50, board=new_board,
                             width=150,
-                            height=100)
+                            height=100,
+                            back_color='#ADFF2F')
     welcomePostit.save()
     sharePostit.save()
     comeBackPostit.save()
@@ -146,7 +148,6 @@ def get_lines(request, board_id):
 
 @csrf_exempt
 def clear_lines(request, board_id):
-    print "hey!"
     board = get_object_or_404(Board, pk=board_id)
     Line.objects.filter(board=board).delete()
 
