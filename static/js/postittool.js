@@ -1,5 +1,6 @@
 function PostitTool(postitToolListener){
     this.postitToolListener = postitToolListener;
+    this.postits = {}
 }
 
 PostitTool.prototype.getListener = function(){
@@ -13,52 +14,40 @@ PostitTool.prototype.setListener = function(postitToolListener){
 PostitTool.prototype.addPostits = function(postits) {
     var _this = this;
     $.each(postits, function(i, postit) {
-        var postit = new Postit(_this, postit.id, postit.text, postit.x, postit.y, postit.width, postit.height, postit.back_color);
+        _this.createPostit(postit.id, postit.text, postit.x, postit.y, postit.width, postit.height, postit.back_color);
     });
 };
 
-PostitTool.prototype.createPostit = function(id, text, x, y, width, height){
-    var postit = new Postit(this, id, text, x, y, width, height);
+PostitTool.prototype.createPostit = function(id, text, x, y, width, height, back_color){
+    this.postits[id] = new Postit(this, id, text, x, y, width, height, back_color);
 };
 
 PostitTool.prototype.movePostit = function(id, newX, newY){
-    var postit = this.getPostit(id);
-    postit.css('top', newY+"px");
-    postit.css('left',newX+"px");
+    this.getPostit(id).move(newX, newY);
 };
 
 PostitTool.prototype.resizePostit = function(id, width, height){
     var postit = this.getPostit(id);
-    postit.width(width);
-    postit.height(height);
+    postit.setWidth(width);
+    postit.setHeight(height);
 };
 
 PostitTool.prototype.updatePostitText = function(id, text){
-    this.getPostit(id).find("textarea").val(text);
+    this.getPostit(id).setText(text);
 };
 
 PostitTool.prototype.deletePostit = function(id){
-    this.getPostit(id).find("textarea").remove();
     this.getPostit(id).remove();
+    delete this.postits[id];
 };
 
 PostitTool.prototype.getPostit = function(id){
-    return $("#postit"+id);
+    return this.postits[id];
 };
 
 PostitTool.prototype.changePostitColor = function(postItId, color, backColor){
-    var postit = this.getPostit(postItId);
-    postit.css('background-color',color);
-    postit.find("textarea").css('background-color', color);
+    this.getPostit(postItId).color(color);
 };
-
-function savePostitPosition(postitId, x, y){
-    $.post('/postit/'+postitId+'/update/', { x:x, y:y });
-}
-
-function savePostitSize(postitId, width, height){
-    $.post('/postit/'+postitId+'/update/', { width:width, height:height });
-}
 
 function PostitToolListener(boardConnection){
     this.boardConnection = boardConnection;
@@ -90,6 +79,14 @@ PostitToolListener.prototype.onPostitMoved = function(postitId, x, y){
     boardConnection.movePostit(postitId, x, y);
 };
 
+PostitToolListener.prototype.onPostitStopMoving = function(postitId, x, y){
+    $.post('/postit/'+postitId+'/update/', { x:x, y:y });
+};
+
+PostitToolListener.prototype.onPostitStopResizing = function(postitId, width, height){
+    $.post('/postit/'+postitId+'/update/', { width:width, height:height });
+};
+
 function Postit(postitTool, id, text, x, y, width, height, back_color){
     if(back_color == null)
         back_color = "#FFFF33";
@@ -102,16 +99,15 @@ function Postit(postitTool, id, text, x, y, width, height, back_color){
     this.width = width;
     this.height = height;
     this.back_color = back_color;
-    this.element = this.createElement().appendTo("#board");
+    this.createElement();
 }
 
 Postit.prototype.createElement = function(){
-    var postit = this.createPostitDiv();
-    this.createPostitCloseElement().appendTo(postit);
-    this.createPostitColorTool().appendTo(postit);
-    this.createPostitTextArea().appendTo(postit);
-    this.createChangePostitColorTool().appendTo(postit);
-    return postit;
+    this.element = this.createPostitDiv().appendTo("#board");
+    this.createPostitCloseElement().appendTo(this.element);
+    this.createPostitColorTool().appendTo(this.element);
+    this.createPostitTextArea().appendTo(this.element);
+    this.createChangePostitColorTool().appendTo(this.element);
 };
 
 Postit.prototype.createPostitDiv = function(){
@@ -137,7 +133,7 @@ Postit.prototype.createPostitDiv = function(){
                     },
                     stop: function(){
                         var position = $(this).position();
-                        savePostitPosition(_this.id, position.left, position.top);
+                        postitToolListener.onPostitStopMoving(_this.id, position.left, position.top);
                     }
             })
             .resizable({
@@ -149,7 +145,7 @@ Postit.prototype.createPostitDiv = function(){
                     stop: function(event, ui){
                         var width = ui.size.width;
                         var height = ui.size.height;
-                        savePostitSize(_this.id, width, height);
+                        postitToolListener.onPostitStopResizing(_this.id, width, height);
                     }
             });
     postitElement.mouseover(function(){
@@ -193,12 +189,12 @@ Postit.prototype.createPostitColorTool = function(){
 
     var postitTool = this.postitTool;
     var _this = this;
+    var element = this.element;
     var image = $("<img/>")
             .addClass("postit_color_image")
             .attr("src", "/static/images/colors.png")
             .mouseover(function(){
-                var tool = postitTool.getPostit(_this.id).find(".postit_color_tool");
-                tool.show();
+                element.find(".postit_color_tool").show();
             });
 
     return image;
@@ -220,16 +216,40 @@ Postit.prototype.createChangePostitColorTool = function() {
 Postit.prototype.createColorSelectionElement = function(color, location){
     var _this = this;
     var postitToolListener = this.postitToolListener;
-    var postitTool = this.postitTool;
     return $("<div class='postit_color'/>")
             .css('background-color', color)
             .css('float', location)
             .click(function() {
-                           var postit = postitTool.getPostit(_this.id);
-                           postit.find("textarea").css('background-color', color);
-                           postit.css('background-color', color);
+                           _this.color(color);
                            postitToolListener.onPostitChangedColor(_this.id, color, color);
                        });
+};
+
+Postit.prototype.move = function(newX, newY){
+    this.element.css('top', newY+"px");
+    this.element.css('left',newX+"px");
+};
+
+Postit.prototype.setWidth = function(width){
+    this.element.width(width);
+};
+
+Postit.prototype.setHeight = function(height){
+    this.element.height(height);
+};
+
+Postit.prototype.setText = function(text){
+    this.element.find("textarea").val(text);
+};
+
+Postit.prototype.remove = function(){
+    this.element.find("textarea").remove();
+    this.element.remove();
+};
+
+Postit.prototype.color = function(color){
+    this.element.css('background-color',color);
+    this.element.find("textarea").css('background-color', color);
 };
 
 
