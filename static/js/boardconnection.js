@@ -1,9 +1,6 @@
 function BoardConnection(board_id, boardMessageHandler) {
-    var host = "localhost";
-    var port = "8888";
-    var uri = "/ws";
 
-    this.ws = io.connect('http://localhost:8888');
+    this.ws = io.connect('http://'+window.location.hostname+':8888');
 
     var _this = this;
     this.ws.on('connect', function () {
