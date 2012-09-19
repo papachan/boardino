@@ -81,4 +81,8 @@ public void selectEraserTool(){
     currentTool = pencilTool;
     currentTool.setColor(255);
     currentTool.setStrokeWeight(20);
-} 
+}
+
+public void clearLines(){
+   lines.clear();
+}

@@ -20,6 +20,7 @@
 }
 
 .postit_close_image{
+    display: none;
     position: relative;
     float:right;
     top:0px;
@@ -27,6 +28,7 @@
 }
 
 .postit_color_image{
+    display: none;
     position: relative;
     float:left;
     top:0px;
@@ -34,6 +36,7 @@
 }
 
 .postit_color_tool{
+    cursor:pointer;
     border: 1px black solid;
     position: absolute;
     background-color: #FFFFFF;
@@ -56,7 +59,7 @@
     border:none;
     resize: none;
     display:block;
-    background-color: #FFFF99;
+    background-color: #FFFF33;
     position: relative;
     padding:0px;
     top:0px;
@@ -66,6 +69,7 @@
 }
 
 .postit_tool_enabled{
+    cursor:pointer;
     background-image: url('/static/images/postit_enabled.png');
     display: block;
     height: 50px;
@@ -73,6 +77,7 @@
 }
 
 .postit_tool_disabled{
+    cursor:pointer;
     background-image: url('/static/images/postit_disabled.png');
     display: block;
     height: 50px;
@@ -80,6 +85,7 @@
 }
 
 .pencil_tool_enabled{
+    cursor:pointer;
     background-image: url('/static/images/pencil_enabled.png');
     display: block;
     height: 50px;
@@ -87,6 +93,7 @@
 }
 
 .pencil_tool_disabled{
+    cursor:pointer;
     background-image: url('/static/images/pencil_disabled.png');
     display: block;
     height: 50px;
@@ -94,6 +101,7 @@
 }
 
 .pencil_red_tool_enabled{
+    cursor:pointer;
     background-image: url('/static/images/pencil_red_enabled.png');
     display: block;
     height: 50px;
@@ -101,6 +109,7 @@
 }
 
 .pencil_red_tool_disabled{
+    cursor:pointer;
     background-image: url('/static/images/pencil_red_disabled.png');
     display: block;
     height: 50px;
@@ -108,6 +117,7 @@
 }
 
 .pencil_blue_tool_enabled{
+    cursor:pointer;
     background-image: url('/static/images/pencil_blue_enabled.png');
     display: block;
     height: 50px;
@@ -115,6 +125,7 @@
 }
 
 .pencil_blue_tool_disabled{
+
     background-image: url('/static/images/pencil_blue_disabled.png');
     display: block;
     height: 50px;
@@ -122,6 +133,7 @@
 }
 
 .pencil_green_tool_enabled{
+    cursor:pointer;
     background-image: url('/static/images/pencil_green_enabled.png');
     display: block;
     height: 50px;
@@ -129,6 +141,7 @@
 }
 
 .pencil_green_tool_disabled{
+    cursor:pointer;
     background-image: url('/static/images/pencil_green_disabled.png');
     display: block;
     height: 50px;
@@ -142,7 +155,24 @@
     width: 50px;
 }
 .eraser_tool_disabled{
+    cursor:pointer;
     background-image: url('/static/images/eraser_disabled.png');
+    display: block;
+    height: 50px;
+    width: 50px;
+}
+
+.clear_lines_tool_enabled{
+    cursor:pointer;
+    background-image: url('/static/images/clear_lines_enabled.png');
+    display: block;
+    height: 50px;
+    width: 50px;
+}
+
+.clear_lines_tool_disabled{
+    cursor:pointer;
+    background-image: url('/static/images/clear_lines_enabled.png');
     display: block;
     height: 50px;
     width: 50px;

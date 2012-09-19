@@ -10,7 +10,7 @@ PostitTool.prototype.addPostits = function(postits) {
     var _this = this;
     $.each(postits, function(i, postit) {
         _this.createPostit(postit.id, postit.text, postit.x, postit.y, postit.width, postit.height);
-        _this.changePostitColor(postit.id, postit.color, postit.back_color);
+        _this.changePostitColor(postit.id, postit.back_color, postit.back_color);
     });
 };
 
@@ -29,7 +29,6 @@ PostitTool.prototype.createPostitTextArea = function(postitId, text){
         postitToolListener.onUpdatedPostitText(postitId, postitTextArea.val());
     });
     postitTextArea.val(text);
-    setTimeout(function() { postitTextArea.focus(); }, 0);
     return postitTextArea;
 };
 
@@ -123,6 +122,16 @@ PostitTool.prototype.createPostitDiv = function(postitId, x, y, width, height){
                         savePostitSize(postitId, width, height);
                     }
             });
+    postitElement.mouseover(function(){
+        var postit = $(this);
+        postit.find(".postit_close_image").show();
+        postit.find(".postit_color_image").show();
+    });
+    postitElement.mouseout(function(){
+        var postit = $(this);
+        postit.find(".postit_close_image").hide();
+        postit.find(".postit_color_image").hide();
+    });
     return postitElement;
 };
 
@@ -153,7 +162,7 @@ PostitTool.prototype.getPostit = function(id){
 
 PostitTool.prototype.changePostitColor = function(postItId, color, backColor){
     var postit = this.getPostit(postItId);
-    postit.css('background-color',backColor);
+    postit.css('background-color',color);
     postit.find("textarea").css('background-color', color);
 };
 
