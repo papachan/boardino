@@ -5,6 +5,9 @@ from django.template import RequestContext
 from django.views.decorators.csrf import csrf_exempt
 from board.models import Board, PostIt, Line
 
+def home(request):
+    return render_to_response('home.html')
+
 def create_board(request):
     new_board = Board()
     new_board.save()

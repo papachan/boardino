@@ -1,0 +1,41 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <link href="/static/css/home.css" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.1/themes/base/jquery-ui.css"/>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+    <title></title>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $("#go-button").click(function(evt){
+                evt.preventDefault();
+                board_id = $("#board-id").val();
+                document.location.href="/"+board_id;
+            });
+            $("#new-board").draggable();
+            $("#existing-board").draggable();
+            $("#board-id").focus(function(){
+                $(this).val("");
+            });
+        });
+    </script>
+</head>
+<body>
+    <div id="logo">
+        <img src="/static/images/logo_big.png"/>
+    </div>
+    <div id="slogan"><h1>Collaborative Real-time Project Management Whiteboard</h1></div>
+    <div id="options">
+        <a href="/new"><div id="new-board"></div></a>
+        <div id="existing-board">
+            <div id="board-form">
+                    <label style="float:left; font-size: 30px; font-weight:bold" for="board-id">#</label>
+                    <input type="text" id="board-id" name="board_id" />
+                    <a id="go-button" href="#"><img id="go-button-img" src="/static/images/go.png" alt="Go!"></a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
