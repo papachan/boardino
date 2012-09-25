@@ -1,0 +1,61 @@
+#logo{
+    margin-left: auto;
+    margin-right: auto;
+    width: 400px;
+}
+
+#slogan{
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    width: 500px;
+}
+
+#options{
+    margin-top: 80px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 550px;
+}
+
+#new-board{
+    float: left;
+    background-image: url('/static/images/postit_note_t.png');
+    background-repeat: no-repeat;
+    width: 244px;
+    height: 240px;
+}
+
+#existing-board{
+    float: right;
+    background-image: url('/static/images/postit_note_g.png');
+    background-repeat: no-repeat;
+    width: 244px;
+    height: 240px;
+}
+
+#board-form{
+    position: relative;
+    top: 160px;
+    left:80px;
+}
+
+#board-id{
+    float:left;
+    position: relative;
+    top:0px;
+    font-size: 30px;
+    width: 50px;
+    border: 1px solid #d2691e;
+    background: #ffc;
+    margin-top: 0;
+    padding-top: 0;
+}
+
+#go-button-img{
+    float:left;
+    position: relative;
+    padding-top: 0;
+    padding-bottom: 0;
+    height: 40px;
+}
