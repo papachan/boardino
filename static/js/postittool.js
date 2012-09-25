@@ -122,7 +122,7 @@ Postit.prototype.createPostitDiv = function(){
             .css("left", this.x+"px")
             .css("width", this.width+"px")
             .css("height", this.height+"px")
-            .css("padding", "2px 2px 25px 2px")
+            .css("padding", "22px 2px 2px 2px")
             .css("background-color", this.back_color);
 
     postitElement.draggable({
@@ -152,11 +152,15 @@ Postit.prototype.createPostitDiv = function(){
         var postit = $(this);
         postit.find(".postit_close_image").show();//showCLoseImage
         postit.find(".postit_color_image").show();//showColorImage
+        postit.css('padding-top','2px');
+        postit.css('padding-bottom','20px');
     });
     postitElement.mouseout(function(){
         var postit = $(this);
         postit.find(".postit_close_image").hide();//hideCloseImage
         postit.find(".postit_color_image").hide();//hideColorImage
+        postit.css('padding-top','22px');
+        postit.css('padding-bottom','2px');
     });
     return postitElement;
 };
