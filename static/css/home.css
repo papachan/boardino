@@ -36,26 +36,34 @@
 
 #board-form{
     position: relative;
-    top: 160px;
-    left:80px;
+    top: 150px;
+    left:40px;
+    width: 200px;
 }
 
 #board-id{
+    text-align: center;
     float:left;
     position: relative;
     top:0px;
-    font-size: 30px;
-    width: 50px;
+    font-size: 22px;
+    width: 40px;
     border: 1px solid #d2691e;
     background: #ffc;
     margin-top: 0;
     padding-top: 0;
 }
 
+#go-button-div{
+    margin-left: auto;
+    margin-right: auto;
+    width: 40px;
+}
+
 #go-button-img{
-    float:left;
-    position: relative;
+    margin-left: auto;
+    margin-right: auto;
     padding-top: 0;
     padding-bottom: 0;
-    height: 40px;
+    width: 40px;
 }
