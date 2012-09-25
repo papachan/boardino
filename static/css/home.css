@@ -35,9 +35,10 @@
 }
 
 #board-form{
+    font-family: Arial,serif;
     position: relative;
     top: 150px;
-    left:40px;
+    left:35px;
     width: 200px;
 }
 
