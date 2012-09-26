@@ -192,6 +192,10 @@ BoardMessageHandler = function(postitTool, processingInstance){
         "clear" : function(args){
             if(args["obj"] == "line")
                 processingInstance.clearLines();
+        },
+        "info" : function(args){
+            connectedUsers = args.users;
+            $("#connected_users").text(connectedUsers);
         }
     };
 

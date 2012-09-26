@@ -20,6 +20,7 @@
         var processingInstance;
         var boardConnection;
         var postitTool;
+        var connectedUsers = 0;
 
         function initBoard(){
             processingInstance = Processing.getInstanceById("board");
@@ -76,6 +77,12 @@
         $(document).ready(function() {
             initBoard();
             loadToolBar();
+            $("#connected_users").mouseover(function(){
+                $(this).text(connectedUsers + " connected users");
+            });
+            $("#connected_users").mouseout(function(){
+                $(this).text(connectedUsers);
+            });
         });
 
 
@@ -190,6 +197,9 @@
     </div>
     <div id="boardino_logo"><img src="/static/images/logo_small.png"/></div>
     <div id="mapale_logo"><a target="_blank" href="http://www.mapalesoftware.com"><img src="/static/images/mapale_logo.png"/></a></div>
+    <div id="notifications">
+        <div id="connected_users">0</div>
+    </div>
     <!-- uservoice feedback widget-->
     <script type="text/javascript">
       var uvOptions = {};

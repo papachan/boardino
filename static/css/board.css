@@ -192,3 +192,24 @@ position: fixed;
 top:5px;
 right:5px;
 }
+
+#notifications{
+    position: fixed;
+    top:100px;
+    right:0px;
+    background-color: green;
+    color: white;
+}
+
+#connected_users{
+    padding-left: 10px;
+    padding-right: 10px;
+    font-size: 24px;
+    background-color: green;
+    color: white;
+}
+
+#user_connected{
+    background-color: red;
+    color: white;
+}
