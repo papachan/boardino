@@ -172,6 +172,9 @@
                 });
             });
 
+            $(window).bind("beforeunload", function() {
+                boardConnection.disconnect();
+            });
 
         }
 

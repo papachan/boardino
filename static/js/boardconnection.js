@@ -11,6 +11,10 @@ function BoardConnection(board_id, boardMessageHandler) {
     });
 }
 
+BoardConnection.prototype.disconnect = function(){
+    this.ws.disconnect();
+};
+
 BoardConnection.prototype.movePostit = function(postItId, x, y){
     if(!this.board_id){
         throw "should be subscribed to board before trying to update postit";
