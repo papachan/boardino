@@ -194,14 +194,17 @@ right:5px;
 }
 
 #notifications{
+    max-width: 300px;
     position: fixed;
     top:100px;
     right:0px;
-    background-color: green;
     color: white;
+    z-index: 10000;
 }
 
 #connected_users{
+    position: relative;
+    right: 0px;
     padding-left: 10px;
     padding-right: 10px;
     font-size: 24px;
@@ -209,7 +212,22 @@ right:5px;
     color: white;
 }
 
-#user_connected{
+.user_connected{
+    white-space: nowrap;
+    display: none;
+    margin-top: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    background-color: #adff2f;
+    color: black;
+}
+
+.user_disconnected{
+    white-space: nowrap;
+    display: none;
+    margin-top: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
     background-color: red;
     color: white;
 }
