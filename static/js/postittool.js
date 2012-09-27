@@ -49,6 +49,10 @@ PostitTool.prototype.changePostitColor = function(postItId, color, backColor){
     this.getPostit(postItId).color(color);
 };
 
+PostitTool.prototype.focusPostit = function(postitId){
+    this.getPostit(postitId).focus();
+};
+
 function PostitToolListener(boardConnection){
     this.boardConnection = boardConnection;
 }
@@ -256,5 +260,8 @@ Postit.prototype.color = function(color){
     this.element.find("textarea").css('background-color', color);
 };
 
+Postit.prototype.focus = function(){
+    this.element.find("textarea").focus();
+};
 
 

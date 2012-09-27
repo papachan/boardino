@@ -56,6 +56,7 @@
             var height = 120;
             $.post('/{{ board_id }}/postit/new/', { text: "", x:x, y:y, width:width, height:height }, function(json){
                 postitTool.createPostit(json["postit_id"], "", x, y, width, height);
+                postitTool.focusPostit(json["postit_id"]);
                 boardConnection.newPostit({{ board_id }}, json["postit_id"], json["x"],json["y"], width, height, json["text"]);
             });
         }
