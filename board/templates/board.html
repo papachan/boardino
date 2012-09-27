@@ -95,7 +95,8 @@
                     "disabledClass": "eraser_tool_disabled",
                     "action": function(){
                         processingInstance.selectEraserTool();
-                    }
+                    } ,
+                    "exclusive": true
                 },
                 {
                     "selector": "#postit_tool",
@@ -103,7 +104,8 @@
                     "disabledClass": "postit_tool_disabled",
                     "action": function(){
                         processingInstance.selectPostitTool();
-                    }
+                    },
+                    "exclusive": true
                 },
                 {
                     "selector": "#pencil_tool",
@@ -111,7 +113,8 @@
                     "disabledClass": "pencil_tool_disabled",
                     "action": function(){
                         processingInstance.selectPencilTool("FF000000");
-                    }
+                    },
+                    "exclusive": true
                 },
                 {
                     "selector": "#pencil_green_tool",
@@ -119,7 +122,8 @@
                     "disabledClass": "pencil_green_tool_disabled",
                     "action": function(){
                         processingInstance.selectPencilTool("FF00FF00");
-                    }
+                    },
+                    "exclusive": true
                 },
                 {
                     "selector": "#pencil_red_tool",
@@ -127,7 +131,8 @@
                     "disabledClass": "pencil_red_tool_disabled",
                     "action": function(){
                         processingInstance.selectPencilTool("FFFF0000");
-                    }
+                    },
+                    "exclusive": true
                 },
                 {
                     "selector": "#pencil_blue_tool",
@@ -135,7 +140,8 @@
                     "disabledClass": "pencil_blue_tool_disabled",
                     "action": function(){
                         processingInstance.selectPencilTool("FF0000FF");
-                    }
+                    },
+                    "exclusive": true
                 },
                 {
                     "selector": "#clear_lines_tool",
@@ -144,16 +150,19 @@
                     "action": function(){
                         clearLines();
                     },
-                    "confirmable": true
+                    "confirmable": true,
+                    "exclusive": false
                 }
             ];
 
             $.each(tools, function(i, tool){
                 $(tool.selector).click(function(){
-                    $.each(tools, function(i, otherTool){
-                        otherToolElement = $(otherTool.selector);
-                        otherToolElement.attr({'class': otherTool.disabledClass})
-                    });
+                    if(tool.exclusive){
+                        $.each(tools, function(i, otherTool){
+                            otherToolElement = $(otherTool.selector);
+                            otherToolElement.attr({'class': otherTool.disabledClass})
+                        });
+                    }
                     $(tool.selector).attr({'class':tool.enabledClass});
                     if(tool.confirmable){
                         $("#dialog").dialog({
