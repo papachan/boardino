@@ -3,6 +3,7 @@ from django.conf.urls.defaults import patterns, url
 urlpatterns = patterns('board.views',
     url(r'^$', 'home'),
     url(r'^new$', 'create_board'),
+    url(r'^subscribe', 'subscribe'),
     url(r'^(?P<board_id>\d+)$', 'board'),
     url(r'^(?P<board_id>\d+)/postits', 'get_postits'),
     url(r'^(?P<board_id>\d+)/lines$', 'get_lines'),

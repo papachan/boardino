@@ -1,4 +1,5 @@
 import json
+from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect, HttpResponse, HttpResponseForbidden
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
@@ -7,6 +8,36 @@ from board.models import Board, PostIt, Line
 
 def home(request):
     return render_to_response('home.html')
+
+@csrf_exempt
+def subscribe(request):
+
+    if "email" not in request.POST or not validateEmail(request.POST["email"]):
+        json_data = json.dumps({"result":"Pleas enter a valid email"})
+        return HttpResponse(json_data, mimetype="application/json")
+
+    print "seguieee!!"
+    if request.is_ajax():
+        email = request.POST["email"]
+        try:
+            User.objects.get(email__exact=email)
+            json_data = json.dumps({"result":"The email is already registered"})
+        except User.DoesNotExist:
+            user = User.objects.create_user(email, email)
+            user.save()
+            json_data = json.dumps({"result":"Subscribed!"})
+        return HttpResponse(json_data, mimetype="application/json")
+    else:
+        return HttpResponse(status=400)
+
+def validateEmail(email):
+    from django.core.validators import validate_email
+    from django.core.exceptions import ValidationError
+    try:
+        validate_email( email )
+        return True
+    except ValidationError:
+        return False
 
 def create_board(request):
     new_board = Board()

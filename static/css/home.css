@@ -15,31 +15,71 @@
     margin-top: 80px;
     margin-left: auto;
     margin-right: auto;
-    width: 550px;
+    width: 750px;
 }
 
-#new-board{
+.note{
+    display: table;
     float: left;
-    background-image: url('/static/images/postit_note_t.png');
+    background-image: url('/static/images/postit_note.png');
     background-repeat: no-repeat;
-    width: 244px;
+    width: 245px;
     height: 240px;
+    text-align: center;
+    color: black;
+    font-size: 30px;
 }
 
-#existing-board{
-    float: right;
-    background-image: url('/static/images/postit_note_g.png');
+.green-note{
+    display: table;
+    float: left;
+    background-image: url('/static/images/postit_note_green.png');
     background-repeat: no-repeat;
-    width: 244px;
+    width: 245px;
     height: 240px;
+    text-align: center;
+    color: black;
+    font-size: 30px;
+}
+
+#new-boardino{
+    margin-top: 70px;
+    clear:both;
+    position:relative;
+}
+
+#existing-boardino{
+    margin-top: 50px;
+    margin-right: auto;
+    margin-left: auto;
+    width: 185px;
+    position:relative;
+    clear:both;
+    height:160px;
+}
+
+#subscribe{
+    margin-top: 30px;
+    clear:both;
+    position:relative;
+}
+
+#existing-boardino-floater{
+    float:left;
+    height:50%;
+    margin-bottom:-80px;
 }
 
 #board-form{
     font-family: Arial,serif;
     position: relative;
-    top: 150px;
-    left:35px;
-    width: 200px;
+    margin-top: 20px;
+}
+
+#email-form{
+    font-family: Arial,serif;
+    position: relative;
+    margin-top: 20px;
 }
 
 #board-id{
@@ -55,13 +95,17 @@
     padding-top: 0;
 }
 
+#email-input{
+
+}
+
 #go-button-div{
     margin-left: auto;
     margin-right: auto;
     width: 40px;
 }
 
-#go-button-img{
+.go-button-img{
     margin-left: auto;
     margin-right: auto;
     padding-top: 0;

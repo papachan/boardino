@@ -19,6 +19,18 @@
             $("#board-id").focus(function(){
                 $(this).val("");
             });
+
+            $("#subscribe-submit").click(function(evt){
+                evt.preventDefault();
+                var email = $("#email-input").val();
+                $.post("/subscribe",{"email":email}, function(data){
+                    if(data.result=="Subscribed!")
+                        $("#message").css("color","green");
+                    else
+                        $("#message").css("color","red");
+                    $("#message").text(data.result);
+                });
+            })
         });
     </script>
     <script type="text/javascript">
@@ -41,12 +53,30 @@
     </div>
     <div id="slogan"><h1>Collaborative Real-time Project Management Whiteboard</h1></div>
     <div id="options">
-        <a href="/new"><div id="new-board"></div></a>
-        <div id="existing-board">
-            <div id="board-form">
-                    <label style="float:left; font-size: 24px;" for="board-id">boardino.com/</label>
-                    <input type="text" id="board-id" name="board_id" />
-                    <div id="go-button-div"><a id="go-button" href="#"><img id="go-button-img" src="/static/images/go.png" alt="Go!"></a></div>
+        <a href="/new">
+            <div class="note">
+                <div id="new-boardino">Create a new boardino!</div>
+            </div>
+        </a>
+        <div class="note">
+            <div id="existing-boardino">
+                Go to existing boardino
+                <div id="board-form">
+                        <label style="float:left; font-size: 22px;" for="board-id">boardino.com/</label>
+                        <input type="text" id="board-id" name="board_id" />
+                        <div id="go-button-div"><a id="go-button" href="#"><img class="go-button-img" src="/static/images/go.png" alt="Go!"></a></div>
+                </div>
+            </div>
+        </div>
+        <div class="green-note">
+            <div id="subscribe">
+                Subscribe to be updated of new features!
+                <form id="email-form">
+                    <label style="font-size: 18px;" for="email-input">Email:</label>
+                    <input type="text" name="email-input" id="email-input"/>
+                    <div id="subscribe-button-div"><input id="subscribe-submit" type="submit" value="subscribe"/></div>
+                    <div id="message" style="font-size: 9px; color:green;"></div>
+                </form>
             </div>
         </div>
     </div>
