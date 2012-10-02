@@ -19,6 +19,15 @@ interface Tool {
     public void mouseClicked();
 }
 
+class NullTool implements Tool{
+    public void draw(){}
+    public void mouseDragged(){}
+    public void mouseReleased(){}
+    public void keyPressed(){}
+    public void mousePressed(){}
+    public void mouseClicked(){}
+}
+
 private void setup(){
     size(3000, 1500);
     frameRate(15);
@@ -28,7 +37,7 @@ private void setup(){
     lines = new ArrayList();
     pencilTool = new PencilTool(lines);
 
-    selectPostitTool();
+    currentTool = new NullTool();
 }
 
 private void draw(){

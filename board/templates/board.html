@@ -20,7 +20,7 @@
         var processingInstance;
         var boardConnection;
         var postitTool;
-        var connectedUsers = 0;
+        var connectedUsers = 1;
 
         function initBoard(){
             processingInstance = Processing.getInstanceById("board");
@@ -95,6 +95,7 @@
                     "enabledClass": "eraser_tool_enabled",
                     "disabledClass": "eraser_tool_disabled",
                     "action": function(){
+                        $("#board").css('cursor','url(/static/images/eraser_disabled.ico),default');
                         processingInstance.selectEraserTool();
                     } ,
                     "exclusive": true
@@ -104,6 +105,7 @@
                     "enabledClass": "postit_tool_enabled",
                     "disabledClass": "postit_tool_disabled",
                     "action": function(){
+                        $("#board").css('cursor','url(/static/images/postit_disabled.ico),default');
                         processingInstance.selectPostitTool();
                     },
                     "exclusive": true
@@ -113,6 +115,7 @@
                     "enabledClass": "pencil_tool_enabled",
                     "disabledClass": "pencil_tool_disabled",
                     "action": function(){
+                        $("#board").css('cursor','url(/static/images/pencil_disabled.ico),default');
                         processingInstance.selectPencilTool("FF000000");
                     },
                     "exclusive": true
@@ -122,6 +125,7 @@
                     "enabledClass": "pencil_green_tool_enabled",
                     "disabledClass": "pencil_green_tool_disabled",
                     "action": function(){
+                        $("#board").css('cursor','url(/static/images/pencil_green_disabled.ico),default');
                         processingInstance.selectPencilTool("FF00FF00");
                     },
                     "exclusive": true
@@ -131,6 +135,7 @@
                     "enabledClass": "pencil_red_tool_enabled",
                     "disabledClass": "pencil_red_tool_disabled",
                     "action": function(){
+                        $("#board").css('cursor','url(/static/images/pencil_red_disabled.ico),default');
                         processingInstance.selectPencilTool("FFFF0000");
                     },
                     "exclusive": true
@@ -140,6 +145,7 @@
                     "enabledClass": "pencil_blue_tool_enabled",
                     "disabledClass": "pencil_blue_tool_disabled",
                     "action": function(){
+                        $("#board").css('cursor','url(/static/images/pencil_blue_disabled.ico),default');
                         processingInstance.selectPencilTool("FF0000FF");
                     },
                     "exclusive": true
@@ -193,7 +199,7 @@
 </head>
 <body>
     <div id="toolbar">
-        <a id="postit_tool" class="postit_tool_enabled"></a>
+        <a id="postit_tool" class="postit_tool_disabled"></a>
         <a id="pencil_tool" class="pencil_tool_disabled"></a>
         <a id="pencil_red_tool" class="pencil_red_tool_disabled"></a>
         <a id="pencil_blue_tool" class="pencil_blue_tool_disabled"></a>
@@ -211,7 +217,7 @@
     <div id="boardino_logo"><img src="/static/images/logo_small.png"/></div>
     <div id="mapale_logo"><a target="_blank" href="http://www.mapalesoftware.com"><img src="/static/images/mapale_logo.png"/></a></div>
     <div id="notifications">
-        <div id="connected_users">0</div>
+        <div id="connected_users">1</div>
     </div>
     <!-- uservoice feedback widget-->
     <script type="text/javascript">

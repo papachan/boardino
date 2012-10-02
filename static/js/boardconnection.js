@@ -198,7 +198,7 @@ BoardMessageHandler = function(postitTool, processingInstance){
                 processingInstance.clearLines();
         },
         "info" : function(args){
-            connectedUsers = args.users;
+            connectedUsers = args.users+1;
             $("#connected_users").text(connectedUsers);
         },
         "register": function(args){
