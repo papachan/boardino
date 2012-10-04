@@ -35,10 +35,13 @@ class RectLineTool implements Tool{
     }
 
     public void mousePressed(){
+        painting = true;
+        origin_x=mouseX;
+        origin_y=mouseY;    
     }
 
     public void mouseClicked(){
-        painting = !painting;
+/*        painting = !painting;
         if(painting){
             origin_x=mouseX;
             origin_y=mouseY;
@@ -46,13 +49,18 @@ class RectLineTool implements Tool{
         else { 
             rectlines.add(new Line(origin_x, origin_y, mouseX, mouseY, color_line, stroke_weight)); 
             javaScript.onCreatedLine(origin_x, origin_y, mouseX, mouseY, hex(color_line), stroke_weight, true);
-            }
+            }*/
     }
 
     public void mouseDragged(){
+        painting = true;
+         
     }
 
     public void mouseReleased(){
+        painting = false;
+        rectlines.add(new Line(origin_x, origin_y, mouseX, mouseY, color_line, stroke_weight));
+        javaScript.onCreatedLine(origin_x, origin_y, mouseX, mouseY, hex(color_line), stroke_weight, true);
     }
 
     public void keyPressed(){
