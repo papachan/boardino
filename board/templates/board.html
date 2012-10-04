@@ -40,7 +40,7 @@
             $.get('/{{ board_id }}/lines', function(json){
                 $.each(json, function(i, line){
                     processingInstance.addLine(line.x, line.y , line.x1,
-                    line.y1, line.color_l, line.stroke_w);
+                    line.y1, line.color_l, line.stroke_w, true);
                 });
             });
         }
@@ -61,10 +61,15 @@
             });
         }
 
-        function onCreatedLine(x, y, x1, y1, color, strokeWidth){
+        function onCreatedLine(x, y, x1, y1, color, strokeWidth, add_to_local_array){
             $.post('/{{ board_id }}/line/new/', { x: x, y: y, x1:x1, y1:y1, color_l:color, stroke_w:strokeWidth }, function(json){
-                boardConnection.newLine(x, y, x1, y1, color, strokeWidth);
+                boardConnection.newLine(x, y, x1, y1, color, strokeWidth,
+                                        add_to_local_array);
             });
+        }
+
+        function onCreatingRectLine(x, y, x1, y1, color, strokeWidth, add_to_local_array){
+            boardConnection.newLine(x, y, x1, y1, color, strokeWidth, add_to_local_array);
         }
 
         function clearLines(){
@@ -159,6 +164,16 @@
                     },
                     "confirmable": true,
                     "exclusive": false
+                },
+                {
+                    "selector": "#rect_lines_tool",
+                    "enabledClass": "rectline_tool_enabled",
+                    "disabledClass": "rectline_tool_disabled",
+                    "action": function(){
+                        $("#board").css('cursor','url(/static/images/rectline_disabled.ico),default');
+                        processingInstance.selectRectLineTool("FF000000");
+                    },
+                    "exclusive": true
                 }
             ];
 
@@ -206,13 +221,16 @@
         <a id="pencil_green_tool" class="pencil_green_tool_disabled"></a>
         <a id="eraser_tool" class="eraser_tool_disabled"></a>
         <a id="clear_lines_tool" class="clear_lines_tool_disabled"></a>
+        <a id="rect_lines_tool" class="rectline_tool_disabled"></a>
+
     </div>
     <div id="dialog" title="Cleaning drawings..." style="display: none;">
         Are you sure about this?
     </div>
     <div id="board">
         <canvas id="board" data-processing-sources="/static/pde/blckboard.pde
-        /static/pde/postittool.pde /static/pde/penciltool.pde"></canvas>
+        /static/pde/postittool.pde /static/pde/penciltool.pde
+        /static/pde/rectlinetool.pde"></canvas>
     </div>
     <div id="boardino_logo"><img src="/static/images/logo_small.png"/></div>
     <div id="mapale_logo"><a target="_blank" href="http://www.mapalesoftware.com"><img src="/static/images/mapale_logo.png"/></a></div>

@@ -112,6 +112,7 @@ def new_line(request, board_id):
     else:
         return HttpResponse(status=400)
 
+
 @csrf_exempt
 def update_postit(request, postit_id):
     postit = get_object_or_404(PostIt, pk=postit_id)

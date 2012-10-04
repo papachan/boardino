@@ -166,6 +166,21 @@
     width: 50px;
 }
 
+.rectline_tool_enabled{
+    background-image: url('/static/images/rectline_enabled.png');
+    display: block;
+    height: 50px;
+    width: 50px;
+}
+.rectline_tool_disabled{
+    cursor:pointer;
+    background-image: url('/static/images/rectline_disabled.png');
+    display: block;
+    height: 50px;
+    width: 50px;
+}
+
+
 .clear_lines_tool_enabled{
     cursor:pointer;
     background-image: url('/static/images/clear_lines_enabled.png');

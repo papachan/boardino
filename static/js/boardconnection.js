@@ -107,7 +107,7 @@ BoardConnection.prototype.newPostit = function(board_id, postItId, x, y, width, 
     this.ws.send(JSON.stringify(message));
 };
 
-BoardConnection.prototype.newLine = function(x, y, x1, y1, color_l, stroke_w){
+BoardConnection.prototype.newLine = function(x, y, x1, y1, color_l, stroke_w, add_to_local_array){
     var message = {
         "type": "new",
         "args": {
@@ -118,7 +118,8 @@ BoardConnection.prototype.newLine = function(x, y, x1, y1, color_l, stroke_w){
             "x1": x1,
             "y1": y1,
             "color_l":color_l,
-            "stroke_w":stroke_w
+            "stroke_w":stroke_w,
+            "add_to_local_array":add_to_local_array
         }
     };
     this.ws.send(JSON.stringify(message));
@@ -176,7 +177,9 @@ BoardMessageHandler = function(postitTool, processingInstance){
             if(args["obj"]=="postit")
                 postitTool.createPostit(args["id"], args["text"], args["x"], args["y"], args["w"], args["h"]);
             else
-                processingInstance.addLine(args["x"], args["y"], args["x1"], args["y1"], args["color_l"], args["stroke_w"]);
+                processingInstance.addLine(args["x"], args["y"], args["x1"],
+                                            args["y1"], args["color_l"], args["stroke_w"],
+                                            args["add_to_local_array"]);
         },
         "update" : function(args){
             postitTool.updatePostitText(args["postit_id"], args["text"]);

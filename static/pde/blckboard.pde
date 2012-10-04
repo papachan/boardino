@@ -1,13 +1,16 @@
 // Post-it WhiteBoard
 List lines;
+List tmplines;
 Tool currentTool;
 PostitTool postitTool;
 PencilTool pencilTool;
+RectLineTool rectlineTool;
 JavaScript javaScript;
 
 interface JavaScript{
     void createPostit(float x, float y);
     void onCreatedLine(float x, float y, float x1, float y1);
+    void onCreatingRectLine(float x, float y, float x1, float y1);
 }
 
 interface Tool {
@@ -37,12 +40,21 @@ private void setup(){
     lines = new ArrayList();
     pencilTool = new PencilTool(lines);
 
+    rectlineTool = new RectLineTool(lines);
+
+    tmplines = new ArrayList();
+
     currentTool = new NullTool();
 }
 
 private void draw(){
     background(255,255,255);
     pencilTool.draw();
+    rectlineTool.draw();
+    for(int j=0;j<tmplines.size();j++){
+           tmplines.get(j).show();
+    }    
+    tmplines = new ArrayList();
 }
 
 /**Processing events**/
@@ -71,8 +83,14 @@ public void bindJavaScript(JavaScript js){
     javaScript = js;
 }
 
-public void addLine(int x, int y, int x1, int y1, String color_l, int stroke_w){
-    lines.add(new Line(x, y, x1, y1, unhex(color_l), stroke_w));
+public void addLine(int x, int y, int x1, int y1, String color_l, int stroke_w,boolean add_to_local_array){
+    if(add_to_local_array) {
+        lines.add(new Line(x, y, x1, y1, unhex(color_l), stroke_w));
+    }
+    else {
+        tmplines.add(new Line(x, y, x1, y1, unhex(color_l), stroke_w));
+       
+    }
 }
 
 
@@ -86,10 +104,16 @@ public void selectPencilTool(String color_l){
     currentTool.setStrokeWeight(2);
 }
 
+public void selectRectLineTool(String color_l){
+    currentTool = rectlineTool;
+    currentTool.setColor(unhex(color_l));
+    currentTool.setStrokeWeight(2);
+    }
+
 public void selectEraserTool(){
     currentTool = pencilTool;
     currentTool.setColor(255);
-    currentTool.setStrokeWeight(20);
+    currentTool.setStrokeWeight(2);
 }
 
 public void clearLines(){

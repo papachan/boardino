@@ -24,7 +24,7 @@ class PencilTool implements Tool{
         }
         if(currentTool == this && painting){
             lines.add(new Line(mouseX, mouseY, pmouseX, pmouseY, color_line, stroke_weight));
-            javaScript.onCreatedLine(mouseX, mouseY, pmouseX, pmouseY, hex(color_line), stroke_weight);
+            javaScript.onCreatedLine(mouseX, mouseY, pmouseX, pmouseY, hex(color_line), stroke_weight, true);
         }
     }
 
