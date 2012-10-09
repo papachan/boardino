@@ -113,7 +113,7 @@ public void selectRectLineTool(String color_l){
 public void selectEraserTool(){
     currentTool = pencilTool;
     currentTool.setColor(255);
-    currentTool.setStrokeWeight(2);
+    currentTool.setStrokeWeight(20);
 }
 
 public void clearLines(){
