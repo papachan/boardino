@@ -2,6 +2,7 @@
     position: fixed;
     left: 5px;
     top: 5px;
+    width: 50px;
     z-index: 1000;
 }
 
@@ -88,20 +89,31 @@
     width: 50px;
 }
 
-.pencil_tool_enabled{
-    cursor:pointer;
-    background-image: url('/static/images/pencil_enabled.png');
-    display: block;
-    height: 50px;
-    width: 50px;
-}
-
 .pencil_tool_disabled{
     cursor:pointer;
     background-image: url('/static/images/pencil_disabled.png');
     display: block;
     height: 50px;
     width: 50px;
+    float: left;
+}
+
+.pencil_black_tool_enabled{
+    cursor:pointer;
+    background-image: url('/static/images/pencil_enabled.png');
+    display: block;
+    height: 50px;
+    width: 50px;
+    float: left;
+}
+
+.pencil_black_tool_disabled{
+    cursor:pointer;
+    background-image: url('/static/images/pencil_disabled.png');
+    display: none;
+    height: 50px;
+    width: 50px;
+    float: left;
 }
 
 .pencil_red_tool_enabled{
@@ -110,14 +122,16 @@
     display: block;
     height: 50px;
     width: 50px;
+    float: left;
 }
 
 .pencil_red_tool_disabled{
     cursor:pointer;
     background-image: url('/static/images/pencil_red_disabled.png');
-    display: block;
+    display: none;
     height: 50px;
     width: 50px;
+    float: left;
 }
 
 .pencil_blue_tool_enabled{
@@ -126,14 +140,16 @@
     display: block;
     height: 50px;
     width: 50px;
+    float: left;
 }
 
 .pencil_blue_tool_disabled{
-
+    cursor:pointer;
     background-image: url('/static/images/pencil_blue_disabled.png');
-    display: block;
+    display: none;
     height: 50px;
     width: 50px;
+    float: left;
 }
 
 .pencil_green_tool_enabled{
@@ -142,14 +158,16 @@
     display: block;
     height: 50px;
     width: 50px;
+    float: left;
 }
 
 .pencil_green_tool_disabled{
     cursor:pointer;
     background-image: url('/static/images/pencil_green_disabled.png');
-    display: block;
+    display: none;
     height: 50px;
     width: 50px;
+    float: left;
 }
 
 .eraser_tool_enabled{

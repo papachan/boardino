@@ -89,6 +89,23 @@
             $("#connected_users").mouseout(function(){
                 $(this).text(connectedUsers);
             });
+
+            $("#pencil_tool").mouseover(function(){
+                $("#pencil_tool").width(200);
+                $("#selected_pencil_tool").hide();
+                $("#pencil_black_tool").show();
+                $("#pencil_green_tool").show();
+                $("#pencil_red_tool").show();
+                $("#pencil_blue_tool").show();
+            });
+            $("#pencil_tool").mouseout(function(){
+                $("#pencil_tool").width(50);
+                $("#selected_pencil_tool").show();
+                $("#pencil_black_tool").hide();
+                $("#pencil_green_tool").hide();
+                $("#pencil_red_tool").hide();
+                $("#pencil_blue_tool").hide();
+            });
         });
 
 
@@ -116,12 +133,20 @@
                     "exclusive": true
                 },
                 {
-                    "selector": "#pencil_tool",
-                    "enabledClass": "pencil_tool_enabled",
+                    "selector": "#selected_pencil_tool",
+                    "enabledClass": "pencil_black_tool_enabled",
                     "disabledClass": "pencil_tool_disabled",
+                    "action": function(){},
+                    "exclusive": true
+                },
+                {
+                    "selector": "#pencil_black_tool",
+                    "enabledClass": "pencil_black_tool_enabled",
+                    "disabledClass": "pencil_black_tool_disabled",
                     "action": function(){
                         $("#board").css('cursor','url(/static/images/pencil_disabled.ico),default');
                         processingInstance.selectPencilTool("FF000000");
+                        $("#selected_pencil_tool").attr('class', "pencil_black_tool_enabled");
                     },
                     "exclusive": true
                 },
@@ -132,6 +157,7 @@
                     "action": function(){
                         $("#board").css('cursor','url(/static/images/pencil_green_disabled.ico),default');
                         processingInstance.selectPencilTool("FF00FF00");
+                        $("#selected_pencil_tool").attr('class', "pencil_green_tool_enabled");
                     },
                     "exclusive": true
                 },
@@ -142,6 +168,7 @@
                     "action": function(){
                         $("#board").css('cursor','url(/static/images/pencil_red_disabled.ico),default');
                         processingInstance.selectPencilTool("FFFF0000");
+                        $("#selected_pencil_tool").attr('class', "pencil_red_tool_enabled");
                     },
                     "exclusive": true
                 },
@@ -152,6 +179,7 @@
                     "action": function(){
                         $("#board").css('cursor','url(/static/images/pencil_blue_disabled.ico),default');
                         processingInstance.selectPencilTool("FF0000FF");
+                        $("#selected_pencil_tool").attr('class', "pencil_blue_tool_enabled");
                     },
                     "exclusive": true
                 },
@@ -216,14 +244,16 @@
 <body>
     <div id="toolbar">
         <a id="postit_tool" class="postit_tool_disabled"></a>
-        <a id="pencil_tool" class="pencil_tool_disabled"></a>
-        <a id="pencil_red_tool" class="pencil_red_tool_disabled"></a>
-        <a id="pencil_blue_tool" class="pencil_blue_tool_disabled"></a>
-        <a id="pencil_green_tool" class="pencil_green_tool_disabled"></a>
+        <div id="pencil_tool" style="height:50px; width: 50px">
+            <a id="selected_pencil_tool" class="pencil_tool_disabled"></a>
+            <a id="pencil_black_tool" class="pencil_black_tool_disabled"></a>
+            <a id="pencil_red_tool" class="pencil_red_tool_disabled"></a>
+            <a id="pencil_blue_tool" class="pencil_blue_tool_disabled"></a>
+            <a id="pencil_green_tool" class="pencil_green_tool_disabled"></a>
+        </div>
         <a id="rect_lines_tool" class="rectline_tool_disabled"></a>
         <a id="eraser_tool" class="eraser_tool_disabled"></a>
         <a id="clear_lines_tool" class="clear_lines_tool_disabled"></a>
-
     </div>
     <div id="dialog" title="Cleaning drawings..." style="display: none;">
         Are you sure about this?
