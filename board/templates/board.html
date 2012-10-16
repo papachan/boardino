@@ -16,6 +16,7 @@
     {% compress js %}
     <script type="text/javascript" src="/static/js/boardconnection.js"></script>
     <script type="text/javascript" src="/static/js/postittool.js"></script>
+    <script type="text/javascript" src="/static/js/toolbar.js"></script>
     <script type="application/javascript">
         var processingInstance;
         var boardConnection;
@@ -82,13 +83,89 @@
 
         $(document).ready(function() {
             initBoard();
-            loadToolBar();
+            loadToolbar();
+
             $("#connected_users").mouseover(function(){
                 $(this).text(connectedUsers + " connected users");
             });
             $("#connected_users").mouseout(function(){
                 $(this).text(connectedUsers);
             });
+
+            $(window).bind("beforeunload", function() {
+                boardConnection.disconnect();
+            });
+        });
+
+        function loadToolbar(){
+            var toolbar = new Toolbar();
+            toolbar.addTool($("#eraser_tool").tool(toolbar, {
+                    "action": function(){
+                        $("#board").css('cursor','url(/static/images/eraser_disabled.ico),default');
+                        processingInstance.selectEraserTool();
+                    }
+            }));
+
+            toolbar.addTool($("#postit_tool").tool(toolbar, {
+                    "action": function(){
+                        $("#board").css('cursor','url(/static/images/postit_disabled.ico),default');
+                        processingInstance.selectPostitTool();
+                    }
+            }));
+
+            toolbar.addTool($("#selected_pencil_tool").tool(toolbar, {
+                    "enabledClass": "pencil_black_tool_enabled",
+                    "disabledClass": "pencil_tool_disabled",
+                    "action": function(){}
+            }));
+
+            toolbar.addTool($("#pencil_black_tool").tool(toolbar, {
+                    "action": function(){
+                        $("#board").css('cursor','url(/static/images/pencil_disabled.ico),default');
+                        processingInstance.selectPencilTool("FF000000");
+                        $("#selected_pencil_tool").attr('class', "pencil_black_tool_enabled");
+                    }
+            }));
+
+            toolbar.addTool($("#pencil_green_tool").tool(toolbar, {
+                    "action": function(){
+                        $("#board").css('cursor','url(/static/images/pencil_green_disabled.ico),default');
+                        processingInstance.selectPencilTool("FF00FF00");
+                        $("#selected_pencil_tool").attr('class', "pencil_green_tool_enabled");
+                    }
+            }));
+
+            toolbar.addTool($("#pencil_red_tool").tool(toolbar, {
+                    "action": function(){
+                        $("#board").css('cursor','url(/static/images/pencil_red_disabled.ico),default');
+                        processingInstance.selectPencilTool("FFFF0000");
+                        $("#selected_pencil_tool").attr('class', "pencil_red_tool_enabled");
+                    }
+            }));
+
+            toolbar.addTool($("#pencil_blue_tool").tool(toolbar, {
+                    "action": function(){
+                        $("#board").css('cursor','url(/static/images/pencil_blue_disabled.ico),default');
+                        processingInstance.selectPencilTool("FF0000FF");
+                        $("#selected_pencil_tool").attr('class', "pencil_blue_tool_enabled");
+                    }
+            }));
+
+            toolbar.addTool($("#clear_lines_tool").tool(toolbar, {
+                    "action": function(){
+                        clearLines();
+                    },
+                    "confirmable": true,
+                    "exclusive": false
+            }));
+
+            toolbar.addTool($("#rectline_tool").tool(toolbar, {
+                    "action": function(){
+                        $("#board").css('cursor','url(/static/images/rectline_disabled.ico),default');
+                        processingInstance.selectRectLineTool("FF000000");
+                    }
+            }));
+
 
             $("#pencil_tool").mouseover(function(){
                 $("#pencil_tool").width(200);
@@ -106,135 +183,6 @@
                 $("#pencil_red_tool").hide();
                 $("#pencil_blue_tool").hide();
             });
-        });
-
-
-        function loadToolBar(){
-
-            var tools = [
-                {
-                    "selector": "#eraser_tool",
-                    "enabledClass": "eraser_tool_enabled",
-                    "disabledClass": "eraser_tool_disabled",
-                    "action": function(){
-                        $("#board").css('cursor','url(/static/images/eraser_disabled.ico),default');
-                        processingInstance.selectEraserTool();
-                    } ,
-                    "exclusive": true
-                },
-                {
-                    "selector": "#postit_tool",
-                    "enabledClass": "postit_tool_enabled",
-                    "disabledClass": "postit_tool_disabled",
-                    "action": function(){
-                        $("#board").css('cursor','url(/static/images/postit_disabled.ico),default');
-                        processingInstance.selectPostitTool();
-                    },
-                    "exclusive": true
-                },
-                {
-                    "selector": "#selected_pencil_tool",
-                    "enabledClass": "pencil_black_tool_enabled",
-                    "disabledClass": "pencil_tool_disabled",
-                    "action": function(){},
-                    "exclusive": true
-                },
-                {
-                    "selector": "#pencil_black_tool",
-                    "enabledClass": "pencil_black_tool_enabled",
-                    "disabledClass": "pencil_black_tool_disabled",
-                    "action": function(){
-                        $("#board").css('cursor','url(/static/images/pencil_disabled.ico),default');
-                        processingInstance.selectPencilTool("FF000000");
-                        $("#selected_pencil_tool").attr('class', "pencil_black_tool_enabled");
-                    },
-                    "exclusive": true
-                },
-                {
-                    "selector": "#pencil_green_tool",
-                    "enabledClass": "pencil_green_tool_enabled",
-                    "disabledClass": "pencil_green_tool_disabled",
-                    "action": function(){
-                        $("#board").css('cursor','url(/static/images/pencil_green_disabled.ico),default');
-                        processingInstance.selectPencilTool("FF00FF00");
-                        $("#selected_pencil_tool").attr('class', "pencil_green_tool_enabled");
-                    },
-                    "exclusive": true
-                },
-                {
-                    "selector": "#pencil_red_tool",
-                    "enabledClass": "pencil_red_tool_enabled",
-                    "disabledClass": "pencil_red_tool_disabled",
-                    "action": function(){
-                        $("#board").css('cursor','url(/static/images/pencil_red_disabled.ico),default');
-                        processingInstance.selectPencilTool("FFFF0000");
-                        $("#selected_pencil_tool").attr('class', "pencil_red_tool_enabled");
-                    },
-                    "exclusive": true
-                },
-                {
-                    "selector": "#pencil_blue_tool",
-                    "enabledClass": "pencil_blue_tool_enabled",
-                    "disabledClass": "pencil_blue_tool_disabled",
-                    "action": function(){
-                        $("#board").css('cursor','url(/static/images/pencil_blue_disabled.ico),default');
-                        processingInstance.selectPencilTool("FF0000FF");
-                        $("#selected_pencil_tool").attr('class', "pencil_blue_tool_enabled");
-                    },
-                    "exclusive": true
-                },
-                {
-                    "selector": "#clear_lines_tool",
-                    "enabledClass": "clear_lines_tool_enabled",
-                    "disabledClass": "clear_lines_tool_disabled",
-                    "action": function(){
-                        clearLines();
-                    },
-                    "confirmable": true,
-                    "exclusive": false
-                },
-                {
-                    "selector": "#rect_lines_tool",
-                    "enabledClass": "rectline_tool_enabled",
-                    "disabledClass": "rectline_tool_disabled",
-                    "action": function(){
-                        $("#board").css('cursor','url(/static/images/rectline_disabled.ico),default');
-                        processingInstance.selectRectLineTool("FF000000");
-                    },
-                    "exclusive": true
-                }
-            ];
-
-            $.each(tools, function(i, tool){
-                $(tool.selector).click(function(){
-                    if(tool.exclusive){
-                        $.each(tools, function(i, otherTool){
-                            otherToolElement = $(otherTool.selector);
-                            otherToolElement.attr({'class': otherTool.disabledClass})
-                        });
-                    }
-                    $(tool.selector).attr({'class':tool.enabledClass});
-                    if(tool.confirmable){
-                        $("#dialog").dialog({
-                            buttons : {
-                                "Confirm" : function() {
-                                    $(this).dialog("close");
-                                    tool.action();
-                                },
-                                "Cancel" : function() {
-                                    $(this).dialog("close");
-                                }
-                            }
-                        });
-                    }else
-                        tool.action();
-                });
-            });
-
-            $(window).bind("beforeunload", function() {
-                boardConnection.disconnect();
-            });
-
         }
 
     </script>
@@ -251,7 +199,7 @@
             <a id="pencil_blue_tool" class="pencil_blue_tool_disabled"></a>
             <a id="pencil_green_tool" class="pencil_green_tool_disabled"></a>
         </div>
-        <a id="rect_lines_tool" class="rectline_tool_disabled"></a>
+        <a id="rectline_tool" class="rectline_tool_disabled"></a>
         <a id="eraser_tool" class="eraser_tool_disabled"></a>
         <a id="clear_lines_tool" class="clear_lines_tool_disabled"></a>
     </div>
