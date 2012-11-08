@@ -1,26 +1,19 @@
 $(function(){
     var Postit = Backbone.Model.extend({
 
-        defaults: function(){
-            return {
-                text: "empty note"
-            }
-        },
         initialize: function(){
             if (!this.get("text")) {
-                this.set({"title": this.defaults.title});
+                this.set({"text": " "});
             }
-        },
-        sync: function(method, model, options){
-            alert(method);
-            alert(model);
-            alert(options);
-        }
+        }/*,
+        sync: function(method, object, options){
+            alert(JSON.stringify(object));
+        }*/
     });
 
     var PostitList = Backbone.Collection.extend({
         model: Postit,
-        url: "api/boards/"+board_id+"/postits"
+        url: "api/boards/"+board_id+"/postits/"
     });
 
     var PostitView = Backbone.View.extend({
@@ -29,16 +22,14 @@ $(function(){
         events: {
             "mouseover": "showToolbar",
             "mouseout": "hideToolbar",
-            "click .postit_close_image": "remove",
-            "mouseover .postit_color_image": "showColors"
+            "click .postit_close_image": "deletePostit",
+            "mouseover .postit_color_image": "showColors",
+            "keyup .postit_input": "updateText"
         },
 
         initialize: function(){
             this.model.bind('change', this.render, this);
             this.model.bind('destroy', this.remove, this);
-        },
-
-        render: function(){
             var _this = this;
             this.$el.attr("id", "postit"+this.model.id)
                     .addClass("postit")
@@ -53,13 +44,11 @@ $(function(){
                         containment: "parent",
                         drag: function(){
                             var position = $(this).position();
-                            //_this.model.set("y",position.top);
-                            //_this.model.set({x: position.left, y: position.top});
-                            //postitToolListener.onPostitMoved(_this.id, position.left, position.top);
+                            boardConnection.movePostit(_this.model.get("id"), position.left, position.top);
                         },
                         stop: function(){
                             var position = $(this).position();
-                            //_this.model.set({x: position.left, y: position.top});
+                            _this.model.save({x: position.left, y: position.top});
                             //postitToolListener.onPostitStopMoving(_this.id, position.left, position.top);
                         }
                     })
@@ -72,6 +61,7 @@ $(function(){
                         stop: function(event, ui){
                             var width = ui.size.width;
                             var height = ui.size.height;
+                            _this.model.save({width: width, height: height});
                             //postitToolListener.onPostitStopResizing(_this.id, width, height);
                         }
                     });
@@ -80,6 +70,20 @@ $(function(){
             this.createPostitColorTool().appendTo(this.$el);
             this.createPostitTextArea().appendTo(this.$el);
             this.createChangePostitColorTool().appendTo(this.$el);
+
+            this.input = this.$('.postit_input');
+
+        },
+
+        render: function(){
+            this.$el
+                .css("top", this.model.get("y")+"px")
+                .css("left", this.model.get("x")+"px")
+                .css("width", this.model.get("width")+"px")
+                .css("height", this.model.get("height")+"px")
+                .css("background-color", this.model.get("back_color"));
+            this.$(".postit_input").css('background-color', this.model.get("back_color"));
+            this.input.focus();
             return this;
         },
 
@@ -89,33 +93,28 @@ $(function(){
                     .attr("src", "/static/images/close.png")
         },
 
-        /*remove: function(){
-            this.model.remove();
-            //postitTool.deletePostit(_this.id);
+        deletePostit: function(){
+            this.model.destroy();
             //postitToolListener.onDeletedPostit(_this.id);
-        },*/
+        },
 
         createPostitTextArea: function(){
-            //var postitToolListener = this.postitToolListener;
             var postitTextArea =  $("<textarea/>").addClass("postit_input")
                     .css('background-color', this.model.get("back_color"));
-            var _this = this;
-            postitTextArea.keyup(function(){
-                //postitToolListener.onUpdatedPostitText(_this.id, postitTextArea.val());
-            });
-            postitTextArea.val(this.text);
+            postitTextArea.val(this.model.get("text"));
             return postitTextArea;
         },
 
-        createPostitColorTool: function(){
+        updateText: function(){
+            var text = this.input.val();
+            this.model.save({text: text});
+            //postitToolListener.onUpdatedPostitText(_this.id, postitTextArea.val());
+        },
 
-            var postitTool = this.postitTool;
-            var _this = this;
-            var element = this.element;
+        createPostitColorTool: function(){
             var image = $("<img/>")
                     .addClass("postit_color_image")
                     .attr("src", "/static/images/colors.png");
-
             return image;
         },
 
@@ -138,19 +137,14 @@ $(function(){
 
         createColorSelectionElement: function(color, position){
             var _this = this;
-            //var postitToolListener = this.postitToolListener;
             return $("<div class='postit_color'/>")
                     .css('background-color', color)
                     .css('float', position)
                     .click(function() {
-                        _this.setColor(color);
+                        //_this.setColor(color);
+                        _this.model.save({"back_color": color});
                         //postitToolListener.onPostitChangedColor(_this.id, color, color);
                     });
-        },
-
-        setColor: function(color){
-            this.$el.css('background-color',color);
-            this.$el.find("textarea").css('background-color', color);
         },
 
         showToolbar: function(){
@@ -183,8 +177,12 @@ $(function(){
             postits.fetch();
         },
 
-        createPostit: function(){
-            alert('creando postit');
+        createPostit: function(e){
+                //postitTool.focusPostit(json["postit_id"]);
+                //boardConnection.newPostit({{ board_id }}, json["postit_id"], json["x"],json["y"], width, height, json["text"]);
+            postit = new Postit({"x":e.pageX, "y":e.pageY, "width":120, "height":120, "text":""});
+            postits.add(postit);
+            postit.save();
         },
 
         addAll: function() {
