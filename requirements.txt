@@ -4,3 +4,6 @@ django_nose
 South
 django_compressor
 BeautifulSoup
+djangorestframework
+markdown
+pyyaml

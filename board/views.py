@@ -4,7 +4,12 @@ from django.http import HttpResponseRedirect, HttpResponse, HttpResponseForbidde
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.views.decorators.csrf import csrf_exempt
+from rest_framework.decorators import api_view
+from rest_framework import generics
+from rest_framework.response import Response
+from rest_framework.reverse import reverse
 from board.models import Board, PostIt, Line
+from board.serializers import PostitSerializer
 
 def home(request):
     return render_to_response('home.html')
@@ -192,3 +197,19 @@ def clear_lines(request, board_id):
         return HttpResponse(json_data, mimetype="application/json")
     else:
         return HttpResponse(status=400)
+
+
+@api_view(['GET'])
+def api_root(request, format=None):
+    return Response({
+        'postits':reverse('postit-list', request=request)
+    })
+
+
+class PostitList(generics.ListCreateAPIView):
+    model = PostIt
+    serializer_class = PostitSerializer
+
+    def get_queryset(self):
+        board_id = self.kwargs['board_id']
+        return PostIt.objects.filter(board__id=board_id)
