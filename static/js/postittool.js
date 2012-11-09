@@ -107,7 +107,7 @@ function Postit(postitTool, id, text, x, y, width, height, back_color){
 }
 
 Postit.prototype.createElement = function(){
-    this.element = this.createPostitDiv().appendTo("#board");
+    this.element = this.createPostitDiv().appendTo("#board").addTouch();
     this.createPostitCloseElement().appendTo(this.element);
     this.createPostitColorTool().appendTo(this.element);
     this.createPostitTextArea().appendTo(this.element);
