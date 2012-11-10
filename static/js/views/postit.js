@@ -33,20 +33,18 @@ define([
                         stop: function(){
                             var position = $(this).position();
                             _this.model.save({x: position.left, y: position.top});
-                            //postitToolListener.onPostitStopMoving(_this.id, position.left, position.top);
                         }
                     })
                     .resizable({
                         resize: function(){
                             var width = $(this).width();
                             var height = $(this).height();
-                            //boardConnection.resizePostit(_this.id, width, height); //todo , change to call postittoollistener
+                            boardConnection.resizePostit(_this.model.get("id"), width, height);
                         },
                         stop: function(event, ui){
                             var width = ui.size.width;
                             var height = ui.size.height;
                             _this.model.save({width: width, height: height});
-                            //postitToolListener.onPostitStopResizing(_this.id, width, height);
                         }
                     });
 
@@ -79,7 +77,7 @@ define([
 
         deletePostit: function(){
             this.model.destroy();
-            //postitToolListener.onDeletedPostit(_this.id);
+            boardConnection.deletePostit(this.get("id"));
         },
 
         createPostitTextArea: function(){
@@ -92,7 +90,7 @@ define([
         updateText: function(){
             var text = this.input.val();
             this.model.save({text: text});
-            //postitToolListener.onUpdatedPostitText(_this.id, postitTextArea.val());
+            boardConnection.updatePostitText(this.model.get("id"), text);
         },
 
         createPostitColorTool: function(){
@@ -125,9 +123,8 @@ define([
                     .css('background-color', color)
                     .css('float', position)
                     .click(function() {
-                        //_this.setColor(color);
                         _this.model.save({"back_color": color});
-                        //postitToolListener.onPostitChangedColor(_this.id, color, color);
+                        boardConnection.changePostitColor(_this.model.get("id"), color, color);
                     });
         },
 

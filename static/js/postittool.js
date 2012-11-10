@@ -11,27 +11,6 @@ PostitTool.prototype.setListener = function(postitToolListener){
     this.postitToolListener = postitToolListener;
 };
 
-PostitTool.prototype.addPostits = function(postits) {
-    var _this = this;
-    $.each(postits, function(i, postit) {
-        _this.createPostit(postit.id, postit.text, postit.x, postit.y, postit.width, postit.height, postit.back_color);
-    });
-};
-
-PostitTool.prototype.createPostit = function(id, text, x, y, width, height, back_color){
-    this.postits[id] = new Postit(this, id, text, x, y, width, height, back_color);
-};
-
-PostitTool.prototype.movePostit = function(id, newX, newY){
-    this.getPostit(id).move(newX, newY);
-};
-
-PostitTool.prototype.resizePostit = function(id, width, height){
-    var postit = this.getPostit(id);
-    postit.setWidth(width);
-    postit.setHeight(height);
-};
-
 PostitTool.prototype.updatePostitText = function(id, text){
     this.getPostit(id).setText(text);
 };
@@ -41,13 +20,6 @@ PostitTool.prototype.deletePostit = function(id){
     delete this.postits[id];
 };
 
-PostitTool.prototype.getPostit = function(id){
-    return this.postits[id];
-};
-
-PostitTool.prototype.changePostitColor = function(postItId, color, backColor){
-    this.getPostit(postItId).color(color);
-};
 
 PostitTool.prototype.focusPostit = function(postitId){
     this.getPostit(postitId).focus();
@@ -57,12 +29,6 @@ function PostitToolListener(boardConnection){
     this.boardConnection = boardConnection;
 }
 
-PostitToolListener.prototype.onUpdatedPostitText = function(id, text){
-    var boardConnection = this.boardConnection;
-    $.post('/postit/'+id+'/update/', { text:text}, function(){
-        boardConnection.updatePostitText(id, text);
-    });
-};
 
 PostitToolListener.prototype.onDeletedPostit = function(id){
     var boardConnection = this.boardConnection;
@@ -71,24 +37,8 @@ PostitToolListener.prototype.onDeletedPostit = function(id){
     });
 };
 
-
-PostitToolListener.prototype.onPostitChangedColor = function(id, color, backColor){
-    var boardConnection = this.boardConnection;
-    $.post('/postit/'+id+'/update/', {color:color, back_color:backColor}, function(json){
-        boardConnection.changePostitColor(id, color, backColor);
-    });
-};
-
 PostitToolListener.prototype.onPostitMoved = function(postitId, x, y){
     boardConnection.movePostit(postitId, x, y);
-};
-
-PostitToolListener.prototype.onPostitStopMoving = function(postitId, x, y){
-    $.post('/postit/'+postitId+'/update/', { x:x, y:y });
-};
-
-PostitToolListener.prototype.onPostitStopResizing = function(postitId, width, height){
-    $.post('/postit/'+postitId+'/update/', { width:width, height:height });
 };
 
 function Postit(postitTool, id, text, x, y, width, height, back_color){

@@ -1,11 +1,12 @@
 define([
     'views/postit',
+    'models/postit',
     'collections/postits'
-], function(PostitView, PostitList){
+], function(PostitView, Postit, PostitList){
     var BoardView = Backbone.View.extend({
         el: $("#board"),
         events: {
-            "click #board_canvas": "createPostit"
+            //"click #board_canvas": "createPostit"
         },
 
         initialize: function(){
@@ -16,10 +17,8 @@ define([
             postits.fetch();
         },
 
-        createPostit: function(e){
-                //postitTool.focusPostit(json["postit_id"]);
-                //boardConnection.newPostit({{ board_id }}, json["postit_id"], json["x"],json["y"], width, height, json["text"]);
-            postit = new Postit({"x":e.pageX, "y":e.pageY, "width":120, "height":120, "text":""});
+        createPostit: function(x, y){
+            postit = new Postit({"x":x, "y":y, "width":120, "height":120, "text":""});
             postits.add(postit);
             postit.save();
         },
@@ -31,6 +30,29 @@ define([
         addOne: function(postit){
             var view = new PostitView({model: postit});
             $("#board").append(view.render().el);
+        },
+
+        onCreatedLine: function(x, y, x1, y1, color, strokeWidth, add_to_local_array){
+            $.post('/'+board_id+'/line/new/', { x: x, y: y, x1:x1, y1:y1, color_l:color, stroke_w:strokeWidth }, function(json){
+                boardConnection.newLine(x, y, x1, y1, color, strokeWidth,
+                                        add_to_local_array);
+            });
+        },
+
+        onCreatingRectLine: function(x, y, x1, y1, color, strokeWidth, add_to_local_array){
+            boardConnection.newLine(x, y, x1, y1, color, strokeWidth, add_to_local_array);
+        },
+
+        movePostit: function(id, newX, newY){
+            postits.get(id).set({x: newX, y: newY});
+        },
+
+        resizePostit: function(id, width, height){
+            postits.get(id).set({width: width, height: height});
+        },
+
+        changePostitColor: function(id, color){
+            postits.get(id).set("back_color", color);
         }
     });
 
