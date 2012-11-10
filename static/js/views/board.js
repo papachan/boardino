@@ -53,6 +53,10 @@ define([
 
         changePostitColor: function(id, color){
             postits.get(id).set("back_color", color);
+        },
+
+        deletePostit: function(id){
+            postits.remove(id);
         }
     });
 

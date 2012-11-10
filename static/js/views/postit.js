@@ -14,6 +14,7 @@ define([
         initialize: function(){
             this.model.bind('change', this.render, this);
             this.model.bind('destroy', this.remove, this);
+            this.model.bind('remove', this.remove, this);
             var _this = this;
             this.$el.attr("id", "postit"+this.model.id)
                     .addClass("postit")
@@ -77,7 +78,7 @@ define([
 
         deletePostit: function(){
             this.model.destroy();
-            boardConnection.deletePostit(this.get("id"));
+            boardConnection.deletePostit(this.model.get("id"));
         },
 
         createPostitTextArea: function(){
