@@ -7,7 +7,7 @@ class PostitTool implements Tool{
     }
 
     public void mousePressed(){
-        javaScript.createPostit(mouseX, mouseY);
+
     }
 
     public void mouseDragged(){

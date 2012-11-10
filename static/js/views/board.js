@@ -1,7 +1,7 @@
-$(function(){
-
-
-
+define([
+    'views/postit',
+    'collections/postits'
+], function(PostitView, PostitList){
     var BoardView = Backbone.View.extend({
         el: $("#board"),
         events: {
@@ -9,6 +9,7 @@ $(function(){
         },
 
         initialize: function(){
+            postits = new PostitList();
             postits.bind('add', this.addOne, this);
             postits.bind('reset', this.addAll, this);
             postits.bind('all', this.render, this);
@@ -33,5 +34,5 @@ $(function(){
         }
     });
 
-    var app = new BoardView;
+    return BoardView;
 });
