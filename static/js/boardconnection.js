@@ -92,8 +92,7 @@ define([
         this.ws.send(JSON.stringify(message));
     };
 
-    BoardConnection.prototype.newPostit = function(board_id, postItId, x, y, width, height, text){
-        this.board_id = board_id;
+    BoardConnection.prototype.newPostit = function(postItId, x, y, width, height, text){
         var message = {
             "type": "new",
             "args": {
@@ -178,7 +177,7 @@ define([
         this.handlers = {
             "new" : function(args){
                 if(args["obj"]=="postit")
-                    boardView.createPostit(args["id"], args["text"], args["x"], args["y"], args["w"], args["h"]);
+                    boardView.showPostit(args["id"]);
                 else
                     processingInstance.addLine(args["x"], args["y"], args["x1"],
                                                 args["y1"], args["color_l"], args["stroke_w"],

@@ -20,7 +20,17 @@ define([
         createPostit: function(x, y){
             postit = new Postit({"x":x, "y":y, "width":120, "height":120, "text":""});
             postits.add(postit);
-            postit.save();
+            postit.save(null, {
+                success: function(model, response){
+                    boardConnection.newPostit(model.get("id"), postit.get("x"), postit.get("y"), postit.get("width"), postit.get("height"), postit.get("text"));
+                }
+            });
+        },
+
+        showPostit: function(id){
+            postit = new Postit({id:id});
+            postit.fetch();
+            postits.add(postit);
         },
 
         addAll: function() {
@@ -57,6 +67,11 @@ define([
 
         deletePostit: function(id){
             postits.remove(id);
+        },
+
+        updatePostitText: function(id, text){
+            //alert("updated text! "+text);
+            postits.get(id).set("text",text);
         }
     });
 

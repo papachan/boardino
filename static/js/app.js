@@ -1,9 +1,7 @@
 define([
-  'underscore',
-  'backbone',
   'views/board',
   'boardconnection'
-], function(_, Backbone, BoardView, BoardConnection){
+], function(BoardView, BoardConnection){
   var initialize = function(){
 
       var boardView = new BoardView();
@@ -15,9 +13,7 @@ define([
                 setTimeout(function() { initBoard() }, 1000);
             else{
                 processingInstance.bindJavaScript(boardView);
-                //postitTool = new PostitTool();
                 boardConnection = new BoardConnection(board_id, new BoardMessageHandler(processingInstance, boardView));
-                //postitTool.setListener(new PostitToolListener(boardConnection));
                 loadLines();
             }
         }

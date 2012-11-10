@@ -65,7 +65,8 @@ define([
                 .css("width", this.model.get("width")+"px")
                 .css("height", this.model.get("height")+"px")
                 .css("background-color", this.model.get("back_color"));
-            this.$(".postit_input").css('background-color', this.model.get("back_color"));
+            this.input.css('background-color', this.model.get("back_color"));
+            this.input.val(this.model.get("text"));
             this.input.focus();
             return this;
         },
