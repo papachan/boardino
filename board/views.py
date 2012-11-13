@@ -9,7 +9,7 @@ from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
 from board.models import Board, PostIt, Line
-from board.serializers import PostitSerializer
+from board.serializers import PostitSerializer, LineSerializer
 
 def home(request):
     return render_to_response('home.html')
@@ -87,31 +87,6 @@ def board(request, board_id):
     return render_to_response('board.html',{'board_id': board_id, 'postits':board.postit_set.all()})
 
 @csrf_exempt
-def new_line(request, board_id):
-    board = get_object_or_404(Board, pk=board_id)
-    params = request.POST
-    line = Line(x=params["x"],y=params["y"], x1=params["x1"], y1=params["y1"], color_l=params["color_l"], stroke_w=params["stroke_w"], board=board)
-    line.save()
-
-    json_data = json.dumps({"x":line.x, "y":line.y, "x1":line.x1, "y1":line.y1,
-                           "color_l":line.color_l, "stroke_w":line.stroke_w})
-
-    if request.is_ajax():
-        return HttpResponse(json_data, mimetype="application/json")
-    else:
-        return HttpResponse(status=400)
-
-@csrf_exempt
-def get_lines(request, board_id):
-    board = get_object_or_404(Board, pk=board_id)
-    json_data = json.dumps(list(board.line_set.all().values()))
-
-    if request.is_ajax():
-        return HttpResponse(json_data, mimetype="application/json")
-    else:
-        return HttpResponse(status=400)
-
-@csrf_exempt
 def clear_lines(request, board_id):
     board = get_object_or_404(Board, pk=board_id)
     Line.objects.filter(board=board).delete()
@@ -148,3 +123,21 @@ class PostitList(generics.ListCreateAPIView):
 class PostitDetail(generics.RetrieveUpdateDestroyAPIView):
     model = PostIt
     serializer_class = PostitSerializer
+
+
+class LineList(generics.ListCreateAPIView):
+    model = Line
+    serializer_class = LineSerializer
+
+    def get_queryset(self):
+        board_id = self.kwargs['board_id']
+        return Line.objects.filter(board__id=board_id)
+
+    def pre_save(self, line):
+        board_id = self.kwargs['board_id']
+        board = get_object_or_404(Board, pk=board_id)
+        line.board = board
+
+class LineDetail(generics.RetrieveUpdateDestroyAPIView):
+    model = Line
+    serializer_class = LineSerializer

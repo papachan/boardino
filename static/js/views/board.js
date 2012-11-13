@@ -43,7 +43,7 @@ define([
         },
 
         onCreatedLine: function(x, y, x1, y1, color, strokeWidth, add_to_local_array){
-            $.post('/'+board_id+'/line/new/', { x: x, y: y, x1:x1, y1:y1, color_l:color, stroke_w:strokeWidth }, function(json){
+            $.post('/api/boards/'+board_id+'/lines/', { x: x, y: y, x1:x1, y1:y1, color_l:color, stroke_w:strokeWidth }, function(json){
                 boardConnection.newLine(x, y, x1, y1, color, strokeWidth,
                                         add_to_local_array);
             });

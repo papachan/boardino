@@ -19,7 +19,7 @@ define([
         }
 
         function loadLines(){
-            $.get('/'+board_id+'/lines', function(json){
+            $.get('/api/boards/'+board_id+'/lines/', function(json){
                 $.each(json, function(i, line){
                     processingInstance.addLine(line.x, line.y , line.x1,
                     line.y1, line.color_l, line.stroke_w, true);
