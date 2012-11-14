@@ -1,25 +1,22 @@
 define([
   'views/board',
+  'views/canvas',
   'boardconnection'
-], function(BoardView, BoardConnection){
-  var initialize = function(){
+], function(BoardView, BoardCanvas, BoardConnection){
+    var initialize = function(){
 
-      var boardView = new BoardView();
-      boardView.render();
+        var boardView = new BoardView();
+        boardView.render();
 
-      function initBoard(){
-            processingInstance = Processing.getInstanceById("board_canvas");
-            if(!processingInstance)
-                setTimeout(function() { initBoard() }, 1000);
-            else{
-                processingInstance.bindJavaScript(boardView);
-                boardConnection = new BoardConnection(board_id, new BoardMessageHandler(processingInstance, boardView));
-                loadLines();
-            }
+        var canvas = new BoardCanvas();
+        canvas.render();
+
+        function initBoard(){
+            boardConnection = new BoardConnection(board_id, new BoardMessageHandler(boardView));
         }
 
-        function loadLines(){
-            $.get('/api/boards/'+board_id+'/lines/', function(json){
+        /*function loadLines(){
+            $.get('/'+board_id+'/lines', function(json){
                 $.each(json, function(i, line){
                     processingInstance.addLine(line.x, line.y , line.x1,
                     line.y1, line.color_l, line.stroke_w, true);
@@ -32,7 +29,7 @@ define([
                  boardConnection.clearLines();
                  processingInstance.clearLines();
             });
-        }
+        } */
 
 
         $(document).ready(function() {

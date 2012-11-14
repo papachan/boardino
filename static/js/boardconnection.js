@@ -173,15 +173,57 @@ define([
     };
 
 
-    BoardMessageHandler = function(processingInstance, boardView){
+    BoardConnection.prototype.startPath = function(id, x, y){
+        var message = {
+            "type": "startPath",
+            "args": {
+                "channel_id": this.board_id,
+                "id": id,
+                "x": x,
+                "y": y
+            }
+        };
+        this.ws.send(JSON.stringify(message));
+    };
+
+    BoardConnection.prototype.addPathPoint = function(id, x, y){
+        var message = {
+            "type": "addPathPoint",
+            "args": {
+                "channel_id": this.board_id,
+                "id": id,
+                "x": x,
+                "y": y
+            }
+        };
+        this.ws.send(JSON.stringify(message));
+    };
+
+    BoardConnection.prototype.finishPath = function(id){
+        var message = {
+            "type": "finishPath",
+            "args": {
+                "channel_id": this.board_id,
+                "id": "id"
+            }
+        };
+        this.ws.send(JSON.stringify(message));
+    };
+
+    BoardMessageHandler = function(boardView){
         this.handlers = {
+            "startPath": function(args){
+                boardView.startPath(args["id"], args["x"], args["y"]);
+            },
+            "addPathPoint": function(args){
+                boardView.addPathPoint(args["id"], args["x"], args["y"]);
+            },
+            "finishPath": function(args){
+                boardView.finishPath(args["id"]);
+            },
             "new" : function(args){
                 if(args["obj"]=="postit")
                     boardView.showPostit(args["id"]);
-                else
-                    processingInstance.addLine(args["x"], args["y"], args["x1"],
-                                                args["y1"], args["color_l"], args["stroke_w"],
-                                                args["add_to_local_array"]);
             },
             "update" : function(args){
                 boardView.updatePostitText(args["postit_id"], args["text"]);
@@ -199,8 +241,8 @@ define([
                 boardView.changePostitColor(args["id"], args["back_color"]);
             },
             "clear" : function(args){
-                if(args["obj"] == "line")
-                    processingInstance.clearLines();
+                /*if(args["obj"] == "line")
+                    processingInstance.clearLines();*/
             },
             "info" : function(args){
                 connectedUsers = args.users+1;

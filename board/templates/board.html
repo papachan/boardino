@@ -34,6 +34,7 @@
     <script type="text/javascript" src="/static/js/lib/processing-1.4.1.min.js"></script>
     <script type="text/javascript" src="/static/js/lib/json2.js"></script>
     <script type="text/javascript" src="/static/js/lib/socket.io.min.js"></script>
+    <script type="text/javascript" src="/static/js/lib/paper.js"></script>
     <script data-main="/static/js/main" src="/static/js/lib/require.js"></script>
     <script type="application/javascript">
         var processingInstance;
@@ -61,9 +62,7 @@
         Are you sure about this?
     </div>
     <div id="board">
-        <canvas id="board_canvas" data-processing-sources="/static/pde/blckboard.pde
-        /static/pde/postittool.pde /static/pde/penciltool.pde
-        /static/pde/rectlinetool.pde"></canvas>
+        <canvas id="board-canvas" width="3000" height="1500"></canvas>
     </div>
     <div id="boardino_logo"><a href="http://www.boardino.com"><img src="/static/images/logo_small.png"/></a></div>
     <div id="mapale_logo"><a target="_blank" href="http://www.mapalesoftware.com"><img src="/static/images/mapale_logo.png"/></a></div>
