@@ -16,9 +16,9 @@ define([
             this.strokeColor = "black";
             var _this = this;
             this.lines.fetch({success: function(lineList){
-                //alert(JSON.stringify(lineList.models));
                 _.each(lineList.models, function(line){
-                    _this.deserialize(line.get("path"));  //TODO: REVISAR ERROR DE JQUERY QUE ESTÁ DANDO ESTO!
+                    if(line.get("path"))
+                        _this.deserialize(line.get("path"));
                 });
             }});
             var canvas = this.el;
