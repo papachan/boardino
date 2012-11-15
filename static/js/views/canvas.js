@@ -5,25 +5,20 @@ define([
     var BoardCanvas = Backbone.View.extend({
         el: $("#board-canvas"),
 
-        path: null,
-
-        line: null,
-
         lines : new LineList(),
 
         events: {
-            "mousedown": "startLine",
             "mousemove": "mouseMove",
             "mouseup": "finishLine"
         },
 
         initialize: function(){
-            //lines = new LineList();
+            this.strokeColor = "black";
             var _this = this;
             this.lines.fetch({success: function(lineList){
                 //alert(JSON.stringify(lineList.models));
                 _.each(lineList.models, function(line){
-                    _this.deserialize(line.get("path"));
+                    _this.deserialize(line.get("path"));  //TODO: REVISAR ERROR DE JQUERY QUE ESTÁ DANDO ESTO!
                 });
             }});
             var canvas = this.el;
@@ -45,7 +40,7 @@ define([
             this.lines.add(this.line);
 
             line.path = new paper.Path();
-            line.path.strokeColor = 'black';
+            line.path.strokeColor = this.strokeColor;
             var start = new paper.Point(e.pageX, e.pageY);
             line.path.add(start);
 
@@ -88,7 +83,7 @@ define([
 
         deserialize: function(jsonString){
             var path = new paper.Path();
-            path.strokeColor = 'black';
+            path.strokeColor = this.strokeColor;
             $.each($.parseJSON(jsonString), function(i, segment){
                 path.add(new paper.Segment(segment.point, segment.handleIn, segment._handleOut));
             });
@@ -101,7 +96,7 @@ define([
             this.lines.add(line);
 
             var path = new paper.Path();
-            path.strokeColor = 'black';
+            path.strokeColor = this.strokeColor;
             path.add(new paper.Point(x, y));
             line.path = path;
         },
@@ -114,6 +109,10 @@ define([
         finishPath: function(id){
             this.lines.get(id).path.simplify(10);
             paper.view.draw();
+        },
+
+        setStrokeColor: function(color){
+            this.strokeColor = color;
         }
     });
 

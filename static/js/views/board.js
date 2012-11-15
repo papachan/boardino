@@ -7,12 +7,15 @@ define([
     var BoardView = Backbone.View.extend({
         el: $("#board"),
 
-        canvas: new BoardCanvas(),
         events: {
-            //"click #board_canvas": "createPostit"
+            "mousedown": "startLine",
+            "mousedown #board-canvas": "createPostit"
         },
 
         initialize: function(){
+            this.tool = "postits";
+            this.canvas = new BoardCanvas(),
+            //this.bind("mousedown", this.startLine, this);
             this.canvas.render();
 
             postits = new PostitList();
@@ -22,14 +25,21 @@ define([
             postits.fetch();
         },
 
-        createPostit: function(x, y){
-            postit = new Postit({"x":x, "y":y, "width":120, "height":120, "text":""});
-            postits.add(postit);
-            postit.save(null, {
-                success: function(model, response){
-                    boardConnection.newPostit(model.get("id"), postit.get("x"), postit.get("y"), postit.get("width"), postit.get("height"), postit.get("text"));
-                }
-            });
+        startLine: function(e){
+            if(this.tool=="drawing")
+                this.canvas.startLine(e);
+        },
+
+        createPostit: function(e){
+            if(this.tool=="postits"){
+                postit = new Postit({"x":e.pageX, "y":e.pageY, "width":120, "height":120, "text":""});
+                postits.add(postit);
+                postit.save(null, {
+                    success: function(model, response){
+                        boardConnection.newPostit(model.get("id"), postit.get("x"), postit.get("y"), postit.get("width"), postit.get("height"), postit.get("text"));
+                    }
+                });
+            }
         },
 
         showPostit: function(id){
@@ -88,6 +98,27 @@ define([
 
         finishPath: function(id){
             this.canvas.finishPath(id);
+        },
+
+        selectPostitTool: function(){
+            this.tool = "postits";
+        },
+
+        selectPencilTool: function(color){
+            this.tool = "drawing";
+            this.canvas.setStrokeColor(color);
+        },
+
+        selectRectLineTool: function(){
+            this.tool = "drawing";
+        },
+
+        selectEraserTool: function(){
+
+        },
+
+        clearLines: function(){
+            this.canvas.clearLines();
         }
     });
 
