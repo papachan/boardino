@@ -1,15 +1,20 @@
 define([
     'views/postit',
+    'views/canvas',
     'models/postit',
     'collections/postits'
-], function(PostitView, Postit, PostitList){
+], function(PostitView, BoardCanvas, Postit, PostitList){
     var BoardView = Backbone.View.extend({
         el: $("#board"),
+
+        canvas: new BoardCanvas(),
         events: {
             //"click #board_canvas": "createPostit"
         },
 
         initialize: function(){
+            this.canvas.render();
+
             postits = new PostitList();
             postits.bind('add', this.addOne, this);
             postits.bind('reset', this.addAll, this);
@@ -70,8 +75,19 @@ define([
         },
 
         updatePostitText: function(id, text){
-            //alert("updated text! "+text);
             postits.get(id).set("text",text);
+        },
+
+        startPath: function(id, x, y){
+            this.canvas.startPath(id, x, y);
+        },
+
+        addPathPoint: function(id, x, y){
+            this.canvas.addPathPoint(id, x, y);
+        },
+
+        finishPath: function(id){
+            this.canvas.finishPath(id);
         }
     });
 

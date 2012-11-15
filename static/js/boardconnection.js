@@ -204,7 +204,7 @@ define([
             "type": "finishPath",
             "args": {
                 "channel_id": this.board_id,
-                "id": "id"
+                "id": id
             }
         };
         this.ws.send(JSON.stringify(message));

@@ -8,23 +8,13 @@ define([
         var boardView = new BoardView();
         boardView.render();
 
-        var canvas = new BoardCanvas();
-        canvas.render();
+
 
         function initBoard(){
             boardConnection = new BoardConnection(board_id, new BoardMessageHandler(boardView));
         }
 
-        /*function loadLines(){
-            $.get('/'+board_id+'/lines', function(json){
-                $.each(json, function(i, line){
-                    processingInstance.addLine(line.x, line.y , line.x1,
-                    line.y1, line.color_l, line.stroke_w, true);
-                });
-            });
-        }
-
-        function clearLines(){
+        /*function clearLines(){
             $.get('/'+board_id+'/lines/clear/',  function(json){
                  boardConnection.clearLines();
                  processingInstance.clearLines();
