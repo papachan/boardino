@@ -173,14 +173,15 @@ define([
     };
 
 
-    BoardConnection.prototype.startPath = function(id, x, y){
+    BoardConnection.prototype.startPath = function(id, x, y, color){
         var message = {
             "type": "startPath",
             "args": {
                 "channel_id": this.board_id,
                 "id": id,
                 "x": x,
-                "y": y
+                "y": y,
+                "color": color
             }
         };
         this.ws.send(JSON.stringify(message));
@@ -213,7 +214,7 @@ define([
     BoardMessageHandler = function(boardView){
         this.handlers = {
             "startPath": function(args){
-                boardView.startPath(args["id"], args["x"], args["y"]);
+                boardView.startPath(args["id"], args["x"], args["y"], args["color"]);
             },
             "addPathPoint": function(args){
                 boardView.addPathPoint(args["id"], args["x"], args["y"]);

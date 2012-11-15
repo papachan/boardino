@@ -88,8 +88,8 @@ define([
             postits.get(id).set("text",text);
         },
 
-        startPath: function(id, x, y){
-            this.canvas.startPath(id, x, y);
+        startPath: function(id, x, y, color){
+            this.canvas.startPath(id, x, y, color);
         },
 
         addPathPoint: function(id, x, y){

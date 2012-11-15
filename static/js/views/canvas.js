@@ -18,16 +18,12 @@ define([
             this.lines.fetch({success: function(lineList){
                 _.each(lineList.models, function(line){
                     if(line.get("path"))
-                        _this.deserialize(line.get("path"));
+                        _this.lineToPath(line);
                 });
             }});
             var canvas = this.el;
             paper.setup(canvas);
 
-            _.each(this.lines.models, function(line){
-                alert(line.get("path"));
-                _this.deserialize(line.get("path"));
-            });
             paper.view.draw();
         },
 
@@ -37,6 +33,7 @@ define([
 
         startLine: function(e){
             var line = new Line();
+            line.set("color_l",this.strokeColor);
             this.lines.add(this.line);
 
             line.path = new paper.Path();
@@ -48,7 +45,7 @@ define([
             line.save({"x":1,"y":1,"x1":1,"y1":1,"stroke_w":1},{
                           success: function(model, response){
                               _this.line = model;
-                              boardConnection.startPath(model.get("id"), e.pageX, e.pageY);
+                              boardConnection.startPath(model.get("id"), e.pageX, e.pageY, model.get("color_l"));
                           }
                       });
         },
@@ -81,24 +78,26 @@ define([
             return JSON.stringify(pathToSerialize);
         },
 
-        deserialize: function(jsonString){
+        lineToPath: function(line){
             var path = new paper.Path();
-            path.strokeColor = this.strokeColor;
-            $.each($.parseJSON(jsonString), function(i, segment){
+            path.strokeColor = line.get("color_l");
+            $.each($.parseJSON(line.get("path")), function(i, segment){
                 path.add(new paper.Segment(segment.point, segment.handleIn, segment._handleOut));
             });
             return path;
         },
 
-        startPath: function(id, x, y){
+        startPath: function(id, x, y, color){
             var line = new Line({id:id});
-            line.fetch();
-            this.lines.add(line);
-
-            var path = new paper.Path();
-            path.strokeColor = this.strokeColor;
-            path.add(new paper.Point(x, y));
-            line.path = path;
+            line.fetch({
+                success: function(model){
+                    var path = new paper.Path();
+                    path.strokeColor = model.get("color_l");
+                    path.add(new paper.Point(x, y));
+                    line.path = path;
+                    this.lines.add(line);
+                }
+            });
         },
 
         addPathPoint: function(id, x, y){
