@@ -51,11 +51,14 @@ define([
         },
 
         mouseMove: function(e){
-            if(this.line && e.which==1){
-                this.line.path.add(new paper.Point(e.pageX, e.pageY));
-                boardConnection.addPathPoint(this.line.get("id"), e.pageX, e.pageY);
-            }
-            paper.view.draw();
+            var _this = this;
+            setTimeout(function() {
+                if(_this.line && e.which==1){
+                    _this.line.path.add(new paper.Point(e.pageX, e.pageY));
+                    boardConnection.addPathPoint(_this.line.get("id"), e.pageX, e.pageY);
+                }
+                paper.view.draw();
+            }, 0);
         },
 
         finishLine: function(e){
