@@ -8,8 +8,6 @@ define([
         lines : new LineList(),
 
         events: {
-            "mousemove": "mouseMove",
-            "mouseup": "finishLine"
         },
 
         initialize: function(){
@@ -20,11 +18,12 @@ define([
                     if(line.get("path"))
                         _this.lineToPath(line);
                 });
+                paper.view.draw();
             }});
             var canvas = this.el;
             paper.setup(canvas);
 
-            paper.view.draw();
+
         },
 
         render: function(){
@@ -46,6 +45,7 @@ define([
                           success: function(model, response){
                               _this.line = model;
                               boardConnection.startPath(model.get("id"), e.pageX, e.pageY, model.get("color_l"));
+                              paper.view.draw();
                           }
                       });
         },
@@ -95,9 +95,9 @@ define([
                     path.strokeColor = model.get("color_l");
                     path.add(new paper.Point(x, y));
                     line.path = path;
-                    this.lines.add(line);
                 }
             });
+            this.lines.add(line);
         },
 
         addPathPoint: function(id, x, y){

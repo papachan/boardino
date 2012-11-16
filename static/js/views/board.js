@@ -9,7 +9,9 @@ define([
 
         events: {
             "mousedown": "startLine",
-            "mousedown #board-canvas": "createPostit"
+            "mousedown #board-canvas": "createPostit",
+            "mousemove": "mouseMove",
+            "mouseup": "mouseUp"
         },
 
         initialize: function(){
@@ -28,6 +30,18 @@ define([
         startLine: function(e){
             if(this.tool=="drawing")
                 this.canvas.startLine(e);
+        },
+
+        mouseMove: function(e){
+            if(this.tool=="drawing"){
+                this.canvas.mouseMove(e);
+            }
+        },
+
+        mouseUp: function(e){
+            if(this.tool=="drawing"){
+                this.canvas.finishLine(e);
+            }
         },
 
         createPostit: function(e){
