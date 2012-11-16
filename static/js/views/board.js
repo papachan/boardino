@@ -8,8 +8,7 @@ define([
         el: $("#board"),
 
         events: {
-            "mousedown": "mousedown",
-            "mousedown #board-canvas": "createPostit",
+            "mousedown #board-canvas": "mousedown",
             "mousemove": "mouseMove",
             "mouseup": "mouseUp"
         },
@@ -17,7 +16,6 @@ define([
         initialize: function(){
             this.tool = "postits";
             this.canvas = new BoardCanvas(),
-            //this.bind("mousedown", this.startLine, this);
             this.canvas.render();
 
             postits = new PostitList();
@@ -34,6 +32,15 @@ define([
                 this.canvas.startLine(e.pageX, e.pageY, "rect");
             if(this.tool=="eraser")
                 this.canvas.tryToErase(e.pageX, e.pageY);
+            if(this.tool=="postits"){
+                var postit = new Postit({"x":e.pageX, "y":e.pageY, "width":120, "height":120, "text":""});
+                postits.add(postit);
+                postit.save(null, {
+                    success: function(model, response){
+                        boardConnection.newPostit(model.get("id"), postit.get("x"), postit.get("y"), postit.get("width"), postit.get("height"), postit.get("text"));
+                    }
+                });
+            }
         },
 
         mouseMove: function(e){
@@ -45,18 +52,6 @@ define([
         mouseUp: function(e){
             if(this.tool=="drawing" || this.tool=="rectDrawing"){
                 this.canvas.finishLine(e);
-            }
-        },
-
-        createPostit: function(e){
-            if(this.tool=="postits"){
-                postit = new Postit({"x":e.pageX, "y":e.pageY, "width":120, "height":120, "text":""});
-                postits.add(postit);
-                postit.save(null, {
-                    success: function(model, response){
-                        boardConnection.newPostit(model.get("id"), postit.get("x"), postit.get("y"), postit.get("width"), postit.get("height"), postit.get("text"));
-                    }
-                });
             }
         },
 
