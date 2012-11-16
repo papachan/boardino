@@ -161,6 +161,18 @@ define([
         this.ws.send(JSON.stringify(message));
     };
 
+    BoardConnection.prototype.deleteLine = function(id){
+        var message = {
+            "type": "delete",
+            "args": {
+                "channel_id": this.board_id,
+                "obj": "line",
+                "id": id
+            }
+        };
+        this.ws.send(JSON.stringify(message));
+    };
+
     BoardConnection.prototype.clearLines = function(){
         var message = {
             "type": "clear",
@@ -236,7 +248,10 @@ define([
                 boardView.resizePostit(args["id"], args["w"], args["h"]);
             },
             "delete" : function(args){
-                boardView.deletePostit(args["id"]);
+                if(args["obj"]=="postit")
+                    boardView.deletePostit(args["id"]);
+                else
+                    boardView.deleteLine(args["id"]);
             },
             "change_color" : function(args){
                 boardView.changePostitColor(args["id"], args["back_color"]);

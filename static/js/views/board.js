@@ -32,6 +32,8 @@ define([
                 this.canvas.startLine(e.pageX, e.pageY, "free");
             if(this.tool=="rectDrawing")
                 this.canvas.startLine(e.pageX, e.pageY, "rect");
+            if(this.tool=="eraser")
+                this.canvas.tryToErase(e.pageX, e.pageY);
         },
 
         mouseMove: function(e){
@@ -71,17 +73,6 @@ define([
         addOne: function(postit){
             var view = new PostitView({model: postit});
             $("#board").append(view.render().el);
-        },
-
-        onCreatedLine: function(x, y, x1, y1, color, strokeWidth, add_to_local_array){
-            $.post('/api/boards/'+board_id+'/lines/', { x: x, y: y, x1:x1, y1:y1, color_l:color, stroke_w:strokeWidth }, function(json){
-                boardConnection.newLine(x, y, x1, y1, color, strokeWidth,
-                                        add_to_local_array);
-            });
-        },
-
-        onCreatingRectLine: function(x, y, x1, y1, color, strokeWidth, add_to_local_array){
-            boardConnection.newLine(x, y, x1, y1, color, strokeWidth, add_to_local_array);
         },
 
         movePostit: function(id, newX, newY){
@@ -131,11 +122,15 @@ define([
         },
 
         selectEraserTool: function(){
-
+            this.tool = "eraser";
         },
 
         clearLines: function(){
             this.canvas.clearLines();
+        },
+
+        deleteLine: function(id){
+            this.canvas.deleteLine(id);
         }
     });
 

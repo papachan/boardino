@@ -15,15 +15,15 @@ define([
             var _this = this;
             this.lines.fetch({success: function(lineList){
                 _.each(lineList.models, function(line){
-                    if(line.get("path"))
-                        _this.lineToPath(line);
+                    if(line.get("path")){
+                        line.path = _this.lineToPath(line);
+                        line.path.model = line;
+                    }
                 });
                 paper.view.draw();
             }});
             var canvas = this.el;
             paper.setup(canvas);
-
-
         },
 
         render: function(){
@@ -37,6 +37,8 @@ define([
             this.lines.add(this.line);
 
             line.path = new paper.Path();
+            line.path.model = line;
+
             line.path.strokeColor = this.strokeColor;
             var start = new paper.Point(x, y);
             line.path.add(start);
@@ -122,6 +124,33 @@ define([
 
         setStrokeColor: function(color){
             this.strokeColor = color;
+        },
+
+        clearLines: function(color){
+            _.chain(this.lines.models).clone().each(function(model){
+                model.destroy();
+            });
+        },
+
+        tryToErase: function(x, y){
+            var hitOptions = {
+                segments: true,
+                stroke: true,
+                fill: true,
+                tolerance: 5
+            };
+            var hitResult = paper.project.hitTest(new paper.Point(x,y), hitOptions);
+            if(hitResult){
+                hitResult.item.remove();
+                boardConnection.deleteLine(hitResult.item.model.get("id"));
+                hitResult.item.model.destroy();
+                paper.view.draw();
+            }
+        },
+
+        deleteLine: function(id){
+            this.lines.get(id).path.remove();
+            paper.view.draw();
         }
     });
 
