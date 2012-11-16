@@ -30,21 +30,22 @@ define([
             paper.view.draw();
         },
 
-        startLine: function(e){
+        startLine: function(x, y, type){
             var line = new Line();
             line.set("color_l",this.strokeColor);
+            line.type = type;
             this.lines.add(this.line);
 
             line.path = new paper.Path();
             line.path.strokeColor = this.strokeColor;
-            var start = new paper.Point(e.pageX, e.pageY);
+            var start = new paper.Point(x, y);
             line.path.add(start);
 
             var _this = this;
-            line.save({"x":1,"y":1,"x1":1,"y1":1,"stroke_w":1},{
+            line.save({"x":x,"y":y,"x1":1,"y1":1,"stroke_w":1},{
                           success: function(model, response){
                               _this.line = model;
-                              boardConnection.startPath(model.get("id"), e.pageX, e.pageY, model.get("color_l"));
+                              boardConnection.startPath(model.get("id"), x, y, model.get("color_l"));
                               paper.view.draw();
                           }
                       });
@@ -53,7 +54,7 @@ define([
         mouseMove: function(e){
             var _this = this;
             setTimeout(function() {
-                if(_this.line && e.which==1){
+                if(_this.line && e.which==1 && _this.line.type == "free"){
                     _this.line.path.add(new paper.Point(e.pageX, e.pageY));
                     boardConnection.addPathPoint(_this.line.get("id"), e.pageX, e.pageY);
                 }
@@ -62,7 +63,13 @@ define([
         },
 
         finishLine: function(e){
-            this.line.path.simplify(10);
+            if(this.line.type=="rect"){
+                this.line.path.add(new paper.Point(e.pageX, e.pageY));
+            }
+            else{
+                this.line.path.simplify(10);
+            }
+            paper.view.draw();
             boardConnection.finishPath(this.line.get("id"));
             this.line.save({path: this.serialize(this.line.path)});
             this.line = null;

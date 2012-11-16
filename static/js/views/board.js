@@ -8,7 +8,7 @@ define([
         el: $("#board"),
 
         events: {
-            "mousedown": "startLine",
+            "mousedown": "mousedown",
             "mousedown #board-canvas": "createPostit",
             "mousemove": "mouseMove",
             "mouseup": "mouseUp"
@@ -27,19 +27,21 @@ define([
             postits.fetch();
         },
 
-        startLine: function(e){
+        mousedown: function(e){
             if(this.tool=="drawing")
-                this.canvas.startLine(e);
+                this.canvas.startLine(e.pageX, e.pageY, "free");
+            if(this.tool=="rectDrawing")
+                this.canvas.startLine(e.pageX, e.pageY, "rect");
         },
 
         mouseMove: function(e){
-            if(this.tool=="drawing"){
+            if(this.tool=="drawing" || this.tool=="rectDrawing"){
                 this.canvas.mouseMove(e);
             }
         },
 
         mouseUp: function(e){
-            if(this.tool=="drawing"){
+            if(this.tool=="drawing" || this.tool=="rectDrawing"){
                 this.canvas.finishLine(e);
             }
         },
@@ -124,7 +126,8 @@ define([
         },
 
         selectRectLineTool: function(){
-            this.tool = "drawing";
+            this.tool = "rectDrawing";
+            this.canvas.setStrokeColor("black");
         },
 
         selectEraserTool: function(){
