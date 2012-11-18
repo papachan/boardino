@@ -34,19 +34,20 @@ define([
             var line = new Line();
             line.set("color_l",this.strokeColor);
             line.type = type;
-            this.lines.add(this.line);
 
-            line.path = new paper.Path();
-            line.path.model = line;
+            var path = new paper.Path();
+            path.model = line;
 
-            line.path.strokeColor = this.strokeColor;
+            path.strokeColor = this.strokeColor;
             var start = new paper.Point(x, y);
-            line.path.add(start);
+            path.add(start);
 
             var _this = this;
             line.save({"x":x,"y":y,"x1":1,"y1":1,"stroke_w":1},{
                           success: function(model, response){
                               _this.line = model;
+                              _this.line.path = path;
+                              _this.lines.add(model);
                               boardConnection.startPath(model.get("id"), x, y, model.get("color_l"));
                               paper.view.draw();
                           }
@@ -128,8 +129,11 @@ define([
 
         clearLines: function(color){
             _.chain(this.lines.models).clone().each(function(model){
+                if(model.path)
+                    model.path.remove();
                 model.destroy();
             });
+            paper.view.draw();
         },
 
         tryToErase: function(x, y){
