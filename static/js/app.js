@@ -8,19 +8,9 @@ define([
         var boardView = new BoardView();
         boardView.render();
 
-
-
         function initBoard(){
             boardConnection = new BoardConnection(board_id, new BoardMessageHandler(boardView));
         }
-
-        /*function clearLines(){
-            $.get('/'+board_id+'/lines/clear/',  function(json){
-                 boardConnection.clearLines();
-                 processingInstance.clearLines();
-            });
-        } */
-
 
         $(document).ready(function() {
             initBoard();
