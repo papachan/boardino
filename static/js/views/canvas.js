@@ -68,6 +68,7 @@ define([
         finishLine: function(e){
             if(this.line.type=="rect"){
                 this.line.path.add(new paper.Point(e.pageX, e.pageY));
+                boardConnection.addPathPoint(this.line.get("id"), e.pageX, e.pageY);
             }
             else{
                 this.line.path.simplify(10);
@@ -102,12 +103,12 @@ define([
 
         startPath: function(id, x, y, color){
             var line = new Line({id:id});
+            var path = new paper.Path();
+            path.add(new paper.Point(x, y));
+            line.path = path;
             line.fetch({
                 success: function(model){
-                    var path = new paper.Path();
                     path.strokeColor = model.get("color_l");
-                    path.add(new paper.Point(x, y));
-                    line.path = path;
                 }
             });
             this.lines.add(line);
