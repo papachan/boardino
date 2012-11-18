@@ -91,7 +91,7 @@ define([
 
         updateText: function(){
             var text = this.input.val();
-            this.model.save({text: text});
+            this.model.save({text: text},{'silent':true});
             boardConnection.updatePostitText(this.model.get("id"), text);
         },
 
