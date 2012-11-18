@@ -106,6 +106,7 @@ define([
             var path = new paper.Path();
             path.add(new paper.Point(x, y));
             line.path = path;
+            line.path.model = line;
             line.fetch({
                 success: function(model){
                     path.strokeColor = model.get("color_l");
