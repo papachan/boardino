@@ -43,7 +43,7 @@ define([
             path.add(start);
 
             var _this = this;
-            line.save({"x":x,"y":y,"x1":1,"y1":1,"stroke_w":1},{
+            line.save({"stroke_w":1},{
                           success: function(model, response){
                               _this.line = model;
                               _this.line.path = path;

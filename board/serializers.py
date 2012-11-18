@@ -10,6 +10,6 @@ class PostitSerializer(serializers.ModelSerializer):
 class LineSerializer(serializers.ModelSerializer):
     class Meta:
         model = Line
-        fields = {'id','x','y','x1','y1','color_l','stroke_w','path'}
+        fields = {'id', 'color_l','stroke_w','path'}
 
   

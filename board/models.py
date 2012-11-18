@@ -19,10 +19,6 @@ class PostIt(models.Model):
 
 class Line(models.Model):
     board = models.ForeignKey(Board)
-    x = models.IntegerField()
-    y = models.IntegerField()
-    x1 = models.IntegerField()
-    y1 = models.IntegerField()
     color_l = models.TextField(default="000000")
     stroke_w = models.IntegerField()
     path = models.TextField(null=True)
