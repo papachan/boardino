@@ -132,6 +132,7 @@ define([
                 if(model.path)
                     model.path.remove();
                 model.destroy();
+                boardConnection.deleteLine(model.get("id"));
             });
             paper.view.draw();
         },
@@ -153,8 +154,10 @@ define([
         },
 
         deleteLine: function(id){
-            this.lines.get(id).path.remove();
-            paper.view.draw();
+            if( this.lines.get(id)){
+                this.lines.get(id).path.remove();
+                paper.view.draw();
+            }
         }
     });
 
