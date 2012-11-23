@@ -18,85 +18,52 @@ define([
         this.ws.disconnect();
     };
 
-    BoardConnection.prototype.movePostit = function(postItId, x, y){
-        if(!this.board_id){
-            throw "should be subscribed to board before trying to update postit";
-        }
-        var message = {
-            "type": "move",
-            "args": {
-                "channel_id": this.board_id,
-                "postit_id":postItId,
+    BoardConnection.prototype.send = function(message, args){
+        if (!args["channel_id"]) args["channel_id"] = this.board_id;
+        this.ws.send(JSON.stringify({
+            "type": message,
+            "args": args
+        }));
+    };
+
+    BoardConnection.prototype.movePostit = function(id, x, y){
+        this.send("move",{
+                "id": id,
                 "x": x,
                 "y": y
-            }
-        };
-        this.ws.send(JSON.stringify(message));
+        });
     };
 
     BoardConnection.prototype.resizePostit = function(postItId, width, height){
-        if(!this.board_id){
-            throw "should be subscribed to board before trying to update postit";
-        }
-        var message = {
-            "type": "resize",
-            "args": {
-                "channel_id": this.board_id,
+        this.send("resize", {
                 "id":postItId,
                 "w": width,
                 "h": height
-            }
-        };
-        this.ws.send(JSON.stringify(message));
+            });
     };
 
     BoardConnection.prototype.updatePostitText = function(postItId, text){
-        if(!this.board_id){
-            throw "should be subscribed to board before trying to update postit";
-        }
-        var message = {
-            "type": "update",
-            "args": {
-                "channel_id": this.board_id,
-                "postit_id":postItId,
+        this.send("update", {
+                "id":postItId,
                 "text": text
-            }
-        };
-        this.ws.send(JSON.stringify(message));
+            });
     };
 
     BoardConnection.prototype.changePostitColor = function(postItId, color, backColor){
-        if(!this.board_id){
-            throw "should be subscribed to board before trying to update postit";
-        }
-        var message = {
-            "type": "change_color",
-            "args": {
-                "channel_id": this.board_id,
+        this.send("change_color", {
                 "id": postItId,
                 "color": color,
                 "back_color": backColor
-            }
-        };
-        this.ws.send(JSON.stringify(message));
+            });
     };
 
     BoardConnection.prototype.subscribe = function(board_id){
         this.board_id = board_id;
-        var message = {
-            "type": "register",
-            "args": {
-                "channel_id": this.board_id
-            }
-        };
-        this.ws.send(JSON.stringify(message));
+        this.send("register",{});
     };
 
     BoardConnection.prototype.newPostit = function(postItId, x, y, width, height, text){
-        var message = {
-            "type": "new",
-            "args": {
-                "channel_id": this.board_id,
+        this.send("new",{
                 "obj":"postit",
                 "id":postItId,
                 "x": x,
@@ -104,123 +71,45 @@ define([
                 "w": width,
                 "h": height,
                 "text":text
-            }
-        };
-        this.ws.send(JSON.stringify(message));
-    };
-
-    BoardConnection.prototype.newLine = function(x, y, x1, y1, color_l, stroke_w, add_to_local_array){
-        var message = {
-            "type": "new",
-            "args": {
-                "channel_id": this.board_id,
-                "obj":"line",
-                "x": x,
-                "y": y,
-                "x1": x1,
-                "y1": y1,
-                "color_l":color_l,
-                "stroke_w":stroke_w,
-                "add_to_local_array":add_to_local_array
-            }
-        };
-        this.ws.send(JSON.stringify(message));
-    };
-
-    BoardConnection.prototype.selectPostit = function(postItId){
-        var message = {
-            "type": "select",
-            "args": {
-                "channel_id": this.board_id,
-                "id":postItId
-            }
-        };
-        this.ws.send(JSON.stringify(message));
-    };
-
-    BoardConnection.prototype.deselectPostit = function(postItId){
-        var message = {
-            "type": "deselect",
-            "args": {
-                "channel_id": this.board_id,
-                "id":postItId
-            }
-        };
-        this.ws.send(JSON.stringify(message));
+            });
     };
 
     BoardConnection.prototype.deletePostit = function(postitId){
-        var message = {
-            "type": "delete",
-            "args": {
-                "channel_id": this.board_id,
+        this.send("delete",{
                 "obj": "postit",
                 "id":postitId
-            }
-        };
-        this.ws.send(JSON.stringify(message));
+            });
     };
 
     BoardConnection.prototype.deleteLine = function(id){
-        var message = {
-            "type": "delete",
-            "args": {
-                "channel_id": this.board_id,
+        this.send("delete", {
                 "obj": "line",
                 "id": id
-            }
-        };
-        this.ws.send(JSON.stringify(message));
-    };
-
-    BoardConnection.prototype.clearLines = function(){
-        var message = {
-            "type": "clear",
-            "args": {
-                "channel_id": this.board_id,
-                "obj": "line"
-            }
-        };
-        this.ws.send(JSON.stringify(message));
+            });
     };
 
 
     BoardConnection.prototype.startPath = function(id, x, y, color){
-        var message = {
-            "type": "startPath",
-            "args": {
-                "channel_id": this.board_id,
+        this.send("startPath",{
                 "id": id,
                 "x": x,
                 "y": y,
                 "color": color
-            }
-        };
-        this.ws.send(JSON.stringify(message));
+            });
     };
 
     BoardConnection.prototype.addPathPoint = function(id, x, y){
-        var message = {
-            "type": "addPathPoint",
-            "args": {
-                "channel_id": this.board_id,
+        this.send("addPathPoint",{
                 "id": id,
                 "x": x,
                 "y": y
-            }
-        };
-        this.ws.send(JSON.stringify(message));
+            });
     };
 
     BoardConnection.prototype.finishPath = function(id){
-        var message = {
-            "type": "finishPath",
-            "args": {
-                "channel_id": this.board_id,
+        this.send("finishPath",{
                 "id": id
-            }
-        };
-        this.ws.send(JSON.stringify(message));
+            });
     };
 
     BoardMessageHandler = function(boardView){
@@ -239,10 +128,10 @@ define([
                     boardView.showPostit(args["id"]);
             },
             "update" : function(args){
-                boardView.updatePostitText(args["postit_id"], args["text"]);
+                boardView.updatePostitText(args["id"], args["text"]);
             },
             "move" : function(args){
-                boardView.movePostit(args["postit_id"], args["x"], args["y"]);
+                boardView.movePostit(args["id"], args["x"], args["y"]);
             },
             "resize" : function(args){
                 boardView.resizePostit(args["id"], args["w"], args["h"]);
@@ -255,10 +144,6 @@ define([
             },
             "change_color" : function(args){
                 boardView.changePostitColor(args["id"], args["back_color"]);
-            },
-            "clear" : function(args){
-                /*if(args["obj"] == "line")
-                    processingInstance.clearLines();*/
             },
             "info" : function(args){
                 connectedUsers = args.users+1;
