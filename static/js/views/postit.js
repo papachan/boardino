@@ -26,6 +26,8 @@ define([
                     .css("padding", "22px 2px 2px 2px")
                     .css("background-color", this.model.get("back_color"))
                     .draggable({
+                        stack: ".postit",
+                        cursor: "move",
                         containment: "parent",
                         drag: function(){
                             var position = $(this).position();
