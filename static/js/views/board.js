@@ -41,6 +41,7 @@ define([
                     }
                 });
             }
+            return false;
         },
 
         mouseMove: function(e){
