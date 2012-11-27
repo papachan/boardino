@@ -15,6 +15,7 @@ define([
             this.model.bind('change', this.render, this);
             this.model.bind('destroy', this.remove, this);
             this.model.bind('remove', this.remove, this);
+            this.model.bind('focus', this.focus, this);
             var _this = this;
             this.$el.attr("id", "postit"+this.model.id)
                     .addClass("postit")
@@ -57,7 +58,10 @@ define([
             this.createChangePostitColorTool().appendTo(this.$el);
 
             this.input = this.$('.postit_input');
+        },
 
+        focus: function(){
+            this.input.focus();
         },
 
         render: function(){
@@ -69,7 +73,6 @@ define([
                 .css("background-color", this.model.get("back_color"));
             this.input.css('background-color', this.model.get("back_color"));
             this.input.val(this.model.get("text"));
-            this.input.focus();
             return this;
         },
 

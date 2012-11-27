@@ -40,6 +40,7 @@ define([
                         boardConnection.newPostit(model.get("id"), postit.get("x"), postit.get("y"), postit.get("width"), postit.get("height"), postit.get("text"));
                     }
                 });
+                postit.trigger('focus');
             }
             return false;
         },
