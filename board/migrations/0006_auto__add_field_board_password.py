@@ -8,10 +8,7 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Adding field 'Board.password'
-        db.add_column('board_board', 'password',
-                      self.gf('django.db.models.fields.TextField')(default=''),
-                      keep_default=False)
+        pass
 
 
     def backwards(self, orm):

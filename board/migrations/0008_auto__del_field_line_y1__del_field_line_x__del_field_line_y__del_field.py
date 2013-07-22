@@ -8,17 +8,7 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Deleting field 'Line.y1'
-        db.delete_column('board_line', 'y1')
-
-        # Deleting field 'Line.x'
-        db.delete_column('board_line', 'x')
-
-        # Deleting field 'Line.y'
-        db.delete_column('board_line', 'y')
-
-        # Deleting field 'Line.x1'
-        db.delete_column('board_line', 'x1')
+        pass
 
 
     def backwards(self, orm):

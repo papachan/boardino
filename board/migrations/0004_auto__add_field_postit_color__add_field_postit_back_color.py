@@ -8,15 +8,7 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Adding field 'PostIt.color'
-        db.add_column('board_postit', 'color',
-                      self.gf('django.db.models.fields.TextField')(default='#FFFF99'),
-                      keep_default=False)
-
-        # Adding field 'PostIt.back_color'
-        db.add_column('board_postit', 'back_color',
-                      self.gf('django.db.models.fields.TextField')(default='#FFFF33'),
-                      keep_default=False)
+        pass
 
 
     def backwards(self, orm):

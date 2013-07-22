@@ -9,8 +9,7 @@ class Migration(SchemaMigration):
 
     def forwards(self, orm):
 
-        # Changing field 'PostIt.text'
-        db.alter_column('board_postit', 'text', self.gf('django.db.models.fields.TextField')(null=True))
+        pass
 
     def backwards(self, orm):
 

@@ -8,15 +8,7 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Adding field 'Line.color_l'
-        db.add_column('board_line', 'color_l',
-                      self.gf('django.db.models.fields.IntegerField')(default=0),
-                      keep_default=False)
-
-        # Adding field 'Line.stroke_w'
-        db.add_column('board_line', 'stroke_w',
-                      self.gf('django.db.models.fields.IntegerField')(default=2),
-                      keep_default=False)
+        pass
 
 
     def backwards(self, orm):
