@@ -1,4 +1,5 @@
 django-toolbelt
+psycopg2
 django_jasmine
 lettuce
 django_nose
