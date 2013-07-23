@@ -21,5 +21,5 @@ class Line(models.Model):
     board = models.ForeignKey(Board)
     color_l = models.TextField(default="000000")
     stroke_w = models.IntegerField()
-    path = models.TextField(null=True)
+    path = models.TextField(null=True, blank=True)
 
