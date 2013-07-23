@@ -13,7 +13,7 @@ class PostIt(models.Model):
     y = models.IntegerField()
     width = models.IntegerField()
     height = models.IntegerField()
-    text = models.TextField(null=True)
+    text = models.TextField(null=True, blank=True)
     color = models.TextField(default="#FFFF99")
     back_color = models.TextField(default="#FFFF33")
 
