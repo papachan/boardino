@@ -120,7 +120,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django_nose',
     'lettuce.django',
-    'django_jasmine',
+    #'django_jasmine',
     'south',
     'board',
     'compressor',
