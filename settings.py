@@ -105,7 +105,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
 )
 
-ROOT_URLCONF = 'whiteboard.urls'
+ROOT_URLCONF = 'board.urls'
 
 TEMPLATE_DIRS = (
 
