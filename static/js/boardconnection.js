@@ -3,7 +3,14 @@ define([
 
     BoardConnection = function(board_id, boardMessageHandler) {
 
-        this.ws = io.connect('http://'+window.location.hostname+':8888');
+        /*this.pusher = new Pusher('32b728d173f152c58554');
+        var channel = this.pusher.subscribe('test_channel');
+
+        channel.bind('my_event', function(data) {
+            alert(data.message);
+        });*/
+
+        this.ws = io.connect('http://23.21.155.34:8888');
 
         var _this = this;
         this.ws.on('connect', function () {

@@ -8,10 +8,7 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Adding field 'Line.path'
-        db.add_column('board_line', 'path',
-                      self.gf('django.db.models.fields.TextField')(null=True),
-                      keep_default=False)
+        pass
 
 
     def backwards(self, orm):

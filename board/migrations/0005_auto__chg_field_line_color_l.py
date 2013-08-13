@@ -8,9 +8,7 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-
-        # Changing field 'Line.color_l'
-        db.alter_column('board_line', 'color_l', self.gf('django.db.models.fields.TextField')())
+        pass
 
     def backwards(self, orm):
 

@@ -8,15 +8,7 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Adding field 'PostIt.width'
-        db.add_column('board_postit', 'width',
-                      self.gf('django.db.models.fields.IntegerField')(default=136),
-                      keep_default=False)
-
-        # Adding field 'PostIt.height'
-        db.add_column('board_postit', 'height',
-                      self.gf('django.db.models.fields.IntegerField')(default=114),
-                      keep_default=False)
+        pass
 
 
     def backwards(self, orm):
