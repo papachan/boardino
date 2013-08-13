@@ -120,7 +120,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django_nose',
     'lettuce.django',
-    'django_jasmine',
+    #'django_jasmine',
     'south',
     'board',
     'compressor',
@@ -132,7 +132,7 @@ INSTALLED_APPS = (
 )
 
 
-JASMINE_TEST_DIRECTORY = MEDIA_ROOT+'/js/jasmine'
+#JASMINE_TEST_DIRECTORY = MEDIA_ROOT+'/js/jasmine'
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
 # the site admins on every HTTP 500 error.
