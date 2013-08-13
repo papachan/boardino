@@ -10,7 +10,7 @@ define([
             alert(data.message);
         });*/
 
-        this.ws = io.connect('http://23.21.155.34:8888');
+        this.ws = io.connect( 'http://' + window.location.hostname + ':8888' );
 
         var _this = this;
         this.ws.on('connect', function () {
