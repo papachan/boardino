@@ -1,0 +1,11 @@
+{
+    "name": "Main Test Suite",
+    "js_files": [
+      "http://code.jquery.com/jquery.min.js",
+      "media/js/processing-1.3.6.js",
+      "media/js/json2.js",
+      "media/js/boardconnection.js"
+    ],
+    "media_files": [
+    ]
+}
