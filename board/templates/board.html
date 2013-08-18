@@ -5,14 +5,14 @@
     <title>Boardino - Project Management Whiteboard</title>
     <link href="/static/css/board.css" rel="stylesheet" type="text/css"/>
     <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.1/themes/base/jquery-ui.css"/>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <!--<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.0/jquery-ui.min.js"></script>
     <script type="text/javascript" src="/static/js/lib/underscore-min.js"></script>
     <script type="text/javascript" src="/static/js/lib/backbone-min.js"></script>
     <script type="text/javascript" src="/static/js/toolbar.js"></script>
     <script type="text/javascript" src="/static/js/lib/jquery.ui.touch.js"></script>
-    <script type="text/javascript" src="/static/js/lib/jquery.ui.ipad.altfix.js"></script>
-    <script type="text/javascript">
+    <script type="text/javascript" src="/static/js/lib/jquery.ui.ipad.altfix.js"></script>-->
+    <!--<script type="text/javascript">
 
     $.extend($.support, {
         touch: "ontouchend" in document
@@ -31,16 +31,13 @@
 
     var lastTap = null;
     </script>
-    <script type="text/javascript" src="/static/js/lib/processing-1.4.1.min.js"></script>
     <script type="text/javascript" src="/static/js/lib/json2.js"></script>
     <script type="text/javascript" src="/static/js/lib/socket.io.min.js"></script>
     <script src="http://js.pusher.com/2.1/pusher.min.js" type="text/javascript"></script>
-    <script type="text/javascript" src="/static/js/lib/paper.js"></script>
-    <script data-main="/static/js/main" src="/static/js/lib/require.js"></script>
+    <script type="text/javascript" src="/static/js/lib/paper.js"></script>-->
+    <script data-main="/static/js/application" src="/static/assets/vendor/require.js"></script>
     <script type="application/javascript">
-        var boardConnection;
         var connectedUsers = 1;
-        var board_id = {{ board_id }}
     </script>
     <meta name = "viewport" content = "initial-scale = 1.0">
 </head>
