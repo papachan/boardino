@@ -1,1 +1,19 @@
-Boardino is an opensource project
+boardino
+=================
+
+
+Boardino is a collaborative Dashboard and an opensource project.
+
+To find out more visit http://www.boardino.com
+
+## Installation ##
+
+- Install Django from 1.5.1
+- Install Pip and Python requirements for this project
+- Git clone the Boardino-sync repository
+- Set your local database (Mysql or PostGresql)
+- Run the server with django.
+
+## Screen Shots ##
+![alt tag](https://gist.github.com/papachan/dad57aa156c1f3bfcfa8/raw/18cf93500920eaf615bcf117ce96b7ece7bf9048/screen.png)
+
