@@ -131,6 +131,9 @@ INSTALLED_APPS = (
     # 'django.contrib.admindocs',
 )
 
+COMPRESS_PRECOMPILERS = (
+    ('text/x-scss', 'cd /home/papachan/git/boardino/static && sass -scss --compass {infile} {outfile}')
+)
 
 #JASMINE_TEST_DIRECTORY = MEDIA_ROOT+'/js/jasmine'
 # A sample logging configuration. The only tangible logging

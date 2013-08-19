@@ -1,126 +1,138 @@
+/* line 1, ../scss/home.scss */
 body {
-    font-family: Arial, Helvetica, sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
-#logo{
-    margin-left: auto;
-    margin-right: auto;
-    width: 400px;
+/* line 4, ../scss/home.scss */
+#logo {
+  margin-left: auto;
+  margin-right: auto;
+  width: 400px;
 }
 
-#slogan{
-    text-align: center;
-    margin-left: auto;
-    margin-right: auto;
-    width: 500px;
+/* line 9, ../scss/home.scss */
+#slogan {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  width: 500px;
 }
 
-#options{
-    margin-top: 80px;
-    margin-left: auto;
-    margin-right: auto;
-    width: 750px;
+/* line 15, ../scss/home.scss */
+#options {
+  margin-top: 80px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 750px;
 }
 
-.note{
-    display: table;
-    float: left;
-    background-image: url('/static/images/postit_note.png');
-    background-repeat: no-repeat;
-    width: 245px;
-    height: 240px;
-    text-align: center;
-    color: black;
-    font-size: 30px;
+/* line 21, ../scss/home.scss */
+.note {
+  display: table;
+  float: left;
+  background-image: url("/static/images/postit_note.png");
+  background-repeat: no-repeat;
+  width: 245px;
+  height: 240px;
+  text-align: center;
+  color: black;
+  font-size: 30px;
 }
 
-.green-note{
-    display: table;
-    float: left;
-    background-image: url('/static/images/postit_note_green.png');
-    background-repeat: no-repeat;
-    width: 245px;
-    height: 240px;
-    text-align: center;
-    color: black;
-    font-size: 30px;
+/* line 32, ../scss/home.scss */
+.green-note {
+  display: table;
+  float: left;
+  background-image: url("/static/images/postit_note_green.png");
+  background-repeat: no-repeat;
+  width: 245px;
+  height: 240px;
+  text-align: center;
+  color: black;
+  font-size: 30px;
 }
 
-#new-boardino{
-    margin-top: 70px;
-    clear:both;
-    position:relative;
+/* line 43, ../scss/home.scss */
+#new-boardino {
+  margin-top: 70px;
+  clear: both;
+  position: relative;
 }
 
-#existing-boardino{
-    margin-top: 50px;
-    margin-right: auto;
-    margin-left: auto;
-    width: 185px;
-    position:relative;
-    clear:both;
-    height:160px;
+/* line 48, ../scss/home.scss */
+#existing-boardino {
+  margin-top: 50px;
+  margin-right: auto;
+  margin-left: auto;
+  width: 185px;
+  position: relative;
+  clear: both;
+  height: 160px;
 }
 
-#subscribe{
-    margin-top: 30px;
-    clear:both;
-    position:relative;
+/* line 57, ../scss/home.scss */
+#subscribe {
+  margin-top: 30px;
+  clear: both;
+  position: relative;
 }
 
-#existing-boardino-floater{
-    float:left;
-    height:50%;
-    margin-bottom:-80px;
+/* line 62, ../scss/home.scss */
+#existing-boardino-floater {
+  float: left;
+  height: 50%;
+  margin-bottom: -80px;
 }
 
-#board-form{
-    font-family: Arial,serif;
-    position: relative;
-    margin-top: 20px;
+/* line 67, ../scss/home.scss */
+#board-form {
+  font-family: Arial,serif;
+  position: relative;
+  margin-top: 20px;
 }
 
-#email-form{
-    font-family: Arial,serif;
-    position: relative;
-    margin-top: 20px;
+/* line 72, ../scss/home.scss */
+#email-form {
+  font-family: Arial,serif;
+  position: relative;
+  margin-top: 20px;
 }
 
-#board-id{
-    text-align: center;
-    float:left;
-    position: relative;
-    top:0px;
-    font-size: 22px;
-    width: 40px;
-    border: 1px solid #d2691e;
-    background: #ffc;
-    margin-top: 0;
-    padding-top: 0;
+/* line 77, ../scss/home.scss */
+#board-id {
+  text-align: center;
+  float: left;
+  position: relative;
+  top: 0px;
+  font-size: 22px;
+  width: 40px;
+  border: 1px solid chocolate;
+  background: #ffc;
+  margin-top: 0;
+  padding-top: 0;
 }
 
-#email-input{
-
+/* line 91, ../scss/home.scss */
+#go-button-div {
+  margin-left: auto;
+  margin-right: auto;
+  width: 40px;
 }
 
-#go-button-div{
-    margin-left: auto;
-    margin-right: auto;
-    width: 40px;
+/* line 96, ../scss/home.scss */
+.go-button-img {
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 0;
+  padding-bottom: 0;
+  width: 40px;
 }
 
-.go-button-img{
-    margin-left: auto;
-    margin-right: auto;
-    padding-top: 0;
-    padding-bottom: 0;
-    width: 40px;
-}
-
+/* line 103, ../scss/home.scss */
 #promo_video {
-    margin-top: 100px;
-    margin-left: auto;
-    margin-right: auto;
-    width: 560px;
-    text-align:center
+  margin-top: 100px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 560px;
+  text-align: center;
 }

@@ -1,0 +1,238 @@
+#toolbar{
+	position: fixed;
+	left: 5px;
+	top: 5px;
+	width: 50px;
+	z-index: 1000;
+}
+#board{
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 3000px;
+	height: 1500px;
+}
+.postit{
+	cursor: pointer;
+	position: absolute;
+	background-color: #FFFF33;
+	padding: 2px 2px 25px 2px;
+	-moz-box-shadow: 5px 5px 4px 2px #ccc;
+	-webkit-box-shadow: 5px 5px 4px 2px #ccc;
+	box-shadow: 5px 5px 4px 2px #ccc;
+}
+.postit_close_image{
+	display: none;
+	position: relative;
+	float: right;
+	top: 0px;
+	right: 0px;
+}
+.postit_color_image{
+	display: none;
+	position: relative;
+	float: left;
+	top: 0px;
+	left: 0px;
+}
+.postit_color_tool{
+	cursor: pointer;
+	border: 1px black solid;
+	position: absolute;
+	background-color: #FFFFFF;
+	top: -10px;
+	left: -10px;
+	width: 40px;
+	height: 40px;
+}
+.postit_color{
+	display: block;
+	width: 20px;
+	height: 20px;
+}
+.postit_input{
+	-moz-box-sizing: border-box;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	border: none;
+	resize: none;
+	display: block;
+	background-color: #FFFF33;
+	position: relative;
+	padding: 0px;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	height: 100%;
+}
+.postit_tool_enabled{
+	cursor: pointer;
+	background-image: url('/static/images/postit_enabled.png');
+	display: block;
+	height: 50px;
+	width: 50px;
+}
+.postit_tool_disabled{
+	cursor: pointer;
+	background-image: url('/static/images/postit_disabled.png');
+	display: block;
+	height: 50px;
+	width: 50px;
+}
+.pencil_tool_disabled{
+	cursor: pointer;
+	background-image: url('/static/images/pencil_disabled.png');
+	display: block;
+	height: 50px;
+	width: 50px;
+	float: left;
+}
+.pencil_black_tool_enabled{
+	cursor: pointer;
+	background-image: url('/static/images/pencil_enabled.png');
+	display: block;
+	height: 50px;
+	width: 50px;
+	float: left;
+}
+.pencil_black_tool_disabled{
+	cursor: pointer;
+	background-image: url('/static/images/pencil_disabled.png');
+	display: none;
+	height: 50px;
+	width: 50px;
+	float: left;
+}
+.pencil_red_tool_enabled{
+	cursor: pointer;
+	background-image: url('/static/images/pencil_red_enabled.png');
+	display: block;
+	height: 50px;
+	width: 50px;
+	float: left;
+}
+.pencil_red_tool_disabled{
+	cursor: pointer;
+	background-image: url('/static/images/pencil_red_disabled.png');
+	display: none;
+	height: 50px;
+	width: 50px;
+	float: left;
+}
+.pencil_blue_tool_enabled{
+	cursor: pointer;
+	background-image: url('/static/images/pencil_blue_enabled.png');
+	display: block;
+	height: 50px;
+	width: 50px;
+	float: left;
+}
+.pencil_blue_tool_disabled{
+	cursor: pointer;
+	background-image: url('/static/images/pencil_blue_disabled.png');
+	display: none;
+	height: 50px;
+	width: 50px;
+	float: left;
+}
+.pencil_green_tool_enabled{
+	cursor: pointer;
+	background-image: url('/static/images/pencil_green_enabled.png');
+	display: block;
+	height: 50px;
+	width: 50px;
+	float: left;
+}
+.pencil_green_tool_disabled{
+	cursor: pointer;
+	background-image: url('/static/images/pencil_green_disabled.png');
+	display: none;
+	height: 50px;
+	width: 50px;
+	float: left;
+}
+.eraser_tool_enabled{
+	background-image: url('/static/images/eraser_enabled.png');
+	display: block;
+	height: 50px;
+	width: 50px;
+}
+.eraser_tool_disabled{
+	cursor: pointer;
+	background-image: url('/static/images/eraser_disabled.png');
+	display: block;
+	height: 50px;
+	width: 50px;
+}
+.rectline_tool_enabled{
+	background-image: url('/static/images/rectline_enabled.png');
+	display: block;
+	height: 50px;
+	width: 50px;
+}
+.rectline_tool_disabled{
+	cursor: pointer;
+	background-image: url('/static/images/rectline_disabled.png');
+	display: block;
+	height: 50px;
+	width: 50px;
+}
+.clear_lines_tool_enabled{
+	cursor: pointer;
+	background-image: url('/static/images/clear_lines_enabled.png');
+	display: block;
+	height: 50px;
+	width: 50px;
+}
+.clear_lines_tool_disabled{
+	cursor: pointer;
+	background-image: url('/static/images/clear_lines_enabled.png');
+	display: block;
+	height: 50px;
+	width: 50px;
+}
+#mapale_logo{
+	position: fixed;
+	bottom: 0;
+	right: 0;
+}
+#boardino_logo{
+	position: fixed;
+	top: 5px;
+	right: 5px;
+}
+#notifications{
+	max-width: 300px;
+	position: fixed;
+	top: 100px;
+	right: 0px;
+	color: white;
+	z-index: 10000;
+}
+#connected_users{
+	position: relative;
+	right: 0px;
+	padding-left: 10px;
+	padding-right: 10px;
+	font-size: 24px;
+	background-color: green;
+	color: white;
+}
+.user_connected{
+	white-space: nowrap;
+	display: none;
+	margin-top: 10px;
+	padding-left: 10px;
+	padding-right: 10px;
+	background-color: #adff2f;
+	color: black;
+}
+.user_disconnected{
+	white-space: nowrap;
+	display: none;
+	margin-top: 10px;
+	padding-left: 10px;
+	padding-right: 10px;
+	background-color: red;
+	color: white;
+}
