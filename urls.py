@@ -8,7 +8,7 @@ from django.conf.urls.static import static
 
 urlpatterns = patterns('',
     url(r'^', include('board.urls')),
-    url(r'^jasmine', include('django_jasmine.urls')),
+    #url(r'^jasmine', include('django_jasmine.urls')),
     #url(r'^favicon\.ico$', 'django.views.generic.simple.redirect_to', {'url': '/static/images/favicon.ico'}),
     # Examples:
     # url(r'^$', 'whiteboard.views.home', name='home'),
