@@ -15,5 +15,5 @@ To find out more visit http://www.boardino.com
 - Run the server with django.
 
 ## Screen Shots ##
-![alt tag](http://www.boardino.com/static/images/screen_700x374.png)
+![alt tag](http://www.boardino.com/static/images/screen.png)
 
